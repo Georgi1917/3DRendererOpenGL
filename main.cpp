@@ -9,6 +9,53 @@
 #include <sstream>
 #include <iostream>
 
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 4.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+float deltaTime = 0.0f;
+float lastTime = 0.0f;
+
+float yaw = -90.0f;
+float pitch = 0.0f;
+
+void UpdateCameraPosition(GLFWwindow *window)
+{
+
+    float cameraSpeed = 15.0f;
+    float rotationSpeed = 30.0f;
+
+    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        cameraPos += cameraSpeed * cameraFront * deltaTime;
+    if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        cameraPos -= cameraSpeed * cameraFront * deltaTime;
+    if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * deltaTime;
+    if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * deltaTime;
+
+    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        pitch += rotationSpeed * deltaTime;
+    if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        pitch -= rotationSpeed * deltaTime;
+    if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+        yaw += rotationSpeed * deltaTime;
+    if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+        yaw -= rotationSpeed * deltaTime;
+
+    if(pitch > 89.0f)
+        pitch = 89.0f;
+    if(pitch < -89.0f)
+        pitch = -89.0f;
+
+    glm::vec3 direction;
+    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    direction.y = sin(glm::radians(pitch));
+    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    cameraFront = glm::normalize(direction);
+
+}
+
 std::string GetShaderSources(std::string &source)
 {
 
@@ -18,8 +65,6 @@ std::string GetShaderSources(std::string &source)
 
     while(std::getline(f, line))
         out << line << "\n";
-
-    std::cout << out.str() << "\n";
 
     return out.str();
 
@@ -151,11 +196,8 @@ int main()
 
     glUseProgram(program);
 
-    glm::mat4 models = glm::mat4(1.0f);
     glm::mat4 view = glm::mat4(1.0f);
     glm::mat4 projection;
-
-    const float radius = 10.0f;
 
     projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 100.0f);
 
@@ -170,10 +212,13 @@ int main()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        float camX = sin(glfwGetTime()) * radius;
-        float camZ = cos(glfwGetTime()) * radius;
+        float currTime = glfwGetTime();
+        deltaTime = currTime - lastTime;
+        lastTime = currTime;
 
-        view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        UpdateCameraPosition(window);
+
+        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
         glUniformMatrix4fv(vLoc, 1, GL_FALSE, glm::value_ptr(view));
 
         for (unsigned int i = 0; i < 10; i++)
