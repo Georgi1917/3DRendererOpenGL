@@ -1,6 +1,9 @@
 #define GLEW_STATIC
+#include "include/imgui/imgui.h"
+#include "include/imgui/imgui_impl_glfw.h"
+#include "include/imgui/imgui_impl_opengl3.h"
 #include "include/glew.h"
-#include "include/glfw3.h"
+#include "include/GLFW/glfw3.h"
 #include "include/glm/glm.hpp"
 #include "include/glm/gtc/matrix_transform.hpp"
 #include "include/glm/gtc/type_ptr.hpp"
@@ -23,7 +26,7 @@ void UpdateCameraPosition(GLFWwindow *window)
 {
 
     float cameraSpeed = 15.0f;
-    float rotationSpeed = 30.0f;
+    float rotationSpeed = 60.0f;
 
     if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         cameraPos += cameraSpeed * cameraFront * deltaTime;
@@ -207,10 +210,22 @@ int main()
 
     glEnable(GL_DEPTH_TEST);
 
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
+
     while(!glfwWindowShouldClose(window))
     {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
 
         float currTime = glfwGetTime();
         deltaTime = currTime - lastTime;
@@ -235,11 +250,22 @@ int main()
 
         }
 
+        ImGui::Begin("First Window");
+        ImGui::Text("Hello World");
+        ImGui::End();
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         glfwSwapBuffers(window);
 
         glfwPollEvents();
 
     }
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
     glfwTerminate();
     return 0;
