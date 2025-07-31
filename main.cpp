@@ -218,6 +218,7 @@ int main()
     ImGui_ImplOpenGL3_Init("#version 330");
 
     glm::vec3 translation(0.0f, 0.0f, 0.0f);
+    glm::vec3 angle(0.0f, 0.0f, 0.0f);
 
     while(!glfwWindowShouldClose(window))
     {
@@ -239,12 +240,18 @@ int main()
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, translation);
+        model = glm::rotate(model, glm::radians(angle.x), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(angle.z), glm::vec3(0.0f, 0.0f, 1.0f));
         int mLoc = glGetUniformLocation(program, "model");
         glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         ImGui::Begin("First Window");
-        ImGui::SliderFloat3("Translation", &translation.x, -20.0f, 20.0f);
+        ImGui::SliderFloat3("Translation", &translation.x, -1.0f, 1.0f);
+        ImGui::DragFloat("X Rotation", &angle.x, 1.0f, -360.0f, 360.0f, "Rotate");
+        ImGui::DragFloat("Y Rotation", &angle.y, 1.0f, -360.0f, 360.0f, "Rotate");
+        ImGui::DragFloat("Z Rotation", &angle.z, 1.0f, -360.0f, 360.0f, "Rotate");
         ImGui::End();
 
         ImGui::Render();
