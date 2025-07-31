@@ -244,7 +244,7 @@ int main()
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         ImGui::Begin("First Window");
-        ImGui::SliderFloat3("Translation", &translation.x, 0.0f, 20.0f);
+        ImGui::SliderFloat3("Translation", &translation.x, -20.0f, 20.0f);
         ImGui::End();
 
         ImGui::Render();
