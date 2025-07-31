@@ -217,6 +217,7 @@ int main()
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
+    glm::vec3 translation(0.0f, 0.0f, 0.0f);
 
     while(!glfwWindowShouldClose(window))
     {
@@ -236,22 +237,14 @@ int main()
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
         glUniformMatrix4fv(vLoc, 1, GL_FALSE, glm::value_ptr(view));
 
-        for (unsigned int i = 0; i < 10; i++)
-        {
-
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, cubePositions[i]);
-            float angle = 20.0f * i;
-            model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-            int mLoc = glGetUniformLocation(program, "model");
-            glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(model));
-
-            glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        }
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, translation);
+        int mLoc = glGetUniformLocation(program, "model");
+        glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
         ImGui::Begin("First Window");
-        ImGui::Text("Hello World");
+        ImGui::SliderFloat3("Translation", &translation.x, 0.0f, 20.0f);
         ImGui::End();
 
         ImGui::Render();
