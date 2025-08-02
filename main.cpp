@@ -11,10 +11,14 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <vector>
 
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 4.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+std::vector<float> sphereVertices;
+std::vector<unsigned int> sphereIndices;
 
 float deltaTime = 0.0f;
 float lastTime = 0.0f;
@@ -56,6 +60,69 @@ void UpdateCameraPosition(GLFWwindow *window)
     direction.y = sin(glm::radians(pitch));
     direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
     cameraFront = glm::normalize(direction);
+
+}
+
+void DrawSphere()
+{
+
+    float radius = 1.0f;
+    unsigned int stacks = 50;
+    unsigned int sectors = 50;
+
+    for (unsigned int i = 0; i <= stacks; ++i)
+    {
+
+        float stackAngle = glm::pi<float>() / 2 - i * glm::pi<float>() / stacks;
+        float xy = radius * cosf(stackAngle);
+        float z = radius * sinf(stackAngle);
+
+        for (unsigned int j = 0; j <= sectors; ++j)
+        {
+
+            float sectorAngle = j * 2 * glm::pi<float>() / sectors;
+
+            float x = xy * cosf(sectorAngle);
+            float y = xy * sinf(sectorAngle);
+
+            sphereVertices.push_back(x);
+            sphereVertices.push_back(y);
+            sphereVertices.push_back(z);
+
+            sphereVertices.push_back(1.0f);
+            sphereVertices.push_back(0.0f);
+            sphereVertices.push_back(0.0f);
+
+        }
+
+    }
+
+    for (unsigned int i = 0; i < stacks; ++i)
+    {
+
+        unsigned int k1 = i * (sectors + 1);
+        unsigned int k2 = k1 + sectors + 1;
+
+        for (unsigned int j = 0; j < sectors; ++j, ++k1, ++k2)
+        {
+
+            if (i != 0)
+            {
+                sphereIndices.push_back(k1);
+                sphereIndices.push_back(k2);
+                sphereIndices.push_back(k1 + 1);
+            }
+
+            if (i != (stacks - 1))
+            {
+                sphereIndices.push_back(k1 + 1);
+                sphereIndices.push_back(k2);
+                sphereIndices.push_back(k2 + 1);
+            }
+
+        }
+
+    }
 
 }
 
@@ -166,28 +233,47 @@ int main()
         -0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 1.0f
     };
 
-    glm::vec3 cubePositions[] = {
-        glm::vec3( 0.0f,  0.0f,  0.0f), 
-        glm::vec3( 2.0f,  5.0f, -15.0f), 
-        glm::vec3(-1.5f, -2.2f, -2.5f),  
-        glm::vec3(-3.8f, -2.0f, -12.3f),  
-        glm::vec3( 2.4f, -0.4f, -3.5f),  
-        glm::vec3(-1.7f,  3.0f, -7.5f),  
-        glm::vec3( 1.3f, -2.0f, -2.5f),  
-        glm::vec3( 1.5f,  2.0f, -2.5f), 
-        glm::vec3( 1.5f,  0.2f, -1.5f), 
-        glm::vec3(-1.3f,  1.0f, -1.5f)  
-    };
+    unsigned int cubeVAO;
+    unsigned int cubeVBO;
+    glGenVertexArrays(1, &cubeVAO);
+    glGenBuffers(1, &cubeVBO);
 
-    unsigned int vbo;
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBindVertexArray(cubeVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+
     glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)(sizeof(float) * 3));
+
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
+    DrawSphere();
+
+    unsigned int sphereVAO;
+    unsigned int sphereVBO;
+    unsigned int sphereIBO;
+    glGenVertexArrays(1, &sphereVAO);
+    glGenBuffers(1, &sphereVBO);
+    glGenBuffers(1, &sphereIBO);
+
+    glBindVertexArray(sphereVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, sphereVBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphereIBO);
+
+    glBufferData(GL_ARRAY_BUFFER, sphereVertices.size() * sizeof(float), sphereVertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sphereIndices.size() * sizeof(unsigned int), sphereIndices.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)(sizeof(float) * 3));
+
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+
+    glBindVertexArray(0);
 
     std::string vs = "shaders/vertex.shader";
     std::string fs = "shaders/fragment.shader";
@@ -224,7 +310,6 @@ int main()
     {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glClearColor(0.086f, 0.043f, 0.361f, 1.0f);
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -244,9 +329,22 @@ int main()
         model = glm::rotate(model, glm::radians(angle.x), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(angle.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
         int mLoc = glGetUniformLocation(program, "model");
         glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+        glBindVertexArray(cubeVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        glm::mat4 sphereModel = glm::mat4(1.0f);
+        sphereModel = glm::translate(sphereModel, glm::vec3(2.0f, 0.0f, 0.0f));
+
+        glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(sphereModel));
+
+        //std::cout << sphereIndices.size() << "\n";
+
+        glBindVertexArray(sphereVAO);
+        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(sphereIndices.size()), GL_UNSIGNED_INT, 0);
 
         ImGui::Begin("First Window");
         ImGui::SliderFloat3("Translation", &translation.x, -1.0f, 1.0f);
