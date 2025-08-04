@@ -7,6 +7,7 @@
 #include "include/glm/glm.hpp"
 #include "include/glm/gtc/matrix_transform.hpp"
 #include "include/glm/gtc/type_ptr.hpp"
+#include "VertexBuffer.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -234,14 +235,10 @@ int main()
     };
 
     unsigned int cubeVAO;
-    unsigned int cubeVBO;
     glGenVertexArrays(1, &cubeVAO);
-    glGenBuffers(1, &cubeVBO);
-
     glBindVertexArray(cubeVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
+    VertexBuffer cubeVBO(positions, sizeof(positions));
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)(sizeof(float) * 3));
@@ -249,30 +246,30 @@ int main()
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    cubeVBO.Unbind();
     glBindVertexArray(0);
 
     DrawSphere();
 
     unsigned int sphereVAO;
-    unsigned int sphereVBO;
-    unsigned int sphereIBO;
     glGenVertexArrays(1, &sphereVAO);
-    glGenBuffers(1, &sphereVBO);
-    glGenBuffers(1, &sphereIBO);
-
     glBindVertexArray(sphereVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, sphereVBO);
+
+    VertexBuffer sphereVBO(sphereVertices.data(), sphereVertices.size() * sizeof(float));
+
+    unsigned int sphereIBO;
+    glGenBuffers(1, &sphereIBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphereIBO);
 
-    glBufferData(GL_ARRAY_BUFFER, sphereVertices.size() * sizeof(float), sphereVertices.data(), GL_STATIC_DRAW);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sphereIndices.size() * sizeof(unsigned int), sphereIndices.data(), GL_STATIC_DRAW);
+
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)(sizeof(float) * 3));
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
 
+    sphereVBO.Unbind();
     glBindVertexArray(0);
 
     std::string vs = "shaders/vertex.shader";
