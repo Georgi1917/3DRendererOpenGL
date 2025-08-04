@@ -8,6 +8,7 @@
 #include "include/glm/gtc/matrix_transform.hpp"
 #include "include/glm/gtc/type_ptr.hpp"
 #include "VertexBuffer.h"
+#include "IndexBuffer.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -256,12 +257,7 @@ int main()
     glBindVertexArray(sphereVAO);
 
     VertexBuffer sphereVBO(sphereVertices.data(), sphereVertices.size() * sizeof(float));
-
-    unsigned int sphereIBO;
-    glGenBuffers(1, &sphereIBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphereIBO);
-
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sphereIndices.size() * sizeof(unsigned int), sphereIndices.data(), GL_STATIC_DRAW);
+    IndexBuffer sphereIBO(sphereIndices.data(), sphereIndices.size());
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)(sizeof(float) * 3));
@@ -338,10 +334,8 @@ int main()
 
         glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(sphereModel));
 
-        //std::cout << sphereIndices.size() << "\n";
-
         glBindVertexArray(sphereVAO);
-        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(sphereIndices.size()), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, sphereIBO.Count(), GL_UNSIGNED_INT, 0);
 
         ImGui::Begin("First Window");
         ImGui::SliderFloat3("Translation", &translation.x, -1.0f, 1.0f);
