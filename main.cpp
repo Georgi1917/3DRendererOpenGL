@@ -9,6 +9,8 @@
 #include "include/glm/gtc/type_ptr.hpp"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "VertexArray.h"
+#include "BufferLayoutObject.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -235,38 +237,29 @@ int main()
         -0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 1.0f
     };
 
-    unsigned int cubeVAO;
-    glGenVertexArrays(1, &cubeVAO);
-    glBindVertexArray(cubeVAO);
-
+    VertexArray cubeVAO;
     VertexBuffer cubeVBO(positions, sizeof(positions));
+    BufferLayoutObject cubeLayout;
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)(sizeof(float) * 3));
+    cubeLayout.Push<float>(3);
+    cubeLayout.Push<float>(3);
+    cubeVAO.AddBuffer(cubeVBO, cubeLayout);
 
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-
-    cubeVBO.Unbind();
-    glBindVertexArray(0);
+    cubeVAO.Unbind();
 
     DrawSphere();
 
-    unsigned int sphereVAO;
-    glGenVertexArrays(1, &sphereVAO);
-    glBindVertexArray(sphereVAO);
-
+    VertexArray sphereVAO;
     VertexBuffer sphereVBO(sphereVertices.data(), sphereVertices.size() * sizeof(float));
     IndexBuffer sphereIBO(sphereIndices.data(), sphereIndices.size());
+    BufferLayoutObject sphereLayout;
+    
+    sphereLayout.Push<float>(3);
+    sphereLayout.Push<float>(3);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)(sizeof(float) * 3));
+    sphereVAO.AddBuffer(sphereVBO, sphereLayout);
 
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-
-    sphereVBO.Unbind();
-    glBindVertexArray(0);
+    sphereVAO.Unbind();
 
     std::string vs = "shaders/vertex.shader";
     std::string fs = "shaders/fragment.shader";
@@ -326,7 +319,7 @@ int main()
         int mLoc = glGetUniformLocation(program, "model");
         glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-        glBindVertexArray(cubeVAO);
+        cubeVAO.Bind();
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         glm::mat4 sphereModel = glm::mat4(1.0f);
@@ -334,7 +327,7 @@ int main()
 
         glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(sphereModel));
 
-        glBindVertexArray(sphereVAO);
+        sphereVAO.Bind();
         glDrawElements(GL_TRIANGLES, sphereIBO.Count(), GL_UNSIGNED_INT, 0);
 
         ImGui::Begin("First Window");
