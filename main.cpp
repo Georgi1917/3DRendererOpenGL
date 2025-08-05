@@ -11,6 +11,7 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "BufferLayoutObject.h"
+#include "Renderer.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -280,7 +281,9 @@ int main()
     int pLoc = glGetUniformLocation(program, "projection");
     glUniformMatrix4fv(pLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-    glEnable(GL_DEPTH_TEST);
+    Renderer renderer;
+
+    renderer.EnableDepthTesting();
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -295,7 +298,7 @@ int main()
     while(!glfwWindowShouldClose(window))
     {
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        renderer.Clear();
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -319,16 +322,14 @@ int main()
         int mLoc = glGetUniformLocation(program, "model");
         glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-        cubeVAO.Bind();
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        renderer.DrawArrays(cubeVAO, GL_TRIANGLES, 0, 36);
 
         glm::mat4 sphereModel = glm::mat4(1.0f);
         sphereModel = glm::translate(sphereModel, glm::vec3(2.0f, 0.0f, 0.0f));
 
         glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(sphereModel));
 
-        sphereVAO.Bind();
-        glDrawElements(GL_TRIANGLES, sphereIBO.Count(), GL_UNSIGNED_INT, 0);
+        renderer.DrawElements(sphereVAO, sphereIBO, GL_TRIANGLES, GL_UNSIGNED_INT);
 
         ImGui::Begin("First Window");
         ImGui::SliderFloat3("Translation", &translation.x, -1.0f, 1.0f);
