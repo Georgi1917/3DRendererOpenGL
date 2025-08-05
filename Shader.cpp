@@ -32,7 +32,7 @@ unsigned int Shader::CompileShader(std::string &filepath, unsigned int type)
 
 }
 
-Shader::Shader(std::string &vertexFilePath, std::string &fragmentFilePath)
+Shader::Shader(std::string vertexFilePath, std::string fragmentFilePath)
 {
 
     unsigned int vertexShader, fragmentShader;
@@ -45,6 +45,10 @@ Shader::Shader(std::string &vertexFilePath, std::string &fragmentFilePath)
     glAttachShader(program, fragmentShader);
     glLinkProgram(program);
 
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    shaderProgram = program;
     glUseProgram(program);
 
 }
@@ -52,8 +56,28 @@ Shader::Shader(std::string &vertexFilePath, std::string &fragmentFilePath)
 Shader::~Shader()
 {
 
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    glDeleteProgram(shaderProgram);
 
 }
 
+void Shader::Bind()
+{
+
+    glUseProgram(shaderProgram);
+
+}
+
+void Shader::Unbind()
+{
+
+    glUseProgram(0);
+
+}
+
+void Shader::SetMatrix4fv(std::string uniformName, glm::mat4 &matrix)
+{
+
+    int loc = glGetUniformLocation(shaderProgram, uniformName.c_str());
+    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
+
+}

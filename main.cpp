@@ -12,6 +12,7 @@
 #include "VertexArray.h"
 #include "BufferLayoutObject.h"
 #include "Renderer.h"
+#include "Shader.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -262,24 +263,27 @@ int main()
 
     sphereVAO.Unbind();
 
-    std::string vs = "shaders/vertex.shader";
-    std::string fs = "shaders/fragment.shader";
+    // std::string vs = "shaders/vertex.shader";
+    // std::string fs = "shaders/fragment.shader";
 
-    std::string vsSource = GetShaderSources(vs);
-    std::string fsSource = GetShaderSources(fs);
+    // std::string vsSource = GetShaderSources(vs);
+    // std::string fsSource = GetShaderSources(fs);
 
-    int program = CreateProgram(vsSource, fsSource);
+    // int program = CreateProgram(vsSource, fsSource);
 
-    glUseProgram(program);
+    // glUseProgram(program);
+
+    Shader basicShader("shaders/vertex.shader", "shaders/fragment.shader");
 
     glm::mat4 view = glm::mat4(1.0f);
     glm::mat4 projection;
 
     projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 100.0f);
 
-    int vLoc = glGetUniformLocation(program, "view");
-    int pLoc = glGetUniformLocation(program, "projection");
-    glUniformMatrix4fv(pLoc, 1, GL_FALSE, glm::value_ptr(projection));
+    // int vLoc = glGetUniformLocation(program, "view");
+    // int pLoc = glGetUniformLocation(program, "projection");
+    // glUniformMatrix4fv(pLoc, 1, GL_FALSE, glm::value_ptr(projection));
+    basicShader.SetMatrix4fv("projection", projection);
 
     Renderer renderer;
 
@@ -311,7 +315,8 @@ int main()
         UpdateCameraPosition(window);
 
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-        glUniformMatrix4fv(vLoc, 1, GL_FALSE, glm::value_ptr(view));
+        // glUniformMatrix4fv(vLoc, 1, GL_FALSE, glm::value_ptr(view));
+        basicShader.SetMatrix4fv("view", view);
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, translation);
@@ -319,15 +324,18 @@ int main()
         model = glm::rotate(model, glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(angle.z), glm::vec3(0.0f, 0.0f, 1.0f));
 
-        int mLoc = glGetUniformLocation(program, "model");
-        glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(model));
+        // int mLoc = glGetUniformLocation(program, "model");
+        // glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+        basicShader.SetMatrix4fv("model", model);
 
         renderer.DrawArrays(cubeVAO, GL_TRIANGLES, 0, 36);
 
         glm::mat4 sphereModel = glm::mat4(1.0f);
         sphereModel = glm::translate(sphereModel, glm::vec3(2.0f, 0.0f, 0.0f));
 
-        glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(sphereModel));
+        // glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(sphereModel));
+        basicShader.SetMatrix4fv("model", sphereModel);
 
         renderer.DrawElements(sphereVAO, sphereIBO, GL_TRIANGLES, GL_UNSIGNED_INT);
 
