@@ -13,61 +13,18 @@
 #include "BufferLayoutObject.h"
 #include "Renderer.h"
 #include "Shader.h"
+#include "Camera.h"
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <vector>
 
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 4.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-
 std::vector<float> sphereVertices;
 std::vector<unsigned int> sphereIndices;
 
 float deltaTime = 0.0f;
 float lastTime = 0.0f;
-
-float yaw = -90.0f;
-float pitch = 0.0f;
-
-void UpdateCameraPosition(GLFWwindow *window)
-{
-
-    float cameraSpeed = 15.0f;
-    float rotationSpeed = 60.0f;
-
-    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront * deltaTime;
-    if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront * deltaTime;
-    if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * deltaTime;
-    if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * deltaTime;
-
-    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-        pitch += rotationSpeed * deltaTime;
-    if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        pitch -= rotationSpeed * deltaTime;
-    if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-        yaw += rotationSpeed * deltaTime;
-    if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-        yaw -= rotationSpeed * deltaTime;
-
-    if(pitch > 89.0f)
-        pitch = 89.0f;
-    if(pitch < -89.0f)
-        pitch = -89.0f;
-
-    glm::vec3 direction;
-    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    direction.y = sin(glm::radians(pitch));
-    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    cameraFront = glm::normalize(direction);
-
-}
 
 void DrawSphere()
 {
@@ -129,49 +86,6 @@ void DrawSphere()
         }
 
     }
-
-}
-
-std::string GetShaderSources(std::string &source)
-{
-
-    std::ifstream f(source);
-    std::string line;
-    std::stringstream out;
-
-    while(std::getline(f, line))
-        out << line << "\n";
-
-    return out.str();
-
-}
-
-int CreateProgram(std::string &vs, std::string &fs)
-{
-
-    unsigned int vertex, fragment;
-    int program;
-    vertex = glCreateShader(GL_VERTEX_SHADER);
-    fragment = glCreateShader(GL_FRAGMENT_SHADER);
-
-    const char *vsrc = vs.c_str();
-    const char *fsrc = fs.c_str();
-
-    glShaderSource(vertex, 1, &vsrc, nullptr);
-    glShaderSource(fragment, 1, &fsrc, nullptr);
-
-    glCompileShader(vertex);
-    glCompileShader(fragment);
-
-    program = glCreateProgram();
-    glAttachShader(program, vertex);
-    glAttachShader(program, fragment);
-    glLinkProgram(program);
-
-    glDeleteShader(vertex);
-    glDeleteShader(fragment);
-
-    return program;
 
 }
 
@@ -263,29 +177,16 @@ int main()
 
     sphereVAO.Unbind();
 
-    // std::string vs = "shaders/vertex.shader";
-    // std::string fs = "shaders/fragment.shader";
-
-    // std::string vsSource = GetShaderSources(vs);
-    // std::string fsSource = GetShaderSources(fs);
-
-    // int program = CreateProgram(vsSource, fsSource);
-
-    // glUseProgram(program);
-
     Shader basicShader("shaders/vertex.shader", "shaders/fragment.shader");
 
-    glm::mat4 view = glm::mat4(1.0f);
     glm::mat4 projection;
 
     projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 100.0f);
 
-    // int vLoc = glGetUniformLocation(program, "view");
-    // int pLoc = glGetUniformLocation(program, "projection");
-    // glUniformMatrix4fv(pLoc, 1, GL_FALSE, glm::value_ptr(projection));
     basicShader.SetMatrix4fv("projection", projection);
 
     Renderer renderer;
+    Camera camera(glm::vec3(0.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f));
 
     renderer.EnableDepthTesting();
 
@@ -312,20 +213,13 @@ int main()
         deltaTime = currTime - lastTime;
         lastTime = currTime;
 
-        UpdateCameraPosition(window);
-
-        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-        // glUniformMatrix4fv(vLoc, 1, GL_FALSE, glm::value_ptr(view));
-        basicShader.SetMatrix4fv("view", view);
+        camera.Update(window, deltaTime);
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, translation);
         model = glm::rotate(model, glm::radians(angle.x), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(angle.z), glm::vec3(0.0f, 0.0f, 1.0f));
-
-        // int mLoc = glGetUniformLocation(program, "model");
-        // glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(model));
 
         basicShader.SetMatrix4fv("model", model);
 
@@ -334,7 +228,6 @@ int main()
         glm::mat4 sphereModel = glm::mat4(1.0f);
         sphereModel = glm::translate(sphereModel, glm::vec3(2.0f, 0.0f, 0.0f));
 
-        // glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(sphereModel));
         basicShader.SetMatrix4fv("model", sphereModel);
 
         renderer.DrawElements(sphereVAO, sphereIBO, GL_TRIANGLES, GL_UNSIGNED_INT);
