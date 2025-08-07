@@ -14,6 +14,7 @@
 #include "Renderer.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "MousePicker.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -187,6 +188,7 @@ int main()
 
     Renderer renderer;
     Camera camera(glm::vec3(0.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+    MousePicker mousePicker(window);
 
     renderer.EnableDepthTesting();
 
@@ -214,6 +216,7 @@ int main()
         lastTime = currTime;
 
         camera.Update(window, deltaTime);
+        mousePicker.Update();
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, translation);
