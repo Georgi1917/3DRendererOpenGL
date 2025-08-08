@@ -32,5 +32,6 @@ class Camera
         ~Camera();
 
         void Update(GLFWwindow *window, float delta);
+        glm::mat4 GetViewMatrix();
     
 };

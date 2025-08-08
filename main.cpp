@@ -188,7 +188,7 @@ int main()
 
     Renderer renderer;
     Camera camera(glm::vec3(0.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f));
-    MousePicker mousePicker(window);
+    MousePicker mousePicker(window, &camera, projection);
 
     renderer.EnableDepthTesting();
 

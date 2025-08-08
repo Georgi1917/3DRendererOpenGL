@@ -54,3 +54,8 @@ void Camera::Update(GLFWwindow *window, float delta)
     glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(view));
 
 }
+
+glm::mat4 Camera::GetViewMatrix()
+{
+    return view;
+}
