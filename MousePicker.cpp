@@ -19,7 +19,6 @@ void MousePicker::Update()
 {
 
     currentRay = CalculateRay();
-    std::cout << currentRay.x << " " << currentRay.y << " " << currentRay.z << "\n";
 
 }
 
