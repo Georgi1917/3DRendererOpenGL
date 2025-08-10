@@ -15,6 +15,7 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "MousePicker.h"
+#include "Renderables/Cube.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -163,6 +164,8 @@ int main()
     cubeVAO.AddBuffer(cubeVBO, cubeLayout);
 
     cubeVAO.Unbind();
+
+    Cube cube(1);
 
     DrawSphere();
 

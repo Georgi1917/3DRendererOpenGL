@@ -4,9 +4,10 @@ CXXFLAGS = -Iinclude
 LDFLAGS = -Llib -lglfw3 -lglew32 -lgdi32 -lopengl32
 
 IMGUI = include/imgui/imgui_demo.cpp include/imgui/imgui_draw.cpp include/imgui/imgui_impl_glfw.cpp include/imgui/imgui_impl_opengl3.cpp include/imgui/imgui_tables.cpp include/imgui/imgui_widgets.cpp include/imgui/imgui.cpp
-ADDITIONAL_OBJS = VertexBuffer.cpp IndexBuffer.cpp VertexArray.cpp BufferLayoutObject.cpp Renderer.cpp Shader.cpp Camera.cpp MousePicker.cpp Renderables/Renderable.cpp
+ADDITIONAL_OBJS = VertexBuffer.cpp IndexBuffer.cpp VertexArray.cpp BufferLayoutObject.cpp Renderer.cpp Shader.cpp Camera.cpp MousePicker.cpp
+RENDERABLES_OBJS = Renderables/Renderable.cpp Renderables/Cube.cpp Renderables/Sphere.cpp
 
-SRC = main.cpp $(IMGUI) $(ADDITIONAL_OBJS)
+SRC = main.cpp $(IMGUI) $(ADDITIONAL_OBJS) $(RENDERABLES_OBJS)
 
 TARGET = main.exe
 

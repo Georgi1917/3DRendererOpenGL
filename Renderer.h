@@ -3,6 +3,7 @@
 #include "include/glew.h"
 #include "VertexArray.h"
 #include "IndexBuffer.h"
+#include "Renderables/Renderable.h"
 
 
 class Renderer

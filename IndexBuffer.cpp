@@ -11,6 +11,11 @@ IndexBuffer::IndexBuffer(const unsigned int* data, unsigned int count) : countOf
 
 }
 
+IndexBuffer::IndexBuffer()
+{
+    
+}
+
 IndexBuffer::~IndexBuffer()
 {
 

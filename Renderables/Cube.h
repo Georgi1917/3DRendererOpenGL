@@ -58,5 +58,6 @@ class Cube : public Renderable
         Cube(unsigned int _id);
         ~Cube();
         float *GetData();
+        VertexArray GetVAO();
 
 };

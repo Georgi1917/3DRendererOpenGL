@@ -5,10 +5,9 @@ Cube::Cube(unsigned int _id) : Renderable(_id)
 
     cubeVAO = VertexArray();
     cubeVBO = VertexBuffer(positions, sizeof(positions));
-    BufferLayoutObject layout;
-    layout.Push<float>(3);
-    layout.Push<float>(3);
-    cubeVAO.AddBuffer(cubeVBO, layout);
+    cubeLayout.Push<float>(3);
+    cubeLayout.Push<float>(3);
+    cubeVAO.AddBuffer(cubeVBO, cubeLayout);
     cubeVAO.Unbind();
 
 }
@@ -22,5 +21,12 @@ float *Cube::GetData()
 {
 
     return positions;
+
+}
+
+VertexArray Cube::GetVAO()
+{
+
+    return cubeVAO;
 
 }
