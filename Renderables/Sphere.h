@@ -19,5 +19,7 @@ class Sphere : public Renderable
     public:
         Sphere(unsigned int _id, float _radius, unsigned int _stacks, unsigned int _sectors);
         ~Sphere();
+        VertexArray& GetVAO();
+        IndexBuffer& GetIBO();
 
 };

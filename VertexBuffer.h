@@ -5,7 +5,7 @@ class VertexBuffer
     private:
         unsigned int rendererID;
     public:
-        VertexBuffer(const void* data, unsigned int size);
+        void init(const void* data, unsigned int size);
         VertexBuffer();
         ~VertexBuffer();
 

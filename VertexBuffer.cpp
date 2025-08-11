@@ -2,7 +2,7 @@
 #include "include/glew.h"
 #include "VertexBuffer.h"
 
-VertexBuffer::VertexBuffer(const void* data, unsigned int size)
+void VertexBuffer::init(const void* data, unsigned int size)
 {
 
     glGenBuffers(1, &rendererID);

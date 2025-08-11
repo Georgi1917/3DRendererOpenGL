@@ -6,7 +6,7 @@ class IndexBuffer
         unsigned int rendererID;
         unsigned int countOfIndeces;
     public:
-        IndexBuffer(const unsigned int* data, unsigned int count);
+        void init(const unsigned int* data, unsigned int count);
         IndexBuffer();
         ~IndexBuffer();
 

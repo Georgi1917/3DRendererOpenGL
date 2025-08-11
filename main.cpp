@@ -16,79 +16,20 @@
 #include "Camera.h"
 #include "MousePicker.h"
 #include "Renderables/Cube.h"
+#include "Renderables/Sphere.h"
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <vector>
 
-std::vector<float> sphereVertices;
-std::vector<unsigned int> sphereIndices;
-
 float deltaTime = 0.0f;
 float lastTime = 0.0f;
 
-void DrawSphere()
+void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
+                                const GLchar* message, const void* userParam) 
 {
-
-    float radius = 1.0f;
-    unsigned int stacks = 50;
-    unsigned int sectors = 50;
-
-    for (unsigned int i = 0; i <= stacks; ++i)
-    {
-
-        float stackAngle = glm::pi<float>() / 2 - i * glm::pi<float>() / stacks;
-        float xy = radius * cosf(stackAngle);
-        float z = radius * sinf(stackAngle);
-
-        for (unsigned int j = 0; j <= sectors; ++j)
-        {
-
-            float sectorAngle = j * 2 * glm::pi<float>() / sectors;
-
-            float x = xy * cosf(sectorAngle);
-            float y = xy * sinf(sectorAngle);
-
-            sphereVertices.push_back(x);
-            sphereVertices.push_back(y);
-            sphereVertices.push_back(z);
-
-            sphereVertices.push_back(1.0f);
-            sphereVertices.push_back(0.0f);
-            sphereVertices.push_back(0.0f);
-
-        }
-
-    }
-
-    for (unsigned int i = 0; i < stacks; ++i)
-    {
-
-        unsigned int k1 = i * (sectors + 1);
-        unsigned int k2 = k1 + sectors + 1;
-
-        for (unsigned int j = 0; j < sectors; ++j, ++k1, ++k2)
-        {
-
-            if (i != 0)
-            {
-                sphereIndices.push_back(k1);
-                sphereIndices.push_back(k2);
-                sphereIndices.push_back(k1 + 1);
-            }
-
-            if (i != (stacks - 1))
-            {
-                sphereIndices.push_back(k1 + 1);
-                sphereIndices.push_back(k2);
-                sphereIndices.push_back(k2 + 1);
-            }
-
-        }
-
-    }
-
+    fprintf(stderr, "OpenGL Debug: %s\n", message);
 }
 
 int main()
@@ -111,75 +52,8 @@ int main()
     glfwMakeContextCurrent(window);
     glewInit();
 
-    float positions[] = {
-        -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f,   1.0f, 0.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,   1.0f, 0.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,   1.0f, 0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,
-
-        -0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,   0.0f, 1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,   0.0f, 1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,   0.0f, 1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f,
-
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,
-
-        0.5f,  0.5f,  0.5f,  0.29f, 0.6f, 0.57f,
-        0.5f,  0.5f, -0.5f,  0.29f, 0.6f, 0.57f,
-        0.5f, -0.5f, -0.5f,  0.29f, 0.6f, 0.57f,
-        0.5f, -0.5f, -0.5f,  0.29f, 0.6f, 0.57f,
-        0.5f, -0.5f,  0.5f,  0.29f, 0.6f, 0.57f,
-        0.5f,  0.5f,  0.5f,  0.29f, 0.6f, 0.57f,
-
-        -0.5f, -0.5f, -0.5f, 1.0f, 0.6f, 0.12f, 
-        0.5f, -0.5f, -0.5f,  1.0f, 0.6f, 0.12f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.6f, 0.12f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.6f, 0.12f,
-        -0.5f, -0.5f,  0.5f, 1.0f, 0.6f, 0.12f,
-        -0.5f, -0.5f, -0.5f, 1.0f, 0.6f, 0.12f,
-
-        -0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 1.0f, 
-        -0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 1.0f
-    };
-
-    VertexArray cubeVAO;
-    VertexBuffer cubeVBO(positions, sizeof(positions));
-    BufferLayoutObject cubeLayout;
-
-    cubeLayout.Push<float>(3);
-    cubeLayout.Push<float>(3);
-    cubeVAO.AddBuffer(cubeVBO, cubeLayout);
-
-    cubeVAO.Unbind();
-
     Cube cube(1);
-
-    DrawSphere();
-
-    VertexArray sphereVAO;
-    VertexBuffer sphereVBO(sphereVertices.data(), sphereVertices.size() * sizeof(float));
-    IndexBuffer sphereIBO(sphereIndices.data(), sphereIndices.size());
-    BufferLayoutObject sphereLayout;
-    
-    sphereLayout.Push<float>(3);
-    sphereLayout.Push<float>(3);
-
-    sphereVAO.AddBuffer(sphereVBO, sphereLayout);
-
-    sphereVAO.Unbind();
+    Sphere sphere(2, 1.0f, 50, 50);
 
     Shader basicShader("shaders/vertex.shader", "shaders/fragment.shader");
 
@@ -194,6 +68,9 @@ int main()
     MousePicker mousePicker(window, &camera, projection);
 
     renderer.EnableDepthTesting();
+
+    glEnable(GL_DEBUG_OUTPUT);
+    glDebugMessageCallback(MessageCallback, nullptr);
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -229,14 +106,14 @@ int main()
 
         basicShader.SetMatrix4fv("model", model);
 
-        renderer.DrawArrays(cubeVAO, GL_TRIANGLES, 0, 36);
+        renderer.Draw(&cube, GL_TRIANGLES, 0);
 
         glm::mat4 sphereModel = glm::mat4(1.0f);
         sphereModel = glm::translate(sphereModel, glm::vec3(2.0f, 0.0f, 0.0f));
 
         basicShader.SetMatrix4fv("model", sphereModel);
 
-        renderer.DrawElements(sphereVAO, sphereIBO, GL_TRIANGLES, GL_UNSIGNED_INT);
+        renderer.Draw(&sphere, GL_TRIANGLES, GL_UNSIGNED_INT);
 
         ImGui::Begin("First Window");
         ImGui::SliderFloat3("Translation", &translation.x, -1.0f, 1.0f);

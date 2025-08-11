@@ -59,18 +59,19 @@ void Sphere::SetUpSphere()
 
 }
 
-Sphere::Sphere(unsigned int _id, float _radius, unsigned int _stacks, unsigned int _sectors) : Renderable(_id)
+Sphere::Sphere(unsigned int _id, float _radius, unsigned int _stacks, unsigned int _sectors) : 
+    Renderable(_id), 
+    sphereVAO(), 
+    sphereVBO(),
+    sphereIBO(),
+    layout(),
+    radius(_radius), stacks(_stacks), sectors(_sectors)
 {
 
-    radius = _radius;
-    stacks = _stacks;
-    sectors = _sectors;
-
     SetUpSphere();
-
-    sphereVAO = VertexArray();
-    sphereVBO = VertexBuffer(vertices.data(), vertices.size() * sizeof(float));
-    sphereIBO = IndexBuffer(indices.data(), indices.size());
+    sphereVAO.Bind();
+    sphereVBO.init(vertices.data(), vertices.size() * sizeof(float));
+    sphereIBO.init(indices.data(), indices.size());
     layout.Push<float>(3);
     layout.Push<float>(3);
 
@@ -82,4 +83,14 @@ Sphere::Sphere(unsigned int _id, float _radius, unsigned int _stacks, unsigned i
 Sphere::~Sphere()
 {
     
+}
+
+VertexArray& Sphere::GetVAO()
+{
+    return sphereVAO;
+}
+
+IndexBuffer& Sphere::GetIBO()
+{
+    return sphereIBO;
 }

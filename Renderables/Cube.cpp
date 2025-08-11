@@ -1,10 +1,10 @@
 #include "Cube.h"
 
-Cube::Cube(unsigned int _id) : Renderable(_id)
+Cube::Cube(unsigned int _id) : Renderable(_id), cubeVAO(), cubeVBO(), cubeLayout()
 {
 
-    cubeVAO = VertexArray();
-    cubeVBO = VertexBuffer(positions, sizeof(positions));
+    cubeVAO.Bind();
+    cubeVBO.init(positions, sizeof(positions));
     cubeLayout.Push<float>(3);
     cubeLayout.Push<float>(3);
     cubeVAO.AddBuffer(cubeVBO, cubeLayout);
@@ -17,16 +17,14 @@ Cube::~Cube()
 
 }
 
-float *Cube::GetData()
-{
-
-    return positions;
-
-}
-
-VertexArray Cube::GetVAO()
+VertexArray& Cube::GetVAO()
 {
 
     return cubeVAO;
 
+}
+
+unsigned int Cube::GetNumberOfVertices()
+{
+    return numOfVertices;
 }
