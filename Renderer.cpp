@@ -1,18 +1,23 @@
 #include "Renderer.h"
 #include <iostream>
 
-void Renderer::DrawArrays(VertexArray& vao, unsigned int mode, unsigned int first, unsigned int indicesCount)
+void Renderer::Draw(Cube *cube, Shader &shader, unsigned int mode, unsigned int first)
 {
 
+    VertexArray& vao = cube->GetVAO();
+    shader.SetVec3f("uColor", cube->GetColor());
     vao.Bind();
-    glDrawArrays(mode, first, indicesCount);
+    glDrawArrays(mode, first, 36);
     vao.Unbind();
 
 }
 
-void Renderer::DrawElements(VertexArray& vao, IndexBuffer& ibo, unsigned int mode, unsigned int type)
+void Renderer::Draw(Sphere *sphere, Shader &shader, unsigned int mode, unsigned int type)
 {
 
+    VertexArray& vao = sphere->GetVAO();
+    IndexBuffer& ibo = sphere->GetIBO();
+    shader.SetVec3f("uColor", sphere->GetColor());
     vao.Bind();
     ibo.Bind();
     glDrawElements(mode, ibo.Count(), type, 0);
@@ -21,21 +26,23 @@ void Renderer::DrawElements(VertexArray& vao, IndexBuffer& ibo, unsigned int mod
 
 }
 
-void Renderer::Draw(Cube *cube, unsigned int mode, unsigned int first)
+void Renderer::DrawPicking(Cube *cube, Shader &shader, unsigned int mode, unsigned int first)
 {
 
     VertexArray& vao = cube->GetVAO();
+    shader.SetVec3f("uColor", cube->GetPickingColor());
     vao.Bind();
     glDrawArrays(mode, first, 36);
     vao.Unbind();
 
 }
 
-void Renderer::Draw(Sphere *sphere, unsigned int mode, unsigned int type)
+void Renderer::DrawPicking(Sphere *sphere, Shader &shader, unsigned int mode, unsigned int type)
 {
 
     VertexArray& vao = sphere->GetVAO();
     IndexBuffer& ibo = sphere->GetIBO();
+    shader.SetVec3f("uColor", sphere->GetPickingColor());
     vao.Bind();
     ibo.Bind();
     glDrawElements(mode, ibo.Count(), type, 0);

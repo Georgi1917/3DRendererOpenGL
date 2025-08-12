@@ -81,3 +81,11 @@ void Shader::SetMatrix4fv(std::string uniformName, glm::mat4 &matrix)
     glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
 
 }
+
+void Shader::SetVec3f(std::string uniformName, glm::vec3 &vector3)
+{
+
+    int loc = glGetUniformLocation(shaderProgram, uniformName.c_str());
+    glUniform3f(loc, vector3.r, vector3.g, vector3.b);
+
+}

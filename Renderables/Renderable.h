@@ -15,9 +15,16 @@ class Renderable
     protected:
         unsigned int id;
         glm::mat4 model;
+        glm::vec3 color;
+        glm::vec3 pickingColor;
+        glm::vec3 IdToColor();
+        unsigned int ColorToId(unsigned char r, unsigned char g, unsigned char b);
 
     public:
 
-        Renderable(unsigned int _id);
+        Renderable(unsigned int _id, glm::vec3 _color);
+        glm::vec3& GetColor();
+        glm::vec3& GetPickingColor();
+        bool CompareColorAndId(unsigned char r, unsigned char g, unsigned char b);
 
 };

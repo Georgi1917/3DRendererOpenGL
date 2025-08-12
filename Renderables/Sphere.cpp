@@ -59,8 +59,8 @@ void Sphere::SetUpSphere()
 
 }
 
-Sphere::Sphere(unsigned int _id, float _radius, unsigned int _stacks, unsigned int _sectors) : 
-    Renderable(_id), 
+Sphere::Sphere(unsigned int _id, glm::vec3 _color, float _radius, unsigned int _stacks, unsigned int _sectors) : 
+    Renderable(_id, _color), 
     sphereVAO(), 
     sphereVBO(),
     sphereIBO(),

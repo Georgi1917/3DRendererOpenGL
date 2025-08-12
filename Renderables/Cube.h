@@ -55,7 +55,7 @@ class Cube : public Renderable
         BufferLayoutObject cubeLayout;
 
     public:
-        Cube(unsigned int _id);
+        Cube(unsigned int _id, glm::vec3 _color);
         ~Cube();
         unsigned int GetNumberOfVertices();
         VertexArray& GetVAO();
