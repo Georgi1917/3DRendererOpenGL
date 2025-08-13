@@ -102,7 +102,7 @@ int main()
     {
 
         fbo.Bind();
-        glViewport(0, 0, 1280, 720);
+        renderer.SetViewport(0, 0, 1280, 720);
         renderer.Clear();
 
         ImGui_ImplOpenGL3_NewFrame();
@@ -135,7 +135,7 @@ int main()
 
         fbo.Unbind();
 
-        glViewport(0, 0, 1280, 720);
+        renderer.SetViewport(0, 0, 1280, 720);
         renderer.Clear();
 
         basicShader.SetMatrix4fv("model", model);

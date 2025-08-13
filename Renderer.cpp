@@ -51,6 +51,13 @@ void Renderer::DrawPicking(Sphere *sphere, Shader &shader, unsigned int mode, un
 
 }
 
+void Renderer::SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height)
+{
+
+    glViewport(x, y, width, height);
+
+}
+
 void Renderer::Clear()
 {
 
