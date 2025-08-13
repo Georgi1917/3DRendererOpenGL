@@ -78,6 +78,9 @@ Sphere::Sphere(unsigned int _id, glm::vec3 _color, float _radius, unsigned int _
     sphereVAO.AddBuffer(sphereVBO, layout);
     sphereVAO.Unbind();
 
+    translation = glm::vec3(2.0f, 0.0f, 0.0f);
+    model = glm::translate(model, translation);
+
 }
 
 Sphere::~Sphere()
@@ -93,4 +96,11 @@ VertexArray& Sphere::GetVAO()
 IndexBuffer& Sphere::GetIBO()
 {
     return sphereIBO;
+}
+
+std::string Sphere::GetClassName()
+{
+
+    return "Sphere";
+
 }

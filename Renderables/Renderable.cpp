@@ -5,6 +5,17 @@ Renderable::Renderable(unsigned int _id, glm::vec3 _color) : id(_id), color(_col
 
     pickingColor = IdToColor();
 
+    model = glm::mat4(1.0f);
+    translation = glm::vec3(0.0f, 0.0f, 0.0f);
+    rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+    scale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+    model = glm::translate(model, translation);
+    model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::scale(model, scale);
+
 }
 
 glm::vec3 Renderable::IdToColor()
@@ -46,5 +57,19 @@ glm::vec3& Renderable::GetPickingColor()
 {
 
     return pickingColor;
+
+}
+
+glm::mat4& Renderable::GetModelMatrix()
+{
+
+    return model;
+
+}
+
+std::string Renderable::GetClassName()
+{
+
+    return "Renderable";
 
 }

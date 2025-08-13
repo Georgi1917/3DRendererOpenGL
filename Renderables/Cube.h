@@ -59,5 +59,6 @@ class Cube : public Renderable
         ~Cube();
         unsigned int GetNumberOfVertices();
         VertexArray& GetVAO();
+        std::string GetClassName() override;
 
 };

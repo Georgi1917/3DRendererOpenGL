@@ -21,5 +21,6 @@ class Sphere : public Renderable
         ~Sphere();
         VertexArray& GetVAO();
         IndexBuffer& GetIBO();
+        std::string GetClassName() override;
 
 };

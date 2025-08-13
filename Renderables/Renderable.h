@@ -8,6 +8,7 @@
 #include "../include/glm/glm.hpp"
 #include "../include/glm/gtc/matrix_transform.hpp"
 #include "../include/glm/gtc/type_ptr.hpp"
+#include <string>
 
 class Renderable
 {
@@ -15,6 +16,10 @@ class Renderable
     protected:
         unsigned int id;
         glm::mat4 model;
+        glm::vec3 translation;
+        glm::vec3 rotation;
+        glm::vec3 scale;
+
         glm::vec3 color;
         glm::vec3 pickingColor;
         glm::vec3 IdToColor();
@@ -26,5 +31,7 @@ class Renderable
         glm::vec3& GetColor();
         glm::vec3& GetPickingColor();
         bool CompareColorAndId(unsigned char r, unsigned char g, unsigned char b);
+        glm::mat4& GetModelMatrix();
+        virtual std::string GetClassName();
 
 };

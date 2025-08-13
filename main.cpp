@@ -15,16 +15,16 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "MousePicker.h"
+#include "Renderables/Renderable.h"
 #include "Renderables/Cube.h"
 #include "Renderables/Sphere.h"
 #include "Framebuffer/Framebuffer.h"
 #include "Framebuffer/PickingTexture.h"
 #include "Framebuffer/Renderbuffer.h"
 #include <string>
-#include <fstream>
-#include <sstream>
 #include <iostream>
 #include <vector>
+#include <typeinfo>
 
 float deltaTime = 0.0f;
 float lastTime = 0.0f;
@@ -95,9 +95,6 @@ int main()
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    glm::vec3 translation(0.0f, 0.0f, 0.0f);
-    glm::vec3 angle(0.0f, 0.0f, 0.0f);
-
     while(!glfwWindowShouldClose(window))
     {
 
@@ -116,35 +113,31 @@ int main()
         camera.Update(window, deltaTime);
         mousePicker.Update();
 
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, translation);
-        model = glm::rotate(model, glm::radians(angle.x), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(angle.z), glm::vec3(0.0f, 0.0f, 1.0f));
+        
+        for (auto &mesh : meshes)
+        {
 
-        basicShader.SetMatrix4fv("model", model);
+            if (mesh->GetClassName() == "Cube") renderer.DrawPicking((Cube*)mesh, basicShader, GL_TRIANGLES, 0);
+            else if (mesh->GetClassName() == "Sphere") renderer.DrawPicking((Sphere*)mesh, basicShader, GL_TRIANGLES, GL_UNSIGNED_INT);
 
-        renderer.DrawPicking(&cube, basicShader, GL_TRIANGLES, 0);
+        }
 
-        glm::mat4 sphereModel = glm::mat4(1.0f);
-        sphereModel = glm::translate(sphereModel, glm::vec3(2.0f, 0.0f, 0.0f));
+        // renderer.DrawPicking(&cube, basicShader, GL_TRIANGLES, 0);
 
-        basicShader.SetMatrix4fv("model", sphereModel);
-
-        renderer.DrawPicking(&sphere, basicShader, GL_TRIANGLES, GL_UNSIGNED_INT);
+        // renderer.DrawPicking(&sphere, basicShader, GL_TRIANGLES, GL_UNSIGNED_INT);
 
         fbo.Unbind();
 
         renderer.SetViewport(0, 0, 1280, 720);
         renderer.Clear();
 
-        basicShader.SetMatrix4fv("model", model);
+        for (auto &mesh : meshes)
+        {
 
-        renderer.Draw(&cube, basicShader, GL_TRIANGLES, 0);
+            if (mesh->GetClassName() == "Cube") renderer.Draw((Cube*)mesh, basicShader, GL_TRIANGLES, 0);
+            else if (mesh->GetClassName() == "Sphere") renderer.Draw((Sphere*)mesh, basicShader, GL_TRIANGLES, GL_UNSIGNED_INT);
 
-        basicShader.SetMatrix4fv("model", sphereModel);
-
-        renderer.Draw(&sphere, basicShader, GL_TRIANGLES, GL_UNSIGNED_INT);
+        }
 
         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
         {
@@ -161,12 +154,12 @@ int main()
 
         }
 
-        ImGui::Begin("First Window");
-        ImGui::SliderFloat3("Translation", &translation.x, -1.0f, 1.0f);
-        ImGui::DragFloat("X Rotation", &angle.x, 1.0f, -360.0f, 360.0f, "Rotate");
-        ImGui::DragFloat("Y Rotation", &angle.y, 1.0f, -360.0f, 360.0f, "Rotate");
-        ImGui::DragFloat("Z Rotation", &angle.z, 1.0f, -360.0f, 360.0f, "Rotate");
-        ImGui::End();
+        // ImGui::Begin("First Window");
+        // ImGui::SliderFloat3("Translation", &translation.x, -1.0f, 1.0f);
+        // ImGui::DragFloat("X Rotation", &angle.x, 1.0f, -360.0f, 360.0f, "Rotate");
+        // ImGui::DragFloat("Y Rotation", &angle.y, 1.0f, -360.0f, 360.0f, "Rotate");
+        // ImGui::DragFloat("Z Rotation", &angle.z, 1.0f, -360.0f, 360.0f, "Rotate");
+        // ImGui::End();
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

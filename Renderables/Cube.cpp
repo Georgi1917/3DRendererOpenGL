@@ -28,3 +28,10 @@ unsigned int Cube::GetNumberOfVertices()
 {
     return numOfVertices;
 }
+
+std::string Cube::GetClassName()
+{
+
+    return "Cube";
+
+}
