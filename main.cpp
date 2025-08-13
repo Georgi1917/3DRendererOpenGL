@@ -17,6 +17,9 @@
 #include "MousePicker.h"
 #include "Renderables/Cube.h"
 #include "Renderables/Sphere.h"
+#include "Framebuffer/Framebuffer.h"
+#include "Framebuffer/PickingTexture.h"
+#include "Framebuffer/Renderbuffer.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -30,11 +33,6 @@ void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum se
                                 const GLchar* message, const void* userParam) 
 {
     fprintf(stderr, "OpenGL Debug: %s\n", message);
-}
-
-unsigned int ColorToId(unsigned char r, unsigned char g, unsigned char b)
-{
-    return r + (g << 8) + (b << 16);
 }
 
 int main()
@@ -65,25 +63,13 @@ int main()
     meshes.push_back(&cube);
     meshes.push_back(&sphere);
 
-    unsigned int fbo, pickingTex, rbo;
+    Framebuffer fbo;
+    PickingTexture pickingTex;
+    Renderbuffer rbo;
 
-    glGenFramebuffers(1, &fbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+    fbo.CheckStatus();
 
-    glGenTextures(1, &pickingTex);
-    glBindTexture(GL_TEXTURE_2D, pickingTex);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, 1280, 720, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pickingTex, 0);
-
-    glGenRenderbuffers(1, &rbo);
-    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1280, 720);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
-
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) std::cout << "Framebuffer incomplete!" << "\n";
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    fbo.Unbind();
 
     Shader basicShader("shaders/vertex.shader", "shaders/fragment.shader");
 
@@ -115,7 +101,7 @@ int main()
     while(!glfwWindowShouldClose(window))
     {
 
-        glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+        fbo.Bind();
         glViewport(0, 0, 1280, 720);
         renderer.Clear();
 
@@ -147,21 +133,14 @@ int main()
 
         renderer.DrawPicking(&sphere, basicShader, GL_TRIANGLES, GL_UNSIGNED_INT);
 
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        fbo.Unbind();
 
         glViewport(0, 0, 1280, 720);
         renderer.Clear();
 
-        // model = glm::translate(model, translation);
-        // model = glm::rotate(model, glm::radians(angle.x), glm::vec3(1.0f, 0.0f, 0.0f));
-        // model = glm::rotate(model, glm::radians(angle.y), glm::vec3(0.0f, 1.0f, 0.0f));
-        // model = glm::rotate(model, glm::radians(angle.z), glm::vec3(0.0f, 0.0f, 1.0f));
-
         basicShader.SetMatrix4fv("model", model);
 
         renderer.Draw(&cube, basicShader, GL_TRIANGLES, 0);
-
-        //sphereModel = glm::translate(sphereModel, glm::vec3(2.0f, 0.0f, 0.0f));
 
         basicShader.SetMatrix4fv("model", sphereModel);
 
@@ -173,9 +152,9 @@ int main()
             double mx, my;
             unsigned char pixels[3];
             glfwGetCursorPos(window, &mx, &my);
-            glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+            fbo.Bind();
             glReadPixels((int)mx, 720 - (int)my, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixels);
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            fbo.Unbind();
             if (cube.CompareColorAndId(pixels[0], pixels[1], pixels[2])) std::cout << "Clicked on Cube" << "\n";
             else if (sphere.CompareColorAndId(pixels[0], pixels[1], pixels[2])) std::cout << "Clicked on sphere" << "\n";
             else std::cout << "Clicked on empty space" << "\n";
