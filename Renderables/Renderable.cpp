@@ -1,12 +1,19 @@
 #include "Renderable.h"
 
-Renderable::Renderable(unsigned int _id, glm::vec3 _color) : id(_id), color(_color) 
+unsigned int Renderable::staticId = 1;
+glm::vec3 Renderable::staticTranslation = glm::vec3(0.0f, 0.0f, 0.0f);
+
+Renderable::Renderable(glm::vec3 _color) : color(_color) 
 {
+  
+    id = staticId;
+    staticId++;
 
     pickingColor = IdToColor();
 
     model = glm::mat4(1.0f);
-    translation = glm::vec3(0.0f, 0.0f, 0.0f);
+    translation = staticTranslation;
+    staticTranslation.x += 2.0f;
     rotation = glm::vec3(0.0f, 0.0f, 0.0f);
     scale = glm::vec3(1.0f, 1.0f, 1.0f);
 
@@ -72,4 +79,9 @@ std::string Renderable::GetClassName()
 
     return "Renderable";
 
+}
+
+unsigned int Renderable::GetId()
+{
+    return id;
 }

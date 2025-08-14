@@ -1,6 +1,6 @@
 #include "Cube.h"
 
-Cube::Cube(unsigned int _id, glm::vec3 _color) : Renderable(_id, _color), cubeVAO(), cubeVBO(), cubeLayout()
+Cube::Cube(glm::vec3 _color) : Renderable(_color), cubeVAO(), cubeVBO(), cubeLayout()
 {
 
     cubeVAO.Bind();

@@ -57,11 +57,13 @@ int main()
 
     std::vector<Renderable*> meshes;
 
-    Cube cube(1, glm::vec3(1.0f, 0.0f, 0.0f));
-    Sphere sphere(2, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, 50, 50);
+    Cube cube(glm::vec3(1.0f, 1.0f, 0.0f));
+    Sphere sphere(glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, 50, 50);
+    Cube cubeTwo(glm::vec3(0.8f, 1.0f, 0.2f));
 
     meshes.push_back(&cube);
     meshes.push_back(&sphere);
+    meshes.push_back(&cubeTwo);
 
     Framebuffer fbo;
     PickingTexture pickingTex;
@@ -122,10 +124,6 @@ int main()
 
         }
 
-        // renderer.DrawPicking(&cube, basicShader, GL_TRIANGLES, 0);
-
-        // renderer.DrawPicking(&sphere, basicShader, GL_TRIANGLES, GL_UNSIGNED_INT);
-
         fbo.Unbind();
 
         renderer.SetViewport(0, 0, 1280, 720);
@@ -148,9 +146,13 @@ int main()
             fbo.Bind();
             glReadPixels((int)mx, 720 - (int)my, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixels);
             fbo.Unbind();
-            if (cube.CompareColorAndId(pixels[0], pixels[1], pixels[2])) std::cout << "Clicked on Cube" << "\n";
-            else if (sphere.CompareColorAndId(pixels[0], pixels[1], pixels[2])) std::cout << "Clicked on sphere" << "\n";
-            else std::cout << "Clicked on empty space" << "\n";
+
+            for (auto &mesh : meshes)
+            {
+
+                if (mesh->CompareColorAndId(pixels[0], pixels[1], pixels[2])) std::cout << "Clicked on " << mesh->GetClassName() << "\n";
+
+            }
 
         }
 

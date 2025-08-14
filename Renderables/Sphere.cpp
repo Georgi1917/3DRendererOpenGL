@@ -59,8 +59,8 @@ void Sphere::SetUpSphere()
 
 }
 
-Sphere::Sphere(unsigned int _id, glm::vec3 _color, float _radius, unsigned int _stacks, unsigned int _sectors) : 
-    Renderable(_id, _color), 
+Sphere::Sphere(glm::vec3 _color, float _radius, unsigned int _stacks, unsigned int _sectors) : 
+    Renderable(_color), 
     sphereVAO(), 
     sphereVBO(),
     sphereIBO(),
@@ -77,9 +77,6 @@ Sphere::Sphere(unsigned int _id, glm::vec3 _color, float _radius, unsigned int _
 
     sphereVAO.AddBuffer(sphereVBO, layout);
     sphereVAO.Unbind();
-
-    translation = glm::vec3(2.0f, 0.0f, 0.0f);
-    model = glm::translate(model, translation);
 
 }
 

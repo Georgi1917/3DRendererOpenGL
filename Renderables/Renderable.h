@@ -14,8 +14,10 @@ class Renderable
 {
 
     protected:
+        static unsigned int staticId;
         unsigned int id;
         glm::mat4 model;
+        static glm::vec3 staticTranslation;
         glm::vec3 translation;
         glm::vec3 rotation;
         glm::vec3 scale;
@@ -27,11 +29,12 @@ class Renderable
 
     public:
 
-        Renderable(unsigned int _id, glm::vec3 _color);
+        Renderable(glm::vec3 _color);
         glm::vec3& GetColor();
         glm::vec3& GetPickingColor();
         bool CompareColorAndId(unsigned char r, unsigned char g, unsigned char b);
         glm::mat4& GetModelMatrix();
         virtual std::string GetClassName();
+        unsigned int GetId();
 
 };
