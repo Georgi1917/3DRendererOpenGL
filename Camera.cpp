@@ -55,7 +55,7 @@ void Camera::Update(GLFWwindow *window, float delta)
 
 }
 
-glm::mat4 Camera::GetViewMatrix()
+glm::mat4& Camera::GetViewMatrix()
 {
     return view;
 }

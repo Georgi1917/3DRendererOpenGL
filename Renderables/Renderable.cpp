@@ -81,7 +81,17 @@ std::string Renderable::GetClassName()
 
 }
 
-unsigned int Renderable::GetId()
+glm::vec3& Renderable::GetWorldPos()
 {
-    return id;
+
+    return translation;
+
+}
+
+void Renderable::SetWorldPos(glm::vec3& worldPos)
+{
+
+    translation = worldPos;
+    model = glm::translate(model, translation);
+
 }

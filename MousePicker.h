@@ -19,6 +19,9 @@ class MousePicker
         GLFWwindow *glfwWindow;
         glm::mat4 projMatrix;
         Camera *camera;
+        Renderable *currObject;
+        glm::vec4 currObjectModelToView;
+        bool objectHasBeenSet = false;
         glm::vec3 CalculateRay();
         glm::vec2 NormalizeMouseCoords(double mouseX, double mouseY);
         glm::vec4 ToEyeCoords(glm::vec4 clipCoords);

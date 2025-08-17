@@ -35,6 +35,7 @@ class Renderable
         bool CompareColorAndId(unsigned char r, unsigned char g, unsigned char b);
         glm::mat4& GetModelMatrix();
         virtual std::string GetClassName();
-        unsigned int GetId();
+        glm::vec3& GetWorldPos();
+        void SetWorldPos(glm::vec3& worldPos);
 
 };
