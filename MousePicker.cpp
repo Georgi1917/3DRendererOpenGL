@@ -64,7 +64,26 @@ glm::vec2 MousePicker::NormalizeMouseCoords(double mouseX, double mouseY)
 
 }
 
-glm::vec3 MousePicker::GetCurrentRay()
+void MousePicker::CheckForMouseClick(Framebuffer& fbo, std::vector<std::unique_ptr<Renderable>>& meshes)
 {
-    return currentRay;
+
+    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    {
+
+        double mx, my;
+        char pixel[3];
+        glfwGetCursorPos(glfwWindow, &mx, &my);
+        fbo.Bind();
+        glReadPixels((int)mx, 720 - (int)my, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
+        fbo.Unbind();
+
+        for (auto &mesh : meshes)
+        {
+
+            if (mesh->CompareColorAndId(pixel[0], pixel[1], pixel[2])) std::cout << "Clicked on : " << mesh->GetClassName() << "\n";
+
+        }
+
+    }
+
 }

@@ -111,7 +111,6 @@ int main()
         camera.Update(window, deltaTime);
         mousePicker.Update();
 
-        
         for (auto &mesh : meshes)
         {
 
@@ -133,24 +132,7 @@ int main()
 
         }
 
-        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-        {
-
-            double mx, my;
-            unsigned char pixels[3];
-            glfwGetCursorPos(window, &mx, &my);
-            fbo.Bind();
-            glReadPixels((int)mx, 720 - (int)my, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixels);
-            fbo.Unbind();
-
-            for (auto &mesh : meshes)
-            {
-
-                if (mesh->CompareColorAndId(pixels[0], pixels[1], pixels[2])) std::cout << "Clicked on " << mesh->GetClassName() << "\n";
-
-            }
-
-        }
+        mousePicker.CheckForMouseClick(fbo, meshes);
 
         ImGui::Begin("First Window");
         if (ImGui::Button("Cube"))

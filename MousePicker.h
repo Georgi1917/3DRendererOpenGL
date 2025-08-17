@@ -5,7 +5,11 @@
 #include "include/glm/glm.hpp"
 #include "include/glm/gtc/matrix_transform.hpp"
 #include "include/glm/gtc/type_ptr.hpp"
+#include "Framebuffer/Framebuffer.h"
 #include "Camera.h"
+#include "Renderables/Renderable.h"
+#include <vector>
+#include <memory>
 
 class MousePicker
 {
@@ -25,6 +29,6 @@ class MousePicker
         ~MousePicker();
 
         void Update();
-        glm::vec3 GetCurrentRay();
+        void CheckForMouseClick(Framebuffer &fbo, std::vector<std::unique_ptr<Renderable>> &meshes);
 
 };
