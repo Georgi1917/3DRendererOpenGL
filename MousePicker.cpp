@@ -7,6 +7,7 @@ MousePicker::MousePicker(GLFWwindow *window, Camera *cam, glm::mat4 projectionMa
     glfwWindow = window;
     camera = cam;
     projMatrix = projectionMatrix;
+    currObject = nullptr;
 
 }
 
@@ -68,7 +69,7 @@ glm::vec2 MousePicker::NormalizeMouseCoords(double mouseX, double mouseY)
 void MousePicker::CheckForMouseClick(Framebuffer& fbo, std::vector<std::unique_ptr<Renderable>>& meshes)
 {
 
-    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !currObject)
     {
 
         double mx, my;
@@ -85,10 +86,18 @@ void MousePicker::CheckForMouseClick(Framebuffer& fbo, std::vector<std::unique_p
             {
 
                 std::cout << "Clicked on : " << mesh->GetClassName() << "\n";
+                currObject = mesh.get();
 
             } 
         }
 
     }
+
+}
+
+Renderable* MousePicker::GetClickedObj()
+{
+
+    return currObject;
 
 }

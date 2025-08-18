@@ -147,6 +147,9 @@ int main()
             meshes.push_back(std::make_unique<Sphere>(glm::vec3(0.5f, 0.5f, 0.5f), 1.0f, 50, 50));
 
         }
+        if (mousePicker.GetClickedObj())
+            ImGui::SliderFloat3("Translations", &mousePicker.GetClickedObj()->GetTranslation().x, -10, 10);
+
         ImGui::End();
 
         ImGui::Render();

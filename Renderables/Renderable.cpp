@@ -81,17 +81,12 @@ std::string Renderable::GetClassName()
 
 }
 
-glm::vec3& Renderable::GetWorldPos()
+void Renderable::ResetModelMatrix()
 {
-
-    return translation;
-
+    model = glm::translate(model, translation);
 }
 
-void Renderable::SetWorldPos(glm::vec3& worldPos)
+glm::vec3& Renderable::GetTranslation()
 {
-
-    translation = worldPos;
-    model = glm::translate(model, translation);
-
+    return translation;
 }
