@@ -59,3 +59,10 @@ glm::mat4& Camera::GetViewMatrix()
 {
     return view;
 }
+
+glm::vec3 Camera::GetPosition()
+{
+
+    return CameraPos;
+
+}
