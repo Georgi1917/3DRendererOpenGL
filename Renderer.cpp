@@ -6,7 +6,6 @@ void Renderer::Draw(Cube *cube, Shader &shader, unsigned int mode, unsigned int 
 
     VertexArray& vao = cube->GetVAO();
     shader.SetVec3f("uColor", cube->GetColor());
-    //cube->ResetModelMatrix();
     shader.SetMatrix4fv("model", cube->GetModelMatrix());
     vao.Bind();
     glDrawArrays(mode, first, 36);
@@ -20,7 +19,6 @@ void Renderer::Draw(Sphere *sphere, Shader &shader, unsigned int mode, unsigned 
     VertexArray& vao = sphere->GetVAO();
     IndexBuffer& ibo = sphere->GetIBO();
     shader.SetVec3f("uColor", sphere->GetColor());
-    //sphere->ResetModelMatrix();
     shader.SetMatrix4fv("model", sphere->GetModelMatrix());
     vao.Bind();
     ibo.Bind();
@@ -35,7 +33,6 @@ void Renderer::DrawPicking(Cube *cube, Shader &shader, unsigned int mode, unsign
 
     VertexArray& vao = cube->GetVAO();
     shader.SetVec3f("uColor", cube->GetPickingColor());
-    //cube->ResetModelMatrix();
     shader.SetMatrix4fv("model", cube->GetModelMatrix());
     vao.Bind();
     glDrawArrays(mode, first, 36);
@@ -49,7 +46,6 @@ void Renderer::DrawPicking(Sphere *sphere, Shader &shader, unsigned int mode, un
     VertexArray& vao = sphere->GetVAO();
     IndexBuffer& ibo = sphere->GetIBO();
     shader.SetVec3f("uColor", sphere->GetPickingColor());
-    //sphere->ResetModelMatrix();
     shader.SetMatrix4fv("model", sphere->GetModelMatrix());
     vao.Bind();
     ibo.Bind();

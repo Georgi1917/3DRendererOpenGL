@@ -116,6 +116,7 @@ int main()
 
             if (mesh->GetClassName() == "Cube") renderer.DrawPicking((Cube*)mesh.get(), basicShader, GL_TRIANGLES, 0);
             else if (mesh->GetClassName() == "Sphere") renderer.DrawPicking((Sphere*)mesh.get(), basicShader, GL_TRIANGLES, GL_UNSIGNED_INT);
+            mesh->ResetModelMatrix();
 
         }
 
@@ -129,6 +130,7 @@ int main()
 
             if (mesh->GetClassName() == "Cube") renderer.Draw((Cube*)mesh.get(), basicShader, GL_TRIANGLES, 0);
             else if (mesh->GetClassName() == "Sphere") renderer.Draw((Sphere*)mesh.get(), basicShader, GL_TRIANGLES, GL_UNSIGNED_INT);
+            mesh->ResetModelMatrix();
 
         }
 
@@ -148,8 +150,13 @@ int main()
 
         }
         if (mousePicker.GetClickedObj())
-            ImGui::SliderFloat3("Translations", &mousePicker.GetClickedObj()->GetTranslation().x, -10, 10);
+        {
 
+            ImGui::SliderFloat3("Translations", &(mousePicker.GetClickedObj()->GetTranslation().x), -1, 1);
+            std::cout << mousePicker.GetClickedObj()->GetTranslation().x << " " << mousePicker.GetClickedObj()->GetTranslation().y << " " << mousePicker.GetClickedObj()->GetTranslation().z << "\n"; 
+
+        }
+        
         ImGui::End();
 
         ImGui::Render();
