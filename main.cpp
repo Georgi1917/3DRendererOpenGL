@@ -109,7 +109,7 @@ int main()
         lastTime = currTime;
 
         camera.Update(window, deltaTime);
-        mousePicker.Update();
+        //mousePicker.Update();
 
         for (auto &mesh : meshes)
         {

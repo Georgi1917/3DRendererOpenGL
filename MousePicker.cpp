@@ -20,6 +20,8 @@ void MousePicker::Update()
 {
 
     currentRay = CalculateRay();
+    currObject->SetTranslation(currentRay);
+    objWorldToView = camera->GetViewMatrix() * glm::vec4(currObject->GetTranslation(), 1.0f);
     //std::cout << currentRay.x << " " << currentRay.y << " " << currentRay.z << "\n";
 
 }
@@ -32,7 +34,8 @@ glm::vec3 MousePicker::CalculateRay()
     glm::vec2 normalizedCoords = NormalizeMouseCoords(mouseXPos, mouseYPos);
     glm::vec4 clipCoords = glm::vec4(normalizedCoords.x, normalizedCoords.y, -1.0f, 1.0f);
     glm::vec4 eyeCoords = ToEyeCoords(clipCoords);
-    glm::vec3 worldRay = ToWorldCoords(eyeCoords);
+    glm::vec4 viewSpaceIntersect = glm::vec4(glm::vec3(eyeCoords) * objWorldToView.z, 1.0f);
+    glm::vec3 worldRay = ToWorldCoords(viewSpaceIntersect);
     return worldRay;
 
 }
@@ -44,7 +47,7 @@ glm::vec3 MousePicker::ToWorldCoords(glm::vec4 eyeCoords)
     glm::vec4 rayWorld = inverted * eyeCoords;
     glm::vec3 mouseRay = glm::vec3(rayWorld.x, rayWorld.y, rayWorld.z);
     glm::vec3 normalized = glm::normalize(mouseRay);
-    return normalized;
+    return mouseRay;
 
 }
 
@@ -87,11 +90,16 @@ void MousePicker::CheckForMouseClick(Framebuffer& fbo, std::vector<std::unique_p
 
                 std::cout << "Clicked on : " << mesh->GetClassName() << "\n";
                 currObject = mesh.get();
+                objWorldToView = camera->GetViewMatrix() * glm::vec4(currObject->GetTranslation(), 1.0f);
 
             } 
         }
 
     }
+
+    if (currObject) Update();
+
+    //if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE && currObject) currObject = nullptr;
 
 }
 

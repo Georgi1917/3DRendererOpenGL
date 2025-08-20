@@ -108,3 +108,7 @@ glm::vec3& Renderable::GetScale()
     return scale;
 }
 
+void Renderable::SetTranslation(glm::vec3 worldRay)
+{
+    translation = worldRay;
+}

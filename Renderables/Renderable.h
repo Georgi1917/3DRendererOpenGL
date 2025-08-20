@@ -36,6 +36,7 @@ class Renderable
         glm::mat4& GetModelMatrix();
         virtual std::string GetClassName();
         void ResetModelMatrix();
+        void SetTranslation(glm::vec3 worldRay);
         glm::vec3& GetTranslation();
         glm::vec3& GetRotation();
         glm::vec3& GetScale();
