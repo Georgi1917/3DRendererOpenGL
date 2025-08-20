@@ -97,3 +97,14 @@ glm::vec3& Renderable::GetTranslation()
 {
     return translation;
 }
+
+glm::vec3& Renderable::GetRotation()
+{
+    return rotation;
+}
+
+glm::vec3& Renderable::GetScale()
+{
+    return scale;
+}
+

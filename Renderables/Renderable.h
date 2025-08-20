@@ -37,6 +37,7 @@ class Renderable
         virtual std::string GetClassName();
         void ResetModelMatrix();
         glm::vec3& GetTranslation();
-
+        glm::vec3& GetRotation();
+        glm::vec3& GetScale();
 
 };
