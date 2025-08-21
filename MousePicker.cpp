@@ -7,7 +7,8 @@ MousePicker::MousePicker(GLFWwindow *window, Camera *cam, glm::mat4 projectionMa
     glfwWindow = window;
     camera = cam;
     projMatrix = projectionMatrix;
-    currObject = nullptr;
+    currObjectDrag = nullptr;
+    currObjectData = nullptr;
 
 }
 
@@ -20,8 +21,8 @@ void MousePicker::Update()
 {
 
     currentRay = CalculateRay();
-    currObject->SetTranslation(currentRay);
-    objWorldToView = camera->GetViewMatrix() * glm::vec4(currObject->GetTranslation(), 1.0f);
+    currObjectDrag->SetTranslation(currentRay);
+    //objWorldToView = camera->GetViewMatrix() * glm::vec4(currObject->GetTranslation(), 1.0f);
     //std::cout << currentRay.x << " " << currentRay.y << " " << currentRay.z << "\n";
 
 }
@@ -34,7 +35,7 @@ glm::vec3 MousePicker::CalculateRay()
     glm::vec2 normalizedCoords = NormalizeMouseCoords(mouseXPos, mouseYPos);
     glm::vec4 clipCoords = glm::vec4(normalizedCoords.x, normalizedCoords.y, -1.0f, 1.0f);
     glm::vec4 eyeCoords = ToEyeCoords(clipCoords);
-    glm::vec4 viewSpaceIntersect = glm::vec4(glm::vec3(eyeCoords) * objWorldToView.z, 1.0f);
+    glm::vec4 viewSpaceIntersect = glm::vec4(-(eyeCoords.x * objWorldToView.z), -(eyeCoords.y * objWorldToView.z), objWorldToView.z, 1.0f);
     glm::vec3 worldRay = ToWorldCoords(viewSpaceIntersect);
     return worldRay;
 
@@ -72,7 +73,7 @@ glm::vec2 MousePicker::NormalizeMouseCoords(double mouseX, double mouseY)
 void MousePicker::CheckForMouseClick(Framebuffer& fbo, std::vector<std::unique_ptr<Renderable>>& meshes)
 {
 
-    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !currObjectDrag)
     {
 
         double mx, my;
@@ -89,23 +90,24 @@ void MousePicker::CheckForMouseClick(Framebuffer& fbo, std::vector<std::unique_p
             {
 
                 std::cout << "Clicked on : " << mesh->GetClassName() << "\n";
-                currObject = mesh.get();
-                objWorldToView = camera->GetViewMatrix() * glm::vec4(currObject->GetTranslation(), 1.0f);
+                currObjectDrag = mesh.get();
+                currObjectData = mesh.get();
+                objWorldToView = camera->GetViewMatrix() * glm::vec4(currObjectDrag->GetTranslation(), 1.0f);
 
             } 
         }
 
     }
 
-    if (currObject) Update();
+    if (currObjectDrag && glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) Update();
 
-    //if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE && currObject) currObject = nullptr;
+    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE && currObjectDrag) currObjectDrag = nullptr;
 
 }
 
 Renderable* MousePicker::GetClickedObj()
 {
 
-    return currObject;
+    return currObjectData;
 
 }

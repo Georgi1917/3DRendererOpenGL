@@ -22,10 +22,6 @@ void Sphere::SetUpSphere()
             vertices.push_back(y);
             vertices.push_back(z);
 
-            vertices.push_back(1.0f);
-            vertices.push_back(0.0f);
-            vertices.push_back(0.0f);
-
         }
 
     }
@@ -72,7 +68,6 @@ Sphere::Sphere(glm::vec3 _color, float _radius, unsigned int _stacks, unsigned i
     sphereVAO.Bind();
     sphereVBO.init(vertices.data(), vertices.size() * sizeof(float));
     sphereIBO.init(indices.data(), indices.size());
-    layout.Push<float>(3);
     layout.Push<float>(3);
 
     sphereVAO.AddBuffer(sphereVBO, layout);
