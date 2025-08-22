@@ -1,6 +1,38 @@
 #include "MousePicker.h"
 #include <iostream>
 
+void MousePicker::ScrollCallback(GLFWwindow *window, double xoffset, double yoffset)
+{
+
+    MousePicker *instance = static_cast<MousePicker*>(glfwGetWindowUserPointer(window));
+
+    if (instance)
+    {
+
+        instance->HandleScroll(xoffset, yoffset);
+
+    }
+
+}
+
+void MousePicker::HandleScroll(double xoffset, double yoffset)
+{
+
+    if (!currObjectDrag) return;
+
+    if (yoffset == -1)
+    {
+        objWorldToView.z -= 0.1f;
+    }
+    if (yoffset == 1) 
+    {
+        objWorldToView.z += 0.1f;
+    }
+
+    std::cout << xoffset << "\n" << yoffset << "\n";
+
+}
+
 MousePicker::MousePicker(GLFWwindow *window, Camera *cam, glm::mat4 projectionMatrix)
 {
 
@@ -9,6 +41,7 @@ MousePicker::MousePicker(GLFWwindow *window, Camera *cam, glm::mat4 projectionMa
     projMatrix = projectionMatrix;
     currObjectDrag = nullptr;
     currObjectData = nullptr;
+    glfwSetScrollCallback(glfwWindow, ScrollCallback);
 
 }
 

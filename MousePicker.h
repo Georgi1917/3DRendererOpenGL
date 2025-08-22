@@ -26,6 +26,7 @@ class MousePicker
         glm::vec2 NormalizeMouseCoords(double mouseX, double mouseY);
         glm::vec4 ToEyeCoords(glm::vec4 clipCoords);
         glm::vec3 ToWorldCoords(glm::vec4 eyeCoords);
+        void HandleScroll(double xoffset, double yoffset);
 
     public:
         MousePicker(GLFWwindow *window, Camera *cam, glm::mat4 projectionMatrix);
@@ -34,5 +35,6 @@ class MousePicker
         void Update();
         void CheckForMouseClick(Framebuffer &fbo, std::vector<std::unique_ptr<Renderable>> &meshes);
         Renderable* GetClickedObj();
+        static void ScrollCallback(GLFWwindow *window, double xoffset, double yoffset);
 
 };

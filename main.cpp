@@ -80,6 +80,8 @@ int main()
     Renderer renderer;
     Camera camera(glm::vec3(1.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f));
     MousePicker mousePicker(window, &camera, projection);
+    glfwSetWindowUserPointer(window, &mousePicker);
+    glfwSetScrollCallback(window, MousePicker::ScrollCallback);
 
     renderer.EnableDepthTesting();
 
