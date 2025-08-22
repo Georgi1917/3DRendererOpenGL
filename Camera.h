@@ -23,6 +23,10 @@ class Camera
         float yaw = -90.0f;
         float pitch = 0.0f;
 
+        float lastX = 1280 / 2;
+        float lastY = 720 / 2;
+        bool firstMouse = true;
+
         float CameraSpeed = 15.0f;
         float RotationSpeed = 60.0f;
 

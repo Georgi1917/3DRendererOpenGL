@@ -22,8 +22,6 @@ void MousePicker::Update()
 
     currentRay = CalculateRay();
     currObjectDrag->SetTranslation(currentRay);
-    //objWorldToView = camera->GetViewMatrix() * glm::vec4(currObject->GetTranslation(), 1.0f);
-    //std::cout << currentRay.x << " " << currentRay.y << " " << currentRay.z << "\n";
 
 }
 
