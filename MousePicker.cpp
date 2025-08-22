@@ -22,11 +22,11 @@ void MousePicker::HandleScroll(double xoffset, double yoffset)
 
     if (yoffset == -1)
     {
-        objWorldToView.z -= 0.1f;
+        objWorldToView.z -= 0.5f;
     }
     if (yoffset == 1) 
     {
-        objWorldToView.z += 0.1f;
+        objWorldToView.z += 0.5f;
     }
 
     std::cout << xoffset << "\n" << yoffset << "\n";
