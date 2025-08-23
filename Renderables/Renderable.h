@@ -29,6 +29,7 @@ class Renderable
 
     public:
 
+        Renderable();
         Renderable(glm::vec3 _color);
         glm::vec3& GetColor();
         glm::vec3& GetPickingColor();

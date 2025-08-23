@@ -60,6 +60,7 @@ int main()
     meshes.push_back(std::make_unique<Cube>(glm::vec3(1.0f, 1.0f, 0.0f)));
     meshes.push_back(std::make_unique<Sphere>(glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, 50, 50));
     meshes.push_back(std::make_unique<Cube>(glm::vec3(0.8f, 1.0f, 0.2f)));
+    meshes.push_back(std::make_unique<LightSource>());
 
     Framebuffer fbo;
     PickingTexture pickingTex;
@@ -111,13 +112,13 @@ int main()
         lastTime = currTime;
 
         camera.Update(window, deltaTime);
-        //mousePicker.Update();
 
         for (auto &mesh : meshes)
         {
 
             if (mesh->GetClassName() == "Cube") renderer.DrawPicking((Cube*)mesh.get(), basicShader, GL_TRIANGLES, 0);
             else if (mesh->GetClassName() == "Sphere") renderer.DrawPicking((Sphere*)mesh.get(), basicShader, GL_TRIANGLES, GL_UNSIGNED_INT);
+            else if (mesh->GetClassName() == "Light Source") renderer.DrawPicking((LightSource*)mesh.get(), basicShader, GL_TRIANGLES, 0);
             mesh->ResetModelMatrix();
 
         }
@@ -132,6 +133,7 @@ int main()
 
             if (mesh->GetClassName() == "Cube") renderer.Draw((Cube*)mesh.get(), basicShader, GL_TRIANGLES, 0);
             else if (mesh->GetClassName() == "Sphere") renderer.Draw((Sphere*)mesh.get(), basicShader, GL_TRIANGLES, GL_UNSIGNED_INT);
+            else if (mesh->GetClassName() == "Light Source") renderer.Draw((LightSource*)mesh.get(), basicShader, GL_TRIANGLES, 0);
             mesh->ResetModelMatrix();
 
         }

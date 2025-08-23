@@ -3,6 +3,26 @@
 unsigned int Renderable::staticId = 1;
 glm::vec3 Renderable::staticTranslation = glm::vec3(0.0f, 0.0f, 0.0f);
 
+Renderable::Renderable()
+{
+
+    id = staticId;
+    staticId++;
+
+    pickingColor = IdToColor();
+
+    model = glm::mat4(1.0f);
+    rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+    scale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+    model = glm::translate(model, translation);
+    model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::scale(model, scale);
+
+}
+
 Renderable::Renderable(glm::vec3 _color) : color(_color) 
 {
   

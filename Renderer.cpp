@@ -28,6 +28,18 @@ void Renderer::Draw(Sphere *sphere, Shader &shader, unsigned int mode, unsigned 
 
 }
 
+void Renderer::Draw(LightSource *light, Shader &shader, unsigned int mode, unsigned int first)
+{
+
+    VertexArray& vao = light->GetVAO();
+    shader.SetVec3f("uColor", light->GetColor());
+    shader.SetMatrix4fv("model", light->GetModelMatrix());
+    vao.Bind();
+    glDrawArrays(mode, first, 36);
+    vao.Unbind();
+
+}
+
 void Renderer::DrawPicking(Cube *cube, Shader &shader, unsigned int mode, unsigned int first)
 {
 
@@ -52,6 +64,18 @@ void Renderer::DrawPicking(Sphere *sphere, Shader &shader, unsigned int mode, un
     glDrawElements(mode, ibo.Count(), type, 0);
     vao.Unbind();
     ibo.Unbind();
+
+}
+
+void Renderer::DrawPicking(LightSource *light, Shader &shader, unsigned int mode, unsigned int first)
+{
+
+    VertexArray& vao = light->GetVAO();
+    shader.SetVec3f("uColor", light->GetPickingColor());
+    shader.SetMatrix4fv("model", light->GetModelMatrix());
+    vao.Bind();
+    glDrawArrays(mode, first, 36);
+    vao.Unbind();
 
 }
 

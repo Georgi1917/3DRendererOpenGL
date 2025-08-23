@@ -29,8 +29,6 @@ void MousePicker::HandleScroll(double xoffset, double yoffset)
         objWorldToView.z += 0.5f;
     }
 
-    std::cout << xoffset << "\n" << yoffset << "\n";
-
 }
 
 MousePicker::MousePicker(GLFWwindow *window, Camera *cam, glm::mat4 projectionMatrix)
@@ -120,7 +118,6 @@ void MousePicker::CheckForMouseClick(Framebuffer& fbo, std::vector<std::unique_p
             if (mesh->CompareColorAndId(pixel[0], pixel[1], pixel[2]))
             {
 
-                std::cout << "Clicked on : " << mesh->GetClassName() << "\n";
                 currObjectDrag = mesh.get();
                 currObjectData = mesh.get();
                 objWorldToView = camera->GetViewMatrix() * glm::vec4(currObjectDrag->GetTranslation(), 1.0f);
