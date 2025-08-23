@@ -3,6 +3,7 @@
 #include "Shader.h"
 #include <fstream>
 #include <sstream>
+#include <iostream>
 
 std::string Shader::GetShaderSource(std::string &source)
 {
@@ -27,6 +28,16 @@ unsigned int Shader::CompileShader(std::string &filepath, unsigned int type)
     const char *src = source.c_str();
     glShaderSource(shader, 1, &src, nullptr);
     glCompileShader(shader);
+
+    char infoLog[512];
+    int success;
+
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+
+    if (!success)
+    {
+        std::cout << infoLog << "\n";
+    }
 
     return shader;
 
@@ -86,6 +97,11 @@ void Shader::SetVec3f(std::string uniformName, glm::vec3 &vector3)
 {
 
     int loc = glGetUniformLocation(shaderProgram, uniformName.c_str());
+
+    std::cout << loc << "\n";
+
+    if (loc < 0) exit(0);
+
     glUniform3f(loc, vector3.r, vector3.g, vector3.b);
 
 }

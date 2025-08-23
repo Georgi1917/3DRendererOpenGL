@@ -15,6 +15,7 @@ class Renderable
 
     protected:
         static unsigned int staticId;
+        static glm::vec3 lightColor;
         unsigned int id;
         glm::mat4 model;
         static glm::vec3 staticTranslation;
@@ -41,5 +42,6 @@ class Renderable
         glm::vec3& GetTranslation();
         glm::vec3& GetRotation();
         glm::vec3& GetScale();
+        glm::vec3& GetLightColor();
 
 };

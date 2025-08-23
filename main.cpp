@@ -71,6 +71,7 @@ int main()
     fbo.Unbind();
 
     Shader basicShader("shaders/vertex.shader", "shaders/fragment.shader");
+    Shader lightingShader("shaders/vertex.shader", "shaders/lighting.shader");
 
     glm::mat4 projection;
 
@@ -118,7 +119,7 @@ int main()
 
             if (mesh->GetClassName() == "Cube") renderer.DrawPicking((Cube*)mesh.get(), basicShader, GL_TRIANGLES, 0);
             else if (mesh->GetClassName() == "Sphere") renderer.DrawPicking((Sphere*)mesh.get(), basicShader, GL_TRIANGLES, GL_UNSIGNED_INT);
-            else if (mesh->GetClassName() == "Light Source") renderer.DrawPicking((LightSource*)mesh.get(), basicShader, GL_TRIANGLES, 0);
+            else if (mesh->GetClassName() == "Light Source") renderer.DrawPicking((LightSource*)mesh.get(), lightingShader, GL_TRIANGLES, 0);
             mesh->ResetModelMatrix();
 
         }
@@ -133,7 +134,7 @@ int main()
 
             if (mesh->GetClassName() == "Cube") renderer.Draw((Cube*)mesh.get(), basicShader, GL_TRIANGLES, 0);
             else if (mesh->GetClassName() == "Sphere") renderer.Draw((Sphere*)mesh.get(), basicShader, GL_TRIANGLES, GL_UNSIGNED_INT);
-            else if (mesh->GetClassName() == "Light Source") renderer.Draw((LightSource*)mesh.get(), basicShader, GL_TRIANGLES, 0);
+            else if (mesh->GetClassName() == "Light Source") renderer.Draw((LightSource*)mesh.get(), lightingShader, GL_TRIANGLES, 0);
             mesh->ResetModelMatrix();
 
         }

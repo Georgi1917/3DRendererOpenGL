@@ -2,6 +2,7 @@
 
 unsigned int Renderable::staticId = 1;
 glm::vec3 Renderable::staticTranslation = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 Renderable::lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
 Renderable::Renderable()
 {
@@ -131,4 +132,9 @@ glm::vec3& Renderable::GetScale()
 void Renderable::SetTranslation(glm::vec3 worldRay)
 {
     translation = worldRay;
+}
+
+glm::vec3& Renderable::GetLightColor()
+{
+    return lightColor;
 }
