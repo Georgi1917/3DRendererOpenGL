@@ -8,10 +8,23 @@
 #include "Renderables/Cube.h"
 #include "Renderables/Sphere.h"
 #include "Renderables/LightSource.h"
+#include "Camera.h"
+#include "include/glm/glm.hpp"
+#include "include/glm/gtc/matrix_transform.hpp"
+#include "include/glm/gtc/type_ptr.hpp"
 
 class Renderer
 {
+
+    private:
+        glm::mat4 projection;
+        Camera *cam;
+
     public:
+
+        Renderer();
+        ~Renderer();
+
         void Draw(Cube *cube, Shader &shader, unsigned int mode, unsigned int first);
         void Draw(Sphere *sphere, Shader &shader, unsigned int mode, unsigned int type);
         void Draw(LightSource *light, Shader &shader, unsigned int mode, unsigned int first);
@@ -21,4 +34,7 @@ class Renderer
         void Clear();
         void EnableDepthTesting();
         void SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
+        glm::mat4& GetProjection();
+        void SetCamera(Camera* camera);
+        
 };

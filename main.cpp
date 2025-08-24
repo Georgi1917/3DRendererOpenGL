@@ -70,18 +70,20 @@ int main()
 
     fbo.Unbind();
 
-    Shader basicShader("shaders/vertex.shader", "shaders/fragment.shader");
-    Shader lightingShader("shaders/vertex.shader", "shaders/lighting.shader");
+    Shader basicShader("shaders/basic.vs", "shaders/basic.fs");
+    Shader lightingShader("shaders/lighting.vs", "shaders/lighting.fs");
 
-    glm::mat4 projection;
+    // glm::mat4 projection;
 
-    projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 100.0f);
+    // projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 100.0f);
 
-    basicShader.SetMatrix4fv("projection", projection);
+    // basicShader.SetMatrix4fv("projection", projection);
+    // lightingShader.SetMatrix4fv("projection", projection);
 
     Renderer renderer;
     Camera camera(glm::vec3(1.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f));
-    MousePicker mousePicker(window, &camera, projection);
+    renderer.SetCamera(&camera);
+    MousePicker mousePicker(window, &camera, renderer.GetProjection());
     glfwSetWindowUserPointer(window, &mousePicker);
     glfwSetScrollCallback(window, MousePicker::ScrollCallback);
 
@@ -113,6 +115,8 @@ int main()
         lastTime = currTime;
 
         camera.Update(window, deltaTime);
+        //lightingShader.SetMatrix4fv("view", camera.GetViewMatrix());
+        //basicShader.SetMatrix4fv("view", camera.GetViewMatrix());
 
         for (auto &mesh : meshes)
         {

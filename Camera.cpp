@@ -89,10 +89,10 @@ void Camera::Update(GLFWwindow *window, float delta)
 
     view = glm::lookAt(CameraPos, CameraPos + CameraFront, CameraUp);
 
-    int program;
-    glGetIntegerv(GL_CURRENT_PROGRAM, &program);
-    unsigned int loc = glGetUniformLocation(program, "view");
-    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(view));
+    // int program;
+    // glGetIntegerv(GL_CURRENT_PROGRAM, &program);
+    // unsigned int loc = glGetUniformLocation(program, "view");
+    // glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(view));
 
 }
 

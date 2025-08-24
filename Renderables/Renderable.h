@@ -15,7 +15,7 @@ class Renderable
 
     protected:
         static unsigned int staticId;
-        static glm::vec3 lightColor;
+        glm::vec3 lightColor;
         unsigned int id;
         glm::mat4 model;
         static glm::vec3 staticTranslation;

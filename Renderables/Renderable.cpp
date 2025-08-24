@@ -2,7 +2,6 @@
 
 unsigned int Renderable::staticId = 1;
 glm::vec3 Renderable::staticTranslation = glm::vec3(0.0f, 0.0f, 0.0f);
-glm::vec3 Renderable::lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
 Renderable::Renderable()
 {
@@ -10,6 +9,7 @@ Renderable::Renderable()
     id = staticId;
     staticId++;
 
+    lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
     pickingColor = IdToColor();
 
     model = glm::mat4(1.0f);
