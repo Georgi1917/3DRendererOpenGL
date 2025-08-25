@@ -16,7 +16,6 @@ Renderer::~Renderer()
 void Renderer::Draw(Cube *cube, Shader &shader, unsigned int mode, unsigned int first)
 {
 
-    //std::cout << shader.GetProgram() << "\n";
     shader.Bind();
     VertexArray& vao = cube->GetVAO();
     shader.SetVec3f("uColor", cube->GetColor());
@@ -33,13 +32,10 @@ void Renderer::Draw(Cube *cube, Shader &shader, unsigned int mode, unsigned int 
 void Renderer::Draw(Sphere *sphere, Shader &shader, unsigned int mode, unsigned int type)
 {
 
-    //std::cout << shader.GetProgram() << "\n";'
     shader.Bind();
     VertexArray& vao = sphere->GetVAO();
     IndexBuffer& ibo = sphere->GetIBO();
     shader.SetVec3f("uColor", sphere->GetColor());
-    //shader.SetVec3f("lColor", sphere->GetLightColor());
-    //std::cout << sphere->GetLightColor().r << sphere->GetLightColor().g << sphere->GetLightColor().b << "\n";
     shader.SetMatrix4fv("model", sphere->GetModelMatrix());
     shader.SetMatrix4fv("projection", projection);
     shader.SetMatrix4fv("view", cam->GetViewMatrix());
@@ -54,7 +50,6 @@ void Renderer::Draw(Sphere *sphere, Shader &shader, unsigned int mode, unsigned 
 void Renderer::Draw(LightSource *light, Shader &shader, unsigned int mode, unsigned int first)
 {
 
-    //std::cout << shader.GetProgram() << "\n";
     shader.Bind();
     VertexArray& vao = light->GetVAO();
     shader.SetVec3f("lightColor", light->GetColor());
@@ -70,7 +65,6 @@ void Renderer::Draw(LightSource *light, Shader &shader, unsigned int mode, unsig
 void Renderer::DrawPicking(Cube *cube, Shader &shader, unsigned int mode, unsigned int first)
 {
 
-    //std::cout << shader.GetProgram() << "\n";
     shader.Bind();
     VertexArray& vao = cube->GetVAO();
     shader.SetVec3f("uColor", cube->GetPickingColor());
@@ -87,7 +81,6 @@ void Renderer::DrawPicking(Cube *cube, Shader &shader, unsigned int mode, unsign
 void Renderer::DrawPicking(Sphere *sphere, Shader &shader, unsigned int mode, unsigned int type)
 {
 
-    //std::cout << shader.GetProgram() << "\n";
     shader.Bind();
     VertexArray& vao = sphere->GetVAO();
     IndexBuffer& ibo = sphere->GetIBO();
@@ -107,7 +100,6 @@ void Renderer::DrawPicking(Sphere *sphere, Shader &shader, unsigned int mode, un
 void Renderer::DrawPicking(LightSource *light, Shader &shader, unsigned int mode, unsigned int first)
 {
 
-    //std::cout << shader.GetProgram() << "\n";
     shader.Bind();
     VertexArray& vao = light->GetVAO();
     shader.SetVec3f("lightColor", light->GetPickingColor());

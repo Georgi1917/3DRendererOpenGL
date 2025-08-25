@@ -73,13 +73,6 @@ int main()
     Shader basicShader("shaders/basic.vs", "shaders/basic.fs");
     Shader lightingShader("shaders/lighting.vs", "shaders/lighting.fs");
 
-    // glm::mat4 projection;
-
-    // projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 100.0f);
-
-    // basicShader.SetMatrix4fv("projection", projection);
-    // lightingShader.SetMatrix4fv("projection", projection);
-
     Renderer renderer;
     Camera camera(glm::vec3(1.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f));
     renderer.SetCamera(&camera);
