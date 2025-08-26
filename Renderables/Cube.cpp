@@ -6,6 +6,7 @@ Cube::Cube(glm::vec3 _color) : Renderable(_color), cubeVAO(), cubeVBO(), cubeLay
     cubeVAO.Bind();
     cubeVBO.init(positions, sizeof(positions));
     cubeLayout.Push<float>(3);
+    cubeLayout.Push<float>(3);
     cubeVAO.AddBuffer(cubeVBO, cubeLayout);
     cubeVAO.Unbind();
 

@@ -60,7 +60,9 @@ int main()
     meshes.push_back(std::make_unique<Cube>(glm::vec3(1.0f, 1.0f, 0.0f)));
     meshes.push_back(std::make_unique<Sphere>(glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, 50, 50));
     meshes.push_back(std::make_unique<Cube>(glm::vec3(0.8f, 1.0f, 0.2f)));
-    meshes.push_back(std::make_unique<LightSource>());
+
+    std::unique_ptr<Renderable> lightSource = std::make_unique<LightSource>();
+    meshes.push_back(std::move(lightSource));
 
     Framebuffer fbo;
     PickingTexture pickingTex;

@@ -36,6 +36,7 @@ void Renderer::Draw(Sphere *sphere, Shader &shader, unsigned int mode, unsigned 
     VertexArray& vao = sphere->GetVAO();
     IndexBuffer& ibo = sphere->GetIBO();
     shader.SetVec3f("uColor", sphere->GetColor());
+    shader.SetVec3f("lColor", sphere->GetLightColor());
     shader.SetMatrix4fv("model", sphere->GetModelMatrix());
     shader.SetMatrix4fv("projection", projection);
     shader.SetMatrix4fv("view", cam->GetViewMatrix());
@@ -68,7 +69,6 @@ void Renderer::DrawPicking(Cube *cube, Shader &shader, unsigned int mode, unsign
     shader.Bind();
     VertexArray& vao = cube->GetVAO();
     shader.SetVec3f("uColor", cube->GetPickingColor());
-    shader.SetVec3f("lColor", cube->GetLightColor());
     shader.SetMatrix4fv("model", cube->GetModelMatrix());
     shader.SetMatrix4fv("projection", projection);
     shader.SetMatrix4fv("view", cam->GetViewMatrix());
@@ -85,7 +85,6 @@ void Renderer::DrawPicking(Sphere *sphere, Shader &shader, unsigned int mode, un
     VertexArray& vao = sphere->GetVAO();
     IndexBuffer& ibo = sphere->GetIBO();
     shader.SetVec3f("uColor", sphere->GetPickingColor());
-    shader.SetVec3f("lColor", sphere->GetLightColor());
     shader.SetMatrix4fv("model", sphere->GetModelMatrix());
     shader.SetMatrix4fv("projection", projection);
     shader.SetMatrix4fv("view", cam->GetViewMatrix());

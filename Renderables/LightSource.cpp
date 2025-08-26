@@ -10,6 +10,7 @@ LightSource::LightSource() : lightVAO(), lightVBO(), layout()
     lightVAO.Bind();
     lightVBO.init(positions, sizeof(positions));
     layout.Push<float>(3);
+    layout.Push<float>(3);
     lightVAO.AddBuffer(lightVBO, layout);
     lightVAO.Unbind();
 
