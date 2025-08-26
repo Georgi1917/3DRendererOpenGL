@@ -61,8 +61,6 @@ Shader::Shader(std::string vertexFilePath, std::string fragmentFilePath)
 
     shaderProgram = program;
 
-    //std::cout << shaderProgram << "\n";
-
     glUseProgram(program);
 
 }
@@ -100,11 +98,6 @@ void Shader::SetVec3f(std::string uniformName, glm::vec3 &vector3)
 {
 
     int loc = glGetUniformLocation(shaderProgram, uniformName.c_str());
-
-    // if (loc < 0)
-    // {
-    //     std::cout << "Error" << "\n";
-    // }
 
     glUniform3f(loc, vector3.r, vector3.g, vector3.b);
 

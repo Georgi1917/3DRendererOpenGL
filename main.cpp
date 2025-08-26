@@ -72,6 +72,7 @@ int main()
 
     Shader basicShader("shaders/basic.vs", "shaders/basic.fs");
     Shader lightingShader("shaders/lighting.vs", "shaders/lighting.fs");
+    Shader pickingShader("shaders/picking.vs", "shaders/picking.fs");
 
     Renderer renderer;
     Camera camera(glm::vec3(1.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f));
@@ -108,14 +109,12 @@ int main()
         lastTime = currTime;
 
         camera.Update(window, deltaTime);
-        //lightingShader.SetMatrix4fv("view", camera.GetViewMatrix());
-        //basicShader.SetMatrix4fv("view", camera.GetViewMatrix());
 
         for (auto &mesh : meshes)
         {
 
-            if (mesh->GetClassName() == "Cube") renderer.DrawPicking((Cube*)mesh.get(), basicShader, GL_TRIANGLES, 0);
-            else if (mesh->GetClassName() == "Sphere") renderer.DrawPicking((Sphere*)mesh.get(), basicShader, GL_TRIANGLES, GL_UNSIGNED_INT);
+            if (mesh->GetClassName() == "Cube") renderer.DrawPicking((Cube*)mesh.get(), pickingShader, GL_TRIANGLES, 0);
+            else if (mesh->GetClassName() == "Sphere") renderer.DrawPicking((Sphere*)mesh.get(), pickingShader, GL_TRIANGLES, GL_UNSIGNED_INT);
             else if (mesh->GetClassName() == "Light Source") renderer.DrawPicking((LightSource*)mesh.get(), lightingShader, GL_TRIANGLES, 0);
             mesh->ResetModelMatrix();
 

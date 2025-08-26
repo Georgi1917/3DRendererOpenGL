@@ -30,6 +30,7 @@ Renderable::Renderable(glm::vec3 _color) : color(_color)
     id = staticId;
     staticId++;
 
+    lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
     pickingColor = IdToColor();
 
     model = glm::mat4(1.0f);
