@@ -37,6 +37,6 @@ class Camera
 
         void Update(GLFWwindow *window, float delta);
         glm::mat4& GetViewMatrix();
-        glm::vec3 GetPosition();
+        glm::vec3& GetPosition();
     
 };

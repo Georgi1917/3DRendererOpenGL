@@ -20,8 +20,8 @@ void Renderer::Draw(Cube *cube, Shader &shader, unsigned int mode, unsigned int 
     VertexArray& vao = cube->GetVAO();
     shader.SetVec3f("uColor", cube->GetColor());
     shader.SetVec3f("lColor", cube->GetLightColor());
-    if (source == nullptr) std::cout << "YES YES YES " << "\n";
     shader.SetVec3f("lPos", source->GetTranslation());
+    shader.SetVec3f("viewPos", cam->GetPosition());
     shader.SetMatrix4fv("model", cube->GetModelMatrix());
     shader.SetMatrix4fv("projection", projection);
     shader.SetMatrix4fv("view", cam->GetViewMatrix());
@@ -40,6 +40,7 @@ void Renderer::Draw(Sphere *sphere, Shader &shader, unsigned int mode, unsigned 
     shader.SetVec3f("uColor", sphere->GetColor());
     shader.SetVec3f("lColor", sphere->GetLightColor());
     shader.SetVec3f("lPos", source->GetTranslation());
+    shader.SetVec3f("viewPos", cam->GetPosition());
     shader.SetMatrix4fv("model", sphere->GetModelMatrix());
     shader.SetMatrix4fv("projection", projection);
     shader.SetMatrix4fv("view", cam->GetViewMatrix());

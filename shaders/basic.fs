@@ -12,7 +12,7 @@ in vec3 FragPos;
 void main()
 {
 
-    float ambientStrenght = 0.3;
+    float ambientStrenght = 0.2;
     float specStrenght = 0.5;
 
     vec3 ambient = lColor * ambientStrenght;
