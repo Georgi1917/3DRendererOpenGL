@@ -19,6 +19,7 @@ class Renderer
     private:
         glm::mat4 projection;
         Camera *cam;
+        LightSource *source;
 
     public:
 
@@ -36,5 +37,6 @@ class Renderer
         void SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
         glm::mat4& GetProjection();
         void SetCamera(Camera* camera);
+        void SetLightSource(LightSource *lSource);
         
 };

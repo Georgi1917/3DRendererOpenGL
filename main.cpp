@@ -55,6 +55,8 @@ int main()
     glfwMakeContextCurrent(window);
     glewInit();
 
+    Renderer renderer;
+
     std::vector<std::unique_ptr<Renderable>> meshes;
 
     meshes.push_back(std::make_unique<Cube>(glm::vec3(1.0f, 1.0f, 0.0f)));
@@ -62,6 +64,7 @@ int main()
     meshes.push_back(std::make_unique<Cube>(glm::vec3(0.8f, 1.0f, 0.2f)));
 
     std::unique_ptr<Renderable> lightSource = std::make_unique<LightSource>();
+    renderer.SetLightSource((LightSource*)lightSource.get());
     meshes.push_back(std::move(lightSource));
 
     Framebuffer fbo;
@@ -76,9 +79,10 @@ int main()
     Shader lightingShader("shaders/lighting.vs", "shaders/lighting.fs");
     Shader pickingShader("shaders/picking.vs", "shaders/picking.fs");
 
-    Renderer renderer;
     Camera camera(glm::vec3(1.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+
     renderer.SetCamera(&camera);
+
     MousePicker mousePicker(window, &camera, renderer.GetProjection());
     glfwSetWindowUserPointer(window, &mousePicker);
     glfwSetScrollCallback(window, MousePicker::ScrollCallback);
