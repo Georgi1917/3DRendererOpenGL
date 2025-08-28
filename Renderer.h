@@ -17,6 +17,7 @@ class Renderer
 {
 
     private:
+    
         glm::mat4 projection;
         Camera *cam;
         LightSource *source;

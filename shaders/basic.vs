@@ -13,7 +13,8 @@ void main()
 {
 
     gl_Position = projection * view * model * vec4(pos, 1.0);
-    Normal = aNormal;
+    mat3 normalMatrix = transpose(inverse(mat3(model)));
+    Normal = normalMatrix * aNormal;
     FragPos = vec3(model * vec4(pos, 1.0));
 
 }

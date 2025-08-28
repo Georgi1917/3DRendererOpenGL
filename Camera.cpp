@@ -17,14 +17,18 @@ Camera::~Camera()
 void Camera::Update(GLFWwindow *window, float delta)
 {
 
-    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         CameraPos += CameraSpeed * CameraFront * delta;
-    if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
         CameraPos -= CameraSpeed * CameraFront * delta;
-    if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
         CameraPos -= glm::normalize(glm::cross(CameraFront, CameraUp)) * CameraSpeed * delta;
-    if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         CameraPos += glm::normalize(glm::cross(CameraFront, CameraUp)) * CameraSpeed * delta;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        CameraPos += CameraSpeed * CameraUp * delta;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        CameraPos -= CameraSpeed * CameraUp * delta;
 
     if (glfwGetKey(window, GLFW_KEY_SPACE) != GLFW_PRESS)
     {
