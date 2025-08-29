@@ -117,25 +117,42 @@ void Renderable::ResetModelMatrix()
 
 glm::vec3& Renderable::GetTranslation()
 {
+
     return translation;
+
 }
 
 glm::vec3& Renderable::GetRotation()
 {
+
     return rotation;
+
 }
 
 glm::vec3& Renderable::GetScale()
 {
+
     return scale;
+
 }
 
 void Renderable::SetTranslation(glm::vec3 worldRay)
 {
+
     translation = worldRay;
+
 }
 
 glm::vec3& Renderable::GetLightColor()
 {
+
     return lightColor;
+
+}
+
+void Renderable::Draw()
+{
+
+    
+
 }

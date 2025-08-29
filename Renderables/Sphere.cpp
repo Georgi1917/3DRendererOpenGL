@@ -101,3 +101,14 @@ std::string Sphere::GetClassName()
     return "Sphere";
 
 }
+
+void Sphere::Draw()
+{
+
+    sphereVAO.Bind();
+    sphereIBO.Bind();
+    glDrawElements(GL_TRIANGLES, sphereIBO.Count(), GL_UNSIGNED_INT, 0);
+    sphereVAO.Unbind();
+    sphereIBO.Unbind();
+
+}

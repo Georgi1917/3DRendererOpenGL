@@ -62,5 +62,6 @@ class LightSource : public Renderable
         unsigned int GetNumberOfVertices();
         VertexArray& GetVAO();
         std::string GetClassName() override;
+        void Draw() override;
 
 };

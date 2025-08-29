@@ -21,23 +21,24 @@ class Renderer
         glm::mat4 projection;
         Camera *cam;
         LightSource *source;
+        std::vector<Renderable *> meshes;
 
     public:
 
         Renderer();
         ~Renderer();
 
-        void Draw(Cube *cube, Shader &shader, unsigned int mode, unsigned int first);
-        void Draw(Sphere *sphere, Shader &shader, unsigned int mode, unsigned int type);
-        void Draw(LightSource *light, Shader &shader, unsigned int mode, unsigned int first);
-        void DrawPicking(Cube *cube, Shader &shader, unsigned int mode, unsigned int first);
-        void DrawPicking(Sphere *sphere, Shader &shader, unsigned int mode, unsigned int type);
-        void DrawPicking(LightSource *light, Shader &shader, unsigned int mode, unsigned int first);
+        void DrawMeshes(Shader &shader);
+        void DrawMeshesPicking(Shader &shader);
+        void DrawLightSource(Shader &shader);
+        void DrawLightSourcePicking(Shader &shader);
         void Clear();
         void EnableDepthTesting();
         void SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
         glm::mat4& GetProjection();
         void SetCamera(Camera* camera);
         void SetLightSource(LightSource *lSource);
-        
+        LightSource*& GetLightSource();
+        void AddMesh(Renderable *mesh);
+        std::vector<Renderable *>& GetMeshes();
 };

@@ -57,16 +57,6 @@ int main()
 
     Renderer renderer;
 
-    std::vector<std::unique_ptr<Renderable>> meshes;
-
-    meshes.push_back(std::make_unique<Cube>(glm::vec3(1.0f, 1.0f, 0.0f)));
-    meshes.push_back(std::make_unique<Sphere>(glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, 50, 50));
-    meshes.push_back(std::make_unique<Cube>(glm::vec3(0.8f, 1.0f, 0.2f)));
-
-    std::unique_ptr<Renderable> lightSource = std::make_unique<LightSource>();
-    renderer.SetLightSource((LightSource*)lightSource.get());
-    meshes.push_back(std::move(lightSource));
-
     Framebuffer fbo;
     PickingTexture pickingTex;
     Renderbuffer rbo;
@@ -116,44 +106,31 @@ int main()
 
         camera.Update(window, deltaTime);
 
-        for (auto &mesh : meshes)
-        {
-
-            if (mesh->GetClassName() == "Cube") renderer.DrawPicking((Cube*)mesh.get(), pickingShader, GL_TRIANGLES, 0);
-            else if (mesh->GetClassName() == "Sphere") renderer.DrawPicking((Sphere*)mesh.get(), pickingShader, GL_TRIANGLES, GL_UNSIGNED_INT);
-            else if (mesh->GetClassName() == "Light Source") renderer.DrawPicking((LightSource*)mesh.get(), lightingShader, GL_TRIANGLES, 0);
-            mesh->ResetModelMatrix();
-
-        }
+        renderer.DrawMeshesPicking(pickingShader);
+        renderer.DrawLightSourcePicking(lightingShader);
 
         fbo.Unbind();
 
         renderer.SetViewport(0, 0, 1280, 720);
         renderer.Clear();
 
-        for (auto &mesh : meshes)
-        {
+        renderer.DrawMeshes(basicShader);
+        renderer.DrawLightSource(lightingShader);
 
-            if (mesh->GetClassName() == "Cube") renderer.Draw((Cube*)mesh.get(), basicShader, GL_TRIANGLES, 0);
-            else if (mesh->GetClassName() == "Sphere") renderer.Draw((Sphere*)mesh.get(), basicShader, GL_TRIANGLES, GL_UNSIGNED_INT);
-            else if (mesh->GetClassName() == "Light Source") renderer.Draw((LightSource*)mesh.get(), lightingShader, GL_TRIANGLES, 0);
-            mesh->ResetModelMatrix();
-
-        }
-
-        mousePicker.CheckForMouseClick(fbo, meshes);
+        mousePicker.CheckForMouseClick(fbo, renderer.GetMeshes());
+        mousePicker.CheckForLightSourceClick(fbo, renderer.GetLightSource());
 
         ImGui::Begin("First Window");
         if (ImGui::Button("Cube"))
         {
 
-            meshes.push_back(std::make_unique<Cube>(glm::vec3(0.5f, 0.5f, 0.5f)));
+            renderer.AddMesh(new Cube(glm::vec3(0.5f, 0.5f, 0.5f)));
 
         }
         if (ImGui::Button("Sphere"))
         {
 
-            meshes.push_back(std::make_unique<Sphere>(glm::vec3(0.5f, 0.5f, 0.5f), 1.0f, 50, 50));
+            renderer.AddMesh(new Sphere(glm::vec3(0.5f, 0.5f, 0.5f), 1.0f, 50, 50));
 
         }
         if (mousePicker.GetClickedObj())

@@ -43,3 +43,12 @@ std::string LightSource::GetClassName()
     return "Light Source";
 
 }
+
+void LightSource::Draw()
+{
+
+    lightVAO.Bind();
+    glDrawArrays(GL_TRIANGLES, 0, numOfVertices);
+    lightVAO.Unbind();
+
+}

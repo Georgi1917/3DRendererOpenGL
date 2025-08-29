@@ -35,3 +35,12 @@ std::string Cube::GetClassName()
     return "Cube";
 
 }
+
+void Cube::Draw()
+{
+
+    cubeVAO.Bind();
+    glDrawArrays(GL_TRIANGLES, 0, numOfVertices);
+    cubeVAO.Unbind();
+
+}

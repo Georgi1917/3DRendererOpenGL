@@ -8,6 +8,7 @@
 #include "Framebuffer/Framebuffer.h"
 #include "Camera.h"
 #include "Renderables/Renderable.h"
+#include "Renderables/LightSource.h"
 #include <vector>
 #include <memory>
 
@@ -33,7 +34,8 @@ class MousePicker
         ~MousePicker();
 
         void Update();
-        void CheckForMouseClick(Framebuffer &fbo, std::vector<std::unique_ptr<Renderable>> &meshes);
+        void CheckForMouseClick(Framebuffer &fbo, std::vector<Renderable*> &meshes);
+        void CheckForLightSourceClick(Framebuffer &fbo, LightSource*& source);
         Renderable* GetClickedObj();
         static void ScrollCallback(GLFWwindow *window, double xoffset, double yoffset);
 
