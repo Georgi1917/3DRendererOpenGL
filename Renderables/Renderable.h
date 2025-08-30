@@ -8,6 +8,7 @@
 #include "../include/glm/glm.hpp"
 #include "../include/glm/gtc/matrix_transform.hpp"
 #include "../include/glm/gtc/type_ptr.hpp"
+#include "../Textures/Texture.h"
 #include <string>
 
 class Renderable
@@ -25,13 +26,16 @@ class Renderable
 
         glm::vec3 color;
         glm::vec3 pickingColor;
+        Texture *tex;
         glm::vec3 IdToColor();
         unsigned int ColorToId(unsigned char r, unsigned char g, unsigned char b);
 
     public:
 
         Renderable();
+        Renderable(Texture *t);
         Renderable(glm::vec3 _color);
+        Renderable(glm::vec3 _color, Texture *t);
         glm::vec3& GetColor();
         glm::vec3& GetPickingColor();
         bool CompareColorAndId(unsigned char r, unsigned char g, unsigned char b);

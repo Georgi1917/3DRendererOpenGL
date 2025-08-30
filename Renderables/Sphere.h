@@ -18,6 +18,7 @@ class Sphere : public Renderable
 
     public:
         Sphere(glm::vec3 _color, float _radius, unsigned int _stacks, unsigned int _sectors);
+        Sphere(glm::vec3 _color, Texture *t, float _radius, unsigned int _stacks, unsigned int _sectors);
         ~Sphere();
         VertexArray& GetVAO();
         IndexBuffer& GetIBO();

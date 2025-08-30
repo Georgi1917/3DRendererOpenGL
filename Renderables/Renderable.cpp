@@ -22,9 +22,57 @@ Renderable::Renderable()
     model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
     model = glm::scale(model, scale);
 
+    tex = nullptr;
+
+}
+
+Renderable::Renderable(Texture *t) : tex(t)
+{
+
+    id = staticId;
+    staticId++;
+
+    lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+    pickingColor = IdToColor();
+
+    model = glm::mat4(1.0f);
+    rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+    scale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+    model = glm::translate(model, translation);
+    model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::scale(model, scale);
+
 }
 
 Renderable::Renderable(glm::vec3 _color) : color(_color) 
+{
+  
+    id = staticId;
+    staticId++;
+
+    lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+    pickingColor = IdToColor();
+
+    model = glm::mat4(1.0f);
+    translation = staticTranslation;
+    staticTranslation.x += 2.0f;
+    rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+    scale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+    model = glm::translate(model, translation);
+    model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::scale(model, scale);
+
+    tex = nullptr;
+
+}
+
+Renderable::Renderable(glm::vec3 _color, Texture *t) : color(_color), tex(t) 
 {
   
     id = staticId;

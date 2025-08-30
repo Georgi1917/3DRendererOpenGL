@@ -18,7 +18,7 @@ Texture::Texture(const char* loc)
     if (data)
     {
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
 
     }
@@ -31,6 +31,20 @@ Texture::Texture(const char* loc)
 Texture::~Texture()
 {
 
+    glDeleteTextures(1, &textureID);
 
+}
+
+void Texture::Bind()
+{
+
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+}
+
+void Texture::Unbind()
+{
+
+    glBindTexture(GL_TEXTURE_2D, 0);
 
 }

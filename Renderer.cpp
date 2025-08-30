@@ -6,6 +6,7 @@ Renderer::Renderer()
 
     source = new LightSource();
     projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 100.0f);
+    //Texture *tex = new Texture("texture-files/block_solid.png");
     meshes.push_back(new Cube(glm::vec3(1.0f, 1.0f, 0.0f)));
     meshes.push_back(new Sphere(glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, 50, 50));
     meshes.push_back(new Cube(glm::vec3(0.8f, 1.0f, 0.2f)));

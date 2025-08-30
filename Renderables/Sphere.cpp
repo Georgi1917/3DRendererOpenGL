@@ -27,6 +27,11 @@ void Sphere::SetUpSphere()
             vertices.push_back(normal.y);
             vertices.push_back(normal.z);
 
+            float u = (float)j / sectors;
+            float v = (float)i / stacks;
+            vertices.push_back(u);
+            vertices.push_back(v);
+
         }
 
     }
@@ -75,6 +80,28 @@ Sphere::Sphere(glm::vec3 _color, float _radius, unsigned int _stacks, unsigned i
     sphereIBO.init(indices.data(), indices.size());
     layout.Push<float>(3);
     layout.Push<float>(3);
+    layout.Push<float>(2);
+    sphereVAO.AddBuffer(sphereVBO, layout);
+    sphereVAO.Unbind();
+
+}
+
+Sphere::Sphere(glm::vec3 _color, Texture *t, float _radius, unsigned int _stacks, unsigned int _sectors) : 
+    Renderable(_color, t), 
+    sphereVAO(), 
+    sphereVBO(),
+    sphereIBO(),
+    layout(),
+    radius(_radius), stacks(_stacks), sectors(_sectors)
+{
+
+    SetUpSphere();
+    sphereVAO.Bind();
+    sphereVBO.init(vertices.data(), vertices.size() * sizeof(float));
+    sphereIBO.init(indices.data(), indices.size());
+    layout.Push<float>(3);
+    layout.Push<float>(3);
+    layout.Push<float>(2);
     sphereVAO.AddBuffer(sphereVBO, layout);
     sphereVAO.Unbind();
 
@@ -105,10 +132,12 @@ std::string Sphere::GetClassName()
 void Sphere::Draw()
 {
 
+    //tex->Bind();
     sphereVAO.Bind();
     sphereIBO.Bind();
     glDrawElements(GL_TRIANGLES, sphereIBO.Count(), GL_UNSIGNED_INT, 0);
     sphereVAO.Unbind();
     sphereIBO.Unbind();
+    //tex->Unbind();
 
 }

@@ -5,9 +5,11 @@ uniform vec3 uColor;
 uniform vec3 lColor;
 uniform vec3 lPos;
 uniform vec3 viewPos;
+uniform sampler2D Tex;
 
 in vec3 Normal;
 in vec3 FragPos;
+in vec2 TexCoord;
 
 void main()
 {
@@ -29,6 +31,6 @@ void main()
 
     vec3 result = (ambient + diffuse + specular) * uColor;
 
-    FragColor = vec4(result, 1.0f);
+    FragColor = texture(Tex, TexCoord) * vec4(result, 1.0f);
 
 }
