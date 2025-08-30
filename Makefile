@@ -7,8 +7,9 @@ IMGUI = include/imgui/imgui_demo.cpp include/imgui/imgui_draw.cpp include/imgui/
 ADDITIONAL_OBJS = VertexBuffer.cpp IndexBuffer.cpp VertexArray.cpp BufferLayoutObject.cpp Renderer.cpp Shader.cpp Camera.cpp MousePicker.cpp
 RENDERABLES_OBJS = Renderables/Renderable.cpp Renderables/Cube.cpp Renderables/Sphere.cpp Renderables/LightSource.cpp
 FRAMEBUFFER_OBJS = Framebuffer/Framebuffer.cpp Framebuffer/PickingTexture.cpp Framebuffer/Renderbuffer.cpp
+TEXTURES = Textures/Texture.cpp
 
-SRC = main.cpp $(IMGUI) $(ADDITIONAL_OBJS) $(RENDERABLES_OBJS) $(FRAMEBUFFER_OBJS)
+SRC = main.cpp stb_image.cpp $(IMGUI) $(ADDITIONAL_OBJS) $(RENDERABLES_OBJS) $(FRAMEBUFFER_OBJS) $(TEXTURES)
 
 TARGET = main.exe
 

@@ -21,6 +21,7 @@
 #include "Framebuffer/Framebuffer.h"
 #include "Framebuffer/PickingTexture.h"
 #include "Framebuffer/Renderbuffer.h"
+#include "Textures/Texture.h"
 #include <string>
 #include <iostream>
 #include <vector>

@@ -149,7 +149,6 @@ void MousePicker::CheckForLightSourceClick(Framebuffer& fbo, LightSource*& sourc
         if (source->CompareColorAndId(pixel[0], pixel[1], pixel[2]))
         {
 
-            std::cout << "clicked on light" << "\n";
             currObjectDrag = source;
             currObjectData = source;
             objWorldToView = camera->GetViewMatrix() * glm::vec4(currObjectDrag->GetTranslation(), 1.0f);
