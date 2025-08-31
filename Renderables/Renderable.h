@@ -48,5 +48,6 @@ class Renderable
         glm::vec3& GetRotation();
         glm::vec3& GetScale();
         glm::vec3& GetLightColor();
+        Texture *GetTexture();
 
 };

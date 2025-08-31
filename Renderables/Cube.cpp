@@ -53,10 +53,10 @@ std::string Cube::GetClassName()
 void Cube::Draw()
 {
 
-    //tex->Bind();
+    tex->Bind();
     cubeVAO.Bind();
     glDrawArrays(GL_TRIANGLES, 0, numOfVertices);
     cubeVAO.Unbind();
-    //tex->Unbind();
+    tex->Unbind();
 
 }

@@ -132,12 +132,12 @@ std::string Sphere::GetClassName()
 void Sphere::Draw()
 {
 
-    //tex->Bind();
+    tex->Bind();
     sphereVAO.Bind();
     sphereIBO.Bind();
     glDrawElements(GL_TRIANGLES, sphereIBO.Count(), GL_UNSIGNED_INT, 0);
     sphereVAO.Unbind();
     sphereIBO.Unbind();
-    //tex->Unbind();
+    tex->Unbind();
 
 }
