@@ -29,7 +29,7 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
     vec3 specular = specStrenght * spec * lColor;
 
-    vec3 result = (ambient + diffuse + specular) * uColor;
+    vec3 result = (ambient + diffuse + specular);
 
     FragColor = texture(Tex, TexCoord) * vec4(result, 1.0f);
 

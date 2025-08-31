@@ -6,7 +6,7 @@ Renderer::Renderer()
 
     source = new LightSource();
     projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 100.0f);
-    Texture *tex = new Texture("texture-files/block_solid.png");
+    Texture *tex = new Texture("texture-files/wall.jpg");
 
     if (tex == nullptr) std::cout << "YES YES YES" << "\n";
 
@@ -30,7 +30,7 @@ void Renderer::DrawMeshes(Shader &shader)
     {
 
         shader.SetVec3f("uColor", mesh->GetColor());
-        shader.SetVec3f("lColor", mesh->GetLightColor());
+        shader.SetVec3f("lColor", source->GetColor());
         shader.SetVec3f("lPos", source->GetTranslation());
         shader.SetVec3f("viewPos", cam->GetPosition());
         shader.SetMatrix4fv("model", mesh->GetModelMatrix());
