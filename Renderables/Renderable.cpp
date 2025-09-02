@@ -207,3 +207,10 @@ Texture *Renderable::GetTexture()
     return tex;
 
 }
+
+void Renderable::RemoveTexture()
+{
+
+    tex = nullptr;
+
+}

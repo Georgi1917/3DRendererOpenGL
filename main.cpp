@@ -139,6 +139,21 @@ int main()
 
             const char* text = mousePicker.GetClickedObj()->GetClassName().c_str();
             ImGui::Text(text);
+
+            if (ImGui::Button("Remove Texture"))
+            {
+
+                mousePicker.GetClickedObj()->RemoveTexture();
+
+            }
+
+            if (ImGui::Button("Change Texture"))
+            {
+
+                
+
+            }
+
             ImGui::DragFloat3("Translation", &(mousePicker.GetClickedObj()->GetTranslation().x), 1.0f * deltaTime, -100, 100);
             ImGui::DragFloat3("Rotation", &(mousePicker.GetClickedObj()->GetRotation().x), 10.0f, -360, 360);
             ImGui::DragFloat3("Scale", &(mousePicker.GetClickedObj()->GetScale().x), 2.0f * deltaTime, 1.0f, 100.0f);

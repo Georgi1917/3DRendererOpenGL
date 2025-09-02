@@ -10,7 +10,7 @@ Renderer::Renderer()
 
     if (tex == nullptr) std::cout << "YES YES YES" << "\n";
 
-    meshes.push_back(new Cube(glm::vec3(1.0f, 1.0f, 0.0f), tex));
+    meshes.push_back(new Cube(glm::vec3(1.0f, 1.0f, 0.0f)));
     meshes.push_back(new Sphere(glm::vec3(1.0f, 0.0f, 0.0f), tex, 1.0f, 50, 50));
     meshes.push_back(new Cube(glm::vec3(0.8f, 1.0f, 0.2f), tex));
 
@@ -29,6 +29,16 @@ void Renderer::DrawMeshes(Shader &shader)
     for (auto& mesh : meshes)
     {
 
+        if (mesh->GetTexture())
+        {
+            mesh->GetTexture()->Bind();
+            shader.SetBool("hasTex", true);
+        }
+        else
+        {
+            shader.SetBool("hasTex", false);
+        } 
+    
         shader.SetVec3f("uColor", mesh->GetColor());
         shader.SetVec3f("lColor", source->GetColor());
         shader.SetVec3f("lPos", source->GetTranslation());
@@ -38,6 +48,7 @@ void Renderer::DrawMeshes(Shader &shader)
         shader.SetMatrix4fv("view", cam->GetViewMatrix());
         mesh->Draw();
         mesh->ResetModelMatrix();
+        if (mesh->GetTexture()) mesh->GetTexture()->Unbind();
 
     }
 

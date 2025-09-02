@@ -1,8 +1,10 @@
 #include "Cube.h"
+#include <iostream>
 
 Cube::Cube(glm::vec3 _color) : Renderable(_color), cubeVAO(), cubeVBO(), cubeLayout()
 {
 
+    tex = nullptr;
     cubeVAO.Bind();
     cubeVBO.init(positions, sizeof(positions));
     cubeLayout.Push<float>(3);
@@ -53,10 +55,8 @@ std::string Cube::GetClassName()
 void Cube::Draw()
 {
 
-    tex->Bind();
     cubeVAO.Bind();
     glDrawArrays(GL_TRIANGLES, 0, numOfVertices);
     cubeVAO.Unbind();
-    tex->Unbind();
 
 }

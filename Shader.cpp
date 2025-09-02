@@ -105,6 +105,15 @@ void Shader::SetVec3f(std::string uniformName, glm::vec3 &vector3)
 
 }
 
+void Shader::SetBool(std::string uniformName, bool b)
+{
+
+    int loc = glGetUniformLocation(shaderProgram, uniformName.c_str());
+
+    glUniform1i(loc, b);
+
+}
+
 int Shader::GetProgram()
 {
     return shaderProgram;

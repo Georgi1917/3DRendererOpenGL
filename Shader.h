@@ -22,6 +22,7 @@ class Shader
 
         void SetMatrix4fv(std::string uniformName, glm::mat4 &matrix);
         void SetVec3f(std::string uniformName, glm::vec3 &vector3);
+        void SetBool(std::string uniformName, bool b);
         int GetProgram();
 
 };

@@ -74,6 +74,7 @@ Sphere::Sphere(glm::vec3 _color, float _radius, unsigned int _stacks, unsigned i
     radius(_radius), stacks(_stacks), sectors(_sectors)
 {
 
+    tex = nullptr;
     SetUpSphere();
     sphereVAO.Bind();
     sphereVBO.init(vertices.data(), vertices.size() * sizeof(float));
@@ -132,12 +133,10 @@ std::string Sphere::GetClassName()
 void Sphere::Draw()
 {
 
-    tex->Bind();
     sphereVAO.Bind();
     sphereIBO.Bind();
     glDrawElements(GL_TRIANGLES, sphereIBO.Count(), GL_UNSIGNED_INT, 0);
     sphereVAO.Unbind();
     sphereIBO.Unbind();
-    tex->Unbind();
 
 }
