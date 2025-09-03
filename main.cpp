@@ -26,6 +26,7 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+#include <filesystem>
 
 float deltaTime = 0.0f;
 float lastTime = 0.0f;
@@ -150,7 +151,27 @@ int main()
             if (ImGui::Button("Change Texture"))
             {
 
-                
+                ImGui::OpenPopup("Textures");
+
+            }
+
+            if (ImGui::BeginPopup("Textures"))
+            {
+
+                const char *path = "texture-files/";
+                for (const auto &entry : std::filesystem::directory_iterator(path))
+                {
+
+                    if(ImGui::MenuItem(entry.path().generic_string().c_str()))
+                    {
+
+                        mousePicker.GetClickedObj()->SetTexture(new Texture(entry.path().generic_string().c_str()));
+
+                    }
+
+                }
+
+                ImGui::EndPopup();
 
             }
 

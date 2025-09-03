@@ -214,3 +214,10 @@ void Renderable::RemoveTexture()
     tex = nullptr;
 
 }
+
+void Renderable::SetTexture(Texture* t)
+{
+
+    tex = t;
+
+}

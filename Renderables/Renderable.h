@@ -50,6 +50,7 @@ class Renderable
         glm::vec3& GetLightColor();
         Texture *GetTexture();
         void RemoveTexture();
+        void SetTexture(Texture *t);
         
 
 };
