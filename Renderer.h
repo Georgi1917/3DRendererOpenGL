@@ -41,4 +41,5 @@ class Renderer
         LightSource*& GetLightSource();
         void AddMesh(Renderable *mesh);
         std::vector<Renderable *>& GetMeshes();
+        void DeleteObject(Renderable * obj);
 };

@@ -175,6 +175,13 @@ int main()
 
             }
 
+            if (ImGui::Button("Delete Object"))
+            {
+
+                renderer.DeleteObject(mousePicker.GetClickedObj());
+
+            }
+
             ImGui::DragFloat3("Translation", &(mousePicker.GetClickedObj()->GetTranslation().x), 1.0f * deltaTime, -100, 100);
             ImGui::DragFloat3("Rotation", &(mousePicker.GetClickedObj()->GetRotation().x), 10.0f, -360, 360);
             ImGui::DragFloat3("Scale", &(mousePicker.GetClickedObj()->GetScale().x), 2.0f * deltaTime, 1.0f, 100.0f);

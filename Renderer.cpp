@@ -159,3 +159,16 @@ std::vector<Renderable *>& Renderer::GetMeshes()
     return meshes;
 
 }
+
+void Renderer::DeleteObject(Renderable *obj)
+{
+
+    for (auto it = meshes.begin(); it != meshes.end();)
+    {
+
+        if (*it == obj) it = meshes.erase(it);
+        else ++it;
+
+    }
+
+}
