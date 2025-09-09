@@ -8,6 +8,7 @@
 #include "Renderables/Cube.h"
 #include "Renderables/Sphere.h"
 #include "Renderables/LightSource.h"
+#include "Renderables/Surface.h"
 #include "Camera.h"
 #include "include/glm/glm.hpp"
 #include "include/glm/gtc/matrix_transform.hpp"

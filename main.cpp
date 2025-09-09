@@ -171,6 +171,8 @@ int main()
 
                 }
 
+                if (ImGui::MenuItem("None")) mousePicker.GetClickedObj()->SetTexture(nullptr);
+
                 ImGui::EndPopup();
 
             }
