@@ -114,6 +114,14 @@ void Shader::SetBool(std::string uniformName, bool b)
 
 }
 
+void Shader::Set1I(std::string uniformName, int i)
+{
+
+    int loc = glGetUniformLocation(shaderProgram, uniformName.c_str());
+    glUniform1i(loc, i);
+
+}
+
 int Shader::GetProgram()
 {
     return shaderProgram;
