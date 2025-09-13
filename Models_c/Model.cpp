@@ -7,3 +7,9 @@ Model::Model(char *path)
 
 }
 
+void Model::LoadModel(std::string path)
+{
+
+    
+
+}

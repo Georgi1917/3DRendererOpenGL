@@ -22,9 +22,6 @@
 #include "Framebuffer/PickingTexture.h"
 #include "Framebuffer/Renderbuffer.h"
 #include "Textures/Texture.h"
-#include "include/assimp/Importer.hpp"
-#include "include/assimp/scene.h"
-#include "include/assimp/postprocess.h"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -93,21 +90,6 @@ int main()
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
-
-    // Assimp::Importer importer;
-
-    // const aiScene* scene = importer.ReadFile("models/simple_cube.obj", aiProcess_Triangulate | aiProcess_FlipUVs);
-
-    // if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
-    // {
-
-    //     std::cerr << "Assimp error: " << importer.GetErrorString() << std::endl;
-    //     return -1;
-
-    // }
-
-    // std::cout << "Model loaded! Meshes: " << scene->mNumMeshes << std::endl;
-    // return 0;
 
     while(!glfwWindowShouldClose(window))
     {
