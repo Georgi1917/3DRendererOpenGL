@@ -1,6 +1,6 @@
-#include "Surface.h"
+#include "Surface_c.h"
 
-Surface::Surface(glm::vec3 color, Texture *t) 
+Surface_c::Surface_c(glm::vec3 color, Texture *t) 
 : Renderable(color, t), surfaceVAO(), surfaceVBO(), surfaceIBO(), layout()
 {
 
@@ -25,9 +25,11 @@ Surface::Surface(glm::vec3 color, Texture *t)
 
 }
 
-Surface::Surface(glm::vec3 color)
+Surface_c::Surface_c(glm::vec3 color)
 : Renderable(color), surfaceVAO(), surfaceVBO(), surfaceIBO(), layout()
 {
+
+    tex = nullptr;
 
     surfaceVAO.Bind();
     surfaceVBO.init(positions, sizeof(positions));
@@ -50,28 +52,28 @@ Surface::Surface(glm::vec3 color)
 
 }
 
-VertexArray& Surface::GetVAO()
+VertexArray& Surface_c::GetVAO()
 {
 
     return surfaceVAO;
 
 }
 
-IndexBuffer& Surface::GetIBO()
+IndexBuffer& Surface_c::GetIBO()
 {
 
     return surfaceIBO;
 
 }
 
-std::string Surface::GetClassName()
+std::string Surface_c::GetClassName()
 {
 
-    return "Surface";
+    return "Surface_c";
 
 }
 
-void Surface::Draw()
+void Surface_c::Draw()
 {
 
     surfaceVAO.Bind();

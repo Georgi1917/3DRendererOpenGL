@@ -2,7 +2,7 @@
 
 #include "Renderable.h"
 
-class Surface : public Renderable
+class Surface_c : public Renderable
 {
 
     private:
@@ -24,8 +24,8 @@ class Surface : public Renderable
 
     public:
         
-        Surface(glm::vec3 color, Texture *t);
-        Surface(glm::vec3 color);
+        Surface_c(glm::vec3 color, Texture *t);
+        Surface_c(glm::vec3 color);
         VertexArray& GetVAO();
         IndexBuffer& GetIBO();
         std::string GetClassName() override;
