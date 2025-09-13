@@ -3,6 +3,7 @@
 #include "../include/assimp/Importer.hpp"
 #include "../include/assimp/scene.h"
 #include "../include/assimp/postprocess.h"
+#include "../include/stb_image.h"
 
 class Model
 {
@@ -19,5 +20,6 @@ class Model
         void processNode(aiNode *node, const aiScene *scene);
         Mesh processMesh(aiMesh *mesh, const aiScene *scene);
         std::vector<Texture_c> loadMaterialTexture(aiMaterial *mat, aiTextureType type, std::string typeName);
+        unsigned int TextureFromFile(const char *path);
 
 };
