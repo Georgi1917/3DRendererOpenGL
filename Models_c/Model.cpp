@@ -1,10 +1,19 @@
 #include "Model.h"
 #include <iostream>
 
-Model::Model(char *path)
+Model::Model(const char *path)
 {
 
     LoadModel(path);
+    modelMat = glm::mat4(1.0f);
+    translation = glm::vec3(-2.0f, 0.0f, 0.0f);
+    modelMat = glm::translate(modelMat, translation);
+    rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+    modelMat = glm::rotate(modelMat, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    modelMat = glm::rotate(modelMat, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    modelMat = glm::rotate(modelMat, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    scale = glm::vec3(1.0f, 1.0f, 1.0f);
+    modelMat = glm::scale(modelMat, scale);
 
 }
 
@@ -164,5 +173,29 @@ unsigned int Model::TextureFromFile(const char *path)
     }
 
     return textureId;
+
+}
+
+void Model::Draw(Shader &shader)
+{
+
+    for (unsigned int i = 0; i < meshes.size(); i++)
+    {
+
+        meshes[i].Draw(shader);
+
+    }
+
+}
+
+void Model::ResetModelMat()
+{
+
+    modelMat = glm::mat4(1.0f);
+    modelMat = glm::translate(modelMat, translation);
+    modelMat = glm::rotate(modelMat, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    modelMat = glm::rotate(modelMat, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    modelMat = glm::rotate(modelMat, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    modelMat = glm::scale(modelMat, scale);
 
 }

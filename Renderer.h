@@ -9,6 +9,7 @@
 #include "Renderables/Sphere.h"
 #include "Renderables/LightSource.h"
 #include "Renderables/Surface_c.h"
+#include "Models_c/Model.h"
 #include "Camera.h"
 #include "include/glm/glm.hpp"
 #include "include/glm/gtc/matrix_transform.hpp"
@@ -23,6 +24,7 @@ class Renderer
         Camera *cam;
         LightSource *source;
         std::vector<Renderable *> meshes;
+        std::vector<Model *> models;
 
     public:
 
@@ -31,6 +33,7 @@ class Renderer
 
         void DrawMeshes(Shader &shader);
         void DrawMeshesPicking(Shader &shader);
+        void DrawModels(Shader &shader);
         void DrawLightSource(Shader &shader);
         void DrawLightSourcePicking(Shader &shader);
         void Clear();
