@@ -9,8 +9,13 @@ class Model
 {
 
     public:
-        Model(char *path);
+        Model(const char *path);
         void Draw(Shader &shader);
+        glm::mat4 modelMat;
+        glm::vec3 translation;
+        glm::vec3 rotation;
+        glm::vec3 scale;
+        void ResetModelMat();
 
     private:
         std::vector<Mesh> meshes;
