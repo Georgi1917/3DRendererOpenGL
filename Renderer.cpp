@@ -14,10 +14,6 @@ Renderer::Renderer()
     meshes.push_back(new Sphere(glm::vec3(1.0f, 0.0f, 0.0f), tex, 1.0f, 50, 50));
     meshes.push_back(new Cube(glm::vec3(0.8f, 1.0f, 0.2f), tex));
     meshes.push_back(new Surface_c(glm::vec3(0.295f, 0.304f, 0.268f)));
-    std::cout << 1 << "\n";
-    const char *path = "models/backpack.obj";
-    models.push_back(new Model(path));
-    std::cout << 2 << "\n";
 
 }
 
