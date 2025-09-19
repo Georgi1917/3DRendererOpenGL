@@ -1,16 +1,15 @@
 CXX = g++
 CXXFLAGS = -Iinclude
 
-LDFLAGS = -Llib -lglfw3 -lglew32 -lgdi32 -lopengl32 -lassimp -lz
+LDFLAGS = -Llib -lglfw3 -lglew32 -lgdi32 -lopengl32
 
 IMGUI = include/imgui/imgui_demo.cpp include/imgui/imgui_draw.cpp include/imgui/imgui_impl_glfw.cpp include/imgui/imgui_impl_opengl3.cpp include/imgui/imgui_tables.cpp include/imgui/imgui_widgets.cpp include/imgui/imgui.cpp
 ADDITIONAL_OBJS = VertexBuffer.cpp IndexBuffer.cpp VertexArray.cpp BufferLayoutObject.cpp Renderer.cpp Shader.cpp Camera.cpp MousePicker.cpp
 RENDERABLES_OBJS = Renderables/Renderable.cpp Renderables/Cube.cpp Renderables/Sphere.cpp Renderables/LightSource.cpp Renderables/Surface_c.cpp
-MODELS = Models_c/Mesh.cpp Models_c/Model.cpp
 FRAMEBUFFER_OBJS = Framebuffer/Framebuffer.cpp Framebuffer/PickingTexture.cpp Framebuffer/Renderbuffer.cpp
 TEXTURES = Textures/Texture.cpp
 
-SRC = main.cpp stb_image.cpp $(IMGUI) $(ADDITIONAL_OBJS) $(RENDERABLES_OBJS) $(MODELS) $(FRAMEBUFFER_OBJS) $(TEXTURES)
+SRC = main.cpp stb_image.cpp $(IMGUI) $(ADDITIONAL_OBJS) $(RENDERABLES_OBJS) $(FRAMEBUFFER_OBJS) $(TEXTURES)
 
 TARGET = main.exe
 

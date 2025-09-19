@@ -55,24 +55,6 @@ void Renderer::DrawMeshes(Shader &shader)
 
 }
 
-void Renderer::DrawModels(Shader &shader)
-{
-
-    shader.Bind();
-
-    for (auto &model : models)
-    {
-
-        shader.SetMatrix4fv("model", model->modelMat);
-        shader.SetMatrix4fv("projection", projection);
-        shader.SetMatrix4fv("view", cam->GetViewMatrix());
-        model->Draw(shader);
-        model->ResetModelMat();
-
-    }
-
-}
-
 void Renderer::DrawMeshesPicking(Shader &shader)
 {
 
