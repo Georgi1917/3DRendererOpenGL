@@ -73,7 +73,6 @@ int main()
     Shader basicShader("shaders/basic.vs", "shaders/basic.fs");
     Shader lightingShader("shaders/lighting.vs", "shaders/lighting.fs");
     Shader pickingShader("shaders/picking.vs", "shaders/picking.fs");
-    Shader modelShader("shaders/model-shader.vs", "shaders/model-shader.fs");
 
     Camera camera(glm::vec3(1.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f));
 
@@ -122,7 +121,6 @@ int main()
 
         renderer.DrawMeshes(basicShader);
         renderer.DrawLightSource(lightingShader);
-        renderer.DrawModels(modelShader);
 
         mousePicker.CheckForMouseClick(fbo, renderer.GetMeshes());
         mousePicker.CheckForLightSourceClick(fbo, renderer.GetLightSource());
