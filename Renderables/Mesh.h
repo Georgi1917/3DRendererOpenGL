@@ -4,6 +4,10 @@
 #include "../include/glm/glm.hpp"
 #include "../include/glm/gtc/matrix_transform.hpp"
 #include "../include/glm/gtc/type_ptr.hpp"
+#include "../VertexArray.h"
+#include "../VertexBuffer.h"
+#include "../IndexBuffer.h"
+#include "../BufferLayoutObject.h"
 #include <vector>
 
 struct Vertex
@@ -19,6 +23,12 @@ struct Mesh
 {
 
     unsigned int id;
+
+    VertexArray        vao = VertexArray();
+    VertexBuffer       vbo = VertexBuffer();
+    IndexBuffer        ibo = IndexBuffer();
+    BufferLayoutObject layout = BufferLayoutObject();
+
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
@@ -30,6 +40,9 @@ struct Mesh
     glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
     glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f);
 
-    void Init(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices);
+    void Init(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
+    void Draw();
+    void SetUpMatrix();
+    bool CompareIdToColor(unsigned char r, unsigned char g, unsigned char b);
 
 };

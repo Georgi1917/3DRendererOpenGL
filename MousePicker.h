@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "Renderables/Renderable.h"
 #include "Renderables/LightSource.h"
+#include "Renderables/Mesh.h"
 #include <vector>
 #include <memory>
 
@@ -20,8 +21,8 @@ class MousePicker
         GLFWwindow *glfwWindow;
         glm::mat4 projMatrix;
         Camera *camera;
-        Renderable *currObjectDrag;
-        Renderable *currObjectData;
+        Mesh *currObjectDrag;
+        Mesh *currObjectData;
         glm::vec3 objWorldToView;
         glm::vec3 CalculateRay();
         glm::vec2 NormalizeMouseCoords(double mouseX, double mouseY);
@@ -34,9 +35,9 @@ class MousePicker
         ~MousePicker();
 
         void Update();
-        void CheckForMouseClick(Framebuffer &fbo, std::vector<Renderable*> &meshes);
-        void CheckForLightSourceClick(Framebuffer &fbo, LightSource*& source);
-        Renderable* GetClickedObj();
+        void CheckForMouseClick(Framebuffer &fbo, std::vector<Mesh*> &meshes);
+        void CheckForLightSourceClick(Framebuffer &fbo, Mesh*& source);
+        Mesh* GetClickedObj();
         static void ScrollCallback(GLFWwindow *window, double xoffset, double yoffset);
 
 };
