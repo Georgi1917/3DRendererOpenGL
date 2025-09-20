@@ -141,56 +141,49 @@ int main()
         if (mousePicker.GetClickedObj())
         {
 
-            const char* text = mousePicker.GetClickedObj()->GetClassName().c_str();
-            ImGui::Text(text);
+            // const char* text = mousePicker.GetClickedObj()->GetClassName().c_str();
+            // ImGui::Text(text);
 
-            if (ImGui::Button("Remove Texture"))
-            {
+            // if (ImGui::Button("Remove Texture"))
+            // {
 
-                mousePicker.GetClickedObj()->RemoveTexture();
+            //     mousePicker.GetClickedObj()->RemoveTexture();
 
-            }
+            // }
 
-            if (ImGui::Button("Change Texture"))
-            {
+            // if (ImGui::BeginPopup("Textures"))
+            // {
 
-                ImGui::OpenPopup("Textures");
+            //     const char *path = "texture-files/";
+            //     for (const auto &entry : std::filesystem::directory_iterator(path))
+            //     {
 
-            }
+            //         if(ImGui::MenuItem(entry.path().generic_string().c_str()))
+            //         {
 
-            if (ImGui::BeginPopup("Textures"))
-            {
+            //             mousePicker.GetClickedObj()->SetTexture(new Texture(entry.path().generic_string().c_str()));
 
-                const char *path = "texture-files/";
-                for (const auto &entry : std::filesystem::directory_iterator(path))
-                {
+            //         }
 
-                    if(ImGui::MenuItem(entry.path().generic_string().c_str()))
-                    {
+            //     }
 
-                        mousePicker.GetClickedObj()->SetTexture(new Texture(entry.path().generic_string().c_str()));
+            //     if (ImGui::MenuItem("None")) mousePicker.GetClickedObj()->SetTexture(nullptr);
 
-                    }
+            //     ImGui::EndPopup();
 
-                }
+            // }
 
-                if (ImGui::MenuItem("None")) mousePicker.GetClickedObj()->SetTexture(nullptr);
+            // if (ImGui::Button("Delete Object"))
+            // {
 
-                ImGui::EndPopup();
+            //     renderer.DeleteObject(mousePicker.GetClickedObj());
 
-            }
+            // }
 
-            if (ImGui::Button("Delete Object"))
-            {
-
-                renderer.DeleteObject(mousePicker.GetClickedObj());
-
-            }
-
-            ImGui::DragFloat3("Translation", &(mousePicker.GetClickedObj()->GetTranslation().x), 1.0f * deltaTime, -100, 100);
-            ImGui::DragFloat3("Rotation", &(mousePicker.GetClickedObj()->GetRotation().x), 10.0f, -360, 360);
-            ImGui::DragFloat3("Scale", &(mousePicker.GetClickedObj()->GetScale().x), 2.0f * deltaTime, 1.0f, 100.0f);
-            ImGui::ColorPicker3("Color", &(mousePicker.GetClickedObj()->GetColor().r));
+            ImGui::DragFloat3("Translation", &(mousePicker.GetClickedObj()->trans.x), 1.0f * deltaTime, -100, 100);
+            ImGui::DragFloat3("Rotation", &(mousePicker.GetClickedObj()->rotation.x), 10.0f, -360, 360);
+            ImGui::DragFloat3("Scale", &(mousePicker.GetClickedObj()->scale.x), 2.0f * deltaTime, 1.0f, 100.0f);
+            ImGui::ColorPicker3("Color", &(mousePicker.GetClickedObj()->color.r));
             
         }
         

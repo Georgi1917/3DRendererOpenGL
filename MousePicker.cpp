@@ -52,7 +52,7 @@ void MousePicker::Update()
 {
 
     currentRay = CalculateRay();
-    currObjectDrag->SetTranslation(currentRay);
+    currObjectDrag->trans = currentRay;
 
 }
 
@@ -99,7 +99,7 @@ glm::vec2 MousePicker::NormalizeMouseCoords(double mouseX, double mouseY)
 
 }
 
-void MousePicker::CheckForMouseClick(Framebuffer& fbo, std::vector<Renderable*>& meshes)
+void MousePicker::CheckForMouseClick(Framebuffer& fbo, std::vector<Mesh*>& meshes)
 {
 
     if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !currObjectDrag)
@@ -115,12 +115,12 @@ void MousePicker::CheckForMouseClick(Framebuffer& fbo, std::vector<Renderable*>&
         for (auto &mesh : meshes)
         {
 
-            if (mesh->CompareColorAndId(pixel[0], pixel[1], pixel[2]))
+            if (mesh->CompareIdToColor(pixel[0], pixel[1], pixel[2]))
             {
 
                 currObjectDrag = mesh;
                 currObjectData = mesh;
-                objWorldToView = camera->GetViewMatrix() * glm::vec4(currObjectDrag->GetTranslation(), 1.0f);
+                objWorldToView = camera->GetViewMatrix() * glm::vec4(currObjectDrag->trans, 1.0f);
 
             } 
         }
@@ -133,7 +133,7 @@ void MousePicker::CheckForMouseClick(Framebuffer& fbo, std::vector<Renderable*>&
 
 }
 
-void MousePicker::CheckForLightSourceClick(Framebuffer& fbo, LightSource*& source)
+void MousePicker::CheckForLightSourceClick(Framebuffer& fbo, Mesh*& source)
 {
 
     if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !currObjectDrag)
@@ -146,12 +146,12 @@ void MousePicker::CheckForLightSourceClick(Framebuffer& fbo, LightSource*& sourc
         glReadPixels((int)mx, 720 - (int)my, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
         fbo.Unbind();
 
-        if (source->CompareColorAndId(pixel[0], pixel[1], pixel[2]))
+        if (source->CompareIdToColor(pixel[0], pixel[1], pixel[2]))
         {
 
             currObjectDrag = source;
             currObjectData = source;
-            objWorldToView = camera->GetViewMatrix() * glm::vec4(currObjectDrag->GetTranslation(), 1.0f);
+            objWorldToView = camera->GetViewMatrix() * glm::vec4(currObjectDrag->trans, 1.0f);
 
         }
 
@@ -163,7 +163,7 @@ void MousePicker::CheckForLightSourceClick(Framebuffer& fbo, LightSource*& sourc
 
 }
 
-Renderable* MousePicker::GetClickedObj()
+Mesh* MousePicker::GetClickedObj()
 {
 
     return currObjectData;

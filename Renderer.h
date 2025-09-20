@@ -9,6 +9,7 @@
 #include "Renderables/Sphere.h"
 #include "Renderables/LightSource.h"
 #include "Renderables/Surface_c.h"
+#include "Renderables/Mesh.h"
 #include "Camera.h"
 #include "include/glm/glm.hpp"
 #include "include/glm/gtc/matrix_transform.hpp"
@@ -21,8 +22,9 @@ class Renderer
     
         glm::mat4 projection;
         Camera *cam;
-        LightSource *source;
+        Mesh *source;
         std::vector<Renderable *> meshes;
+        std::vector<Mesh *> meshes_c;
 
     public:
 
@@ -38,9 +40,8 @@ class Renderer
         void SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
         glm::mat4& GetProjection();
         void SetCamera(Camera* camera);
-        void SetLightSource(LightSource *lSource);
-        LightSource*& GetLightSource();
+        Mesh*& GetLightSource();
         void AddMesh(Renderable *mesh);
-        std::vector<Renderable *>& GetMeshes();
+        std::vector<Mesh *>& GetMeshes();
         void DeleteObject(Renderable * obj);
 };
