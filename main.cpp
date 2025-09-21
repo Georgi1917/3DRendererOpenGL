@@ -138,37 +138,35 @@ int main()
         if (mousePicker.GetClickedObj())
         {
 
-            // const char* text = mousePicker.GetClickedObj()->GetClassName().c_str();
-            // ImGui::Text(text);
+            if (ImGui::Button("Remove Texture"))
+            {
 
-            // if (ImGui::Button("Remove Texture"))
-            // {
+                mousePicker.GetClickedObj()->tex = nullptr;
 
-            //     mousePicker.GetClickedObj()->RemoveTexture();
+            }
 
-            // }
+            if (ImGui::Button("Select Texture"))
+                ImGui::OpenPopup("Textures");
 
-            // if (ImGui::BeginPopup("Textures"))
-            // {
+            if (ImGui::BeginPopup("Textures"))
+            {
 
-            //     const char *path = "texture-files/";
-            //     for (const auto &entry : std::filesystem::directory_iterator(path))
-            //     {
+                const char *path = "texture-files/";
+                for (const auto &entry : std::filesystem::directory_iterator(path))
+                {
 
-            //         if(ImGui::MenuItem(entry.path().generic_string().c_str()))
-            //         {
+                    if(ImGui::MenuItem(entry.path().generic_string().c_str()))
+                    {
 
-            //             mousePicker.GetClickedObj()->SetTexture(new Texture(entry.path().generic_string().c_str()));
+                        mousePicker.GetClickedObj()->tex = new Texture(entry.path().generic_string().c_str());
 
-            //         }
+                    }
 
-            //     }
+                }
 
-            //     if (ImGui::MenuItem("None")) mousePicker.GetClickedObj()->SetTexture(nullptr);
+                ImGui::EndPopup();
 
-            //     ImGui::EndPopup();
-
-            // }
+            }
 
             if (ImGui::Button("Delete Object"))
             {
@@ -176,7 +174,13 @@ int main()
                 for (auto it = renderer.meshes_c.begin(); it != renderer.meshes_c.end();)
                 {
 
-                    if (*it == mousePicker.GetClickedObj()) it = renderer.meshes_c.erase(it);
+                    if (*it == mousePicker.GetClickedObj())
+                    {
+
+                        delete *it;
+                        it = renderer.meshes_c.erase(it);
+
+                    }
                     else it++;
 
                 }

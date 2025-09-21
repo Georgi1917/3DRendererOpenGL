@@ -8,6 +8,7 @@
 #include "../VertexBuffer.h"
 #include "../IndexBuffer.h"
 #include "../BufferLayoutObject.h"
+#include "../Textures/Texture.h"
 #include <vector>
 
 struct Vertex
@@ -23,7 +24,7 @@ struct Mesh
 {
 
     unsigned int id;
-    unsigned int texId = 0;
+    Texture *tex = nullptr;
 
     VertexArray        vao = VertexArray();
     VertexBuffer       vbo = VertexBuffer();

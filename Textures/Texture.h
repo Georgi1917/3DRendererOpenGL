@@ -7,7 +7,6 @@ struct Texture
 {
     
     unsigned int textureID;
-    unsigned int id;
 
     Texture(const char* loc);
     ~Texture();

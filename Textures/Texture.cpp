@@ -1,12 +1,8 @@
 #include "Texture.h"
 #include <iostream>
 
-unsigned int currId = 1;
-
 Texture::Texture(const char* loc)
 {
-
-    id = currId++;
 
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);

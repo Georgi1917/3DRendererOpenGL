@@ -30,6 +30,15 @@ void Renderer::DrawMeshes(Shader &shader)
     for (auto &mesh : meshes_c)
     {
 
+        if (mesh->tex != nullptr) 
+        {
+
+            mesh->tex->Bind();
+            shader.SetBool("hasTex", true);
+
+        }
+        else shader.SetBool("hasTex", false);
+
         shader.SetVec3f("uColor", mesh->color);
         shader.SetVec3f("lColor", source->color);
         shader.SetVec3f("lPos", source->trans);
@@ -41,6 +50,9 @@ void Renderer::DrawMeshes(Shader &shader)
 
         mesh->model = glm::mat4(1.0f);
         mesh->SetUpMatrix();
+
+        if (mesh->tex != nullptr)
+            mesh->tex->Unbind();
 
     }
 
