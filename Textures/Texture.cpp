@@ -1,8 +1,12 @@
 #include "Texture.h"
 #include <iostream>
 
+unsigned int currId = 1;
+
 Texture::Texture(const char* loc)
 {
+
+    id = currId++;
 
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
@@ -15,6 +19,8 @@ Texture::Texture(const char* loc)
     int width, height, nChannels;
 
     unsigned char *data = stbi_load(loc, &width, &height, &nChannels, 0);
+    stbi_set_flip_vertically_on_load(true);
+
     if (data)
     {
 

@@ -11,13 +11,10 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "BufferLayoutObject.h"
-#include "Renderer.h"
 #include "Shader.h"
 #include "Camera.h"
 #include "MousePicker.h"
-#include "Renderables/Renderable.h"
-#include "Renderables/Cube.h"
-#include "Renderables/Sphere.h"
+#include "Renderer.h"
 #include "Framebuffer/Framebuffer.h"
 #include "Framebuffer/PickingTexture.h"
 #include "Framebuffer/Renderbuffer.h"
@@ -76,7 +73,7 @@ int main()
 
     Camera camera(glm::vec3(1.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f));
 
-    renderer.SetCamera(&camera);
+    renderer.cam = &camera;
 
     MousePicker mousePicker(window, &camera, renderer.GetProjection());
     glfwSetWindowUserPointer(window, &mousePicker);
@@ -122,20 +119,20 @@ int main()
         renderer.DrawMeshes(basicShader);
         renderer.DrawLightSource(lightingShader);
 
-        mousePicker.CheckForMouseClick(fbo, renderer.GetMeshes());
-        mousePicker.CheckForLightSourceClick(fbo, renderer.GetLightSource());
+        mousePicker.CheckForMouseClick(fbo, renderer.meshes_c);
+        mousePicker.CheckForLightSourceClick(fbo, renderer.source);
 
         ImGui::Begin("First Window");
         if (ImGui::Button("Cube"))
         {
 
-            renderer.AddMesh(new Cube(glm::vec3(0.5f, 0.5f, 0.5f)));
+            renderer.meshes_c.push_back(ConstructCube());
 
         }
         if (ImGui::Button("Sphere"))
         {
 
-            renderer.AddMesh(new Sphere(glm::vec3(0.5f, 0.5f, 0.5f), 1.0f, 50, 50));
+            renderer.meshes_c.push_back(ConstructSphere());
 
         }
         if (mousePicker.GetClickedObj())
@@ -173,12 +170,18 @@ int main()
 
             // }
 
-            // if (ImGui::Button("Delete Object"))
-            // {
+            if (ImGui::Button("Delete Object"))
+            {
 
-            //     renderer.DeleteObject(mousePicker.GetClickedObj());
+                for (auto it = renderer.meshes_c.begin(); it != renderer.meshes_c.end();)
+                {
 
-            // }
+                    if (*it == mousePicker.GetClickedObj()) it = renderer.meshes_c.erase(it);
+                    else it++;
+
+                }
+
+            }
 
             ImGui::DragFloat3("Translation", &(mousePicker.GetClickedObj()->trans.x), 1.0f * deltaTime, -100, 100);
             ImGui::DragFloat3("Rotation", &(mousePicker.GetClickedObj()->rotation.x), 10.0f, -360, 360);

@@ -63,3 +63,140 @@ bool Mesh::CompareIdToColor(unsigned char r, unsigned char g, unsigned char b)
     return id == this->id;
 
 }
+
+Mesh* ConstructCube()
+{
+
+    std::vector<Vertex> vertices = {
+        
+        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}},
+        {{ 0.5f, -0.5f,  0.5f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
+        {{-0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}},
+
+        
+        {{ 0.5f, -0.5f, -0.5f}, {0.0f, 0.0f,-1.0f}, {0.0f, 0.0f}},
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f,-1.0f}, {1.0f, 0.0f}},
+        {{-0.5f,  0.5f, -0.5f}, {0.0f, 0.0f,-1.0f}, {1.0f, 1.0f}},
+        {{ 0.5f,  0.5f, -0.5f}, {0.0f, 0.0f,-1.0f}, {0.0f, 1.0f}},
+
+        
+        {{-0.5f, -0.5f, -0.5f}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+        {{-0.5f, -0.5f,  0.5f}, {-1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
+        {{-0.5f,  0.5f,  0.5f}, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
+        {{-0.5f,  0.5f, -0.5f}, {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}},
+
+        
+        {{ 0.5f, -0.5f,  0.5f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+        {{ 0.5f, -0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
+        {{ 0.5f,  0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}},
+
+        
+        {{-0.5f,  0.5f,  0.5f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
+        {{ 0.5f,  0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f}},
+        {{-0.5f,  0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f}},
+
+        
+        {{-0.5f, -0.5f, -0.5f}, {0.0f,-1.0f, 0.0f}, {0.0f, 0.0f}},
+        {{ 0.5f, -0.5f, -0.5f}, {0.0f,-1.0f, 0.0f}, {1.0f, 0.0f}},
+        {{ 0.5f, -0.5f,  0.5f}, {0.0f,-1.0f, 0.0f}, {1.0f, 1.0f}},
+        {{-0.5f, -0.5f,  0.5f}, {0.0f,-1.0f, 0.0f}, {0.0f, 1.0f}},
+    };
+
+    std::vector<unsigned int> indices = {
+        
+        0, 1, 2,  2, 3, 0,
+        
+        4, 5, 6,  6, 7, 4,
+        
+        8, 9,10, 10,11, 8,
+        
+       12,13,14, 14,15,12,
+        
+       16,17,18, 18,19,16,
+        
+       20,21,22, 22,23,20
+    };
+
+    Mesh* mesh = new Mesh();
+    mesh->Init(vertices, indices);
+
+    return mesh;
+
+}
+
+Mesh* ConstructSphere()
+{
+
+    float radius = 1.0f;
+    unsigned int stacks = 50;
+    unsigned int sectors = 50;
+
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
+
+    for (unsigned int i = 0; i <= stacks; ++i)
+    {
+
+        float stackAngle = glm::pi<float>() / 2 - i * glm::pi<float>() / stacks;
+        float xy = radius * cosf(stackAngle);
+        float z = radius * sinf(stackAngle);
+
+        for (unsigned int j = 0; j <= sectors; ++j)
+        {
+
+            float sectorAngle = j * 2 * glm::pi<float>() / sectors;
+
+            float x = xy * cosf(sectorAngle);
+            float y = xy * sinf(sectorAngle);
+
+            glm::vec3 pos = glm::vec3(x, y, z);
+
+            glm::vec3 normal = glm::normalize(glm::vec3(x, y, z));
+
+            float u = (float)j / sectors;
+            float v = (float)i / stacks;
+
+            vertices.push_back(
+                {{pos}, {normal}, {u, v}}
+            );
+
+        }
+
+    }
+
+    for (unsigned int i = 0; i < stacks; ++i)
+    {
+
+        unsigned int k1 = i * (sectors + 1);
+        unsigned int k2 = k1 + sectors + 1;
+
+        for (unsigned int j = 0; j < sectors; ++j, ++k1, ++k2)
+        {
+
+            if (i != 0)
+            {
+                indices.push_back(k1);
+                indices.push_back(k2);
+                indices.push_back(k1 + 1);
+            }
+
+            if (i != (stacks - 1))
+            {
+                indices.push_back(k1 + 1);
+                indices.push_back(k2);
+                indices.push_back(k2 + 1);
+            }
+
+        }
+
+    }
+
+    Mesh* mesh = new Mesh();
+    mesh->Init(vertices, indices);
+
+    return mesh;
+
+}

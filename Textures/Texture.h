@@ -3,17 +3,15 @@
 #include "../include/glew.h"
 #include "../include/stb_image.h"
 
-class Texture
+struct Texture
 {
+    
+    unsigned int textureID;
+    unsigned int id;
 
-    private:
-        unsigned int textureID;
-
-    public:
-
-        Texture(const char* loc);
-        ~Texture();
-        void Bind();
-        void Unbind();
+    Texture(const char* loc);
+    ~Texture();
+    void Bind();
+    void Unbind();
 
 };

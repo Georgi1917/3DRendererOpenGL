@@ -23,6 +23,7 @@ struct Mesh
 {
 
     unsigned int id;
+    unsigned int texId = 0;
 
     VertexArray        vao = VertexArray();
     VertexBuffer       vbo = VertexBuffer();
@@ -46,3 +47,6 @@ struct Mesh
     bool CompareIdToColor(unsigned char r, unsigned char g, unsigned char b);
 
 };
+
+Mesh* ConstructCube();
+Mesh* ConstructSphere();
