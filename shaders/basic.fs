@@ -15,7 +15,7 @@ in vec2 TexCoord;
 void main()
 {
 
-    float ambientStrenght = 0.3;
+    float ambientStrenght = 0.35;
     float specStrenght = 0.5;
 
     vec3 ambient = lColor * ambientStrenght;

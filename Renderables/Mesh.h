@@ -4,6 +4,7 @@
 #include "../include/glm/glm.hpp"
 #include "../include/glm/gtc/matrix_transform.hpp"
 #include "../include/glm/gtc/type_ptr.hpp"
+#include "../include/tiny_obj_loader.h"
 #include "../VertexArray.h"
 #include "../VertexBuffer.h"
 #include "../IndexBuffer.h"
@@ -51,3 +52,4 @@ struct Mesh
 
 Mesh* ConstructCube();
 Mesh* ConstructSphere();
+Mesh* LoadObj(const char* filepath);

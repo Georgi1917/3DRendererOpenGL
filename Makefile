@@ -9,7 +9,7 @@ MESH = Renderables/Mesh.cpp
 FRAMEBUFFER_OBJS = Framebuffer/Framebuffer.cpp Framebuffer/PickingTexture.cpp Framebuffer/Renderbuffer.cpp
 TEXTURES = Textures/Texture.cpp
 
-SRC = main.cpp stb_image.cpp $(IMGUI) $(ADDITIONAL_OBJS) $(MESH) $(FRAMEBUFFER_OBJS) $(TEXTURES)
+SRC = main.cpp stb_image.cpp tiny_obj_loader.cpp $(IMGUI) $(ADDITIONAL_OBJS) $(MESH) $(FRAMEBUFFER_OBJS) $(TEXTURES)
 
 TARGET = main.exe
 
