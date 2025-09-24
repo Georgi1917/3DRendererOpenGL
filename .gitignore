@@ -1,4 +1,5 @@
 main.exe
 imgui.ini
-obj-files
+obj-files/*.obj
+obj-files/*.mtl
 .vscode

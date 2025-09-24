@@ -35,6 +35,20 @@ void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum se
     fprintf(stderr, "OpenGL Debug: %s\n", message);
 }
 
+bool EndsWithObj(std::string filepath)
+{
+
+    int idx = filepath.find('.', 0);
+
+    std::string s = "";
+
+    for (int i = idx; i < filepath.size(); i++)
+        s += filepath[i];
+
+    return s == ".obj";
+
+}
+
 int main()
 {
 
@@ -135,6 +149,27 @@ int main()
             renderer.meshes_c.push_back(ConstructSphere());
 
         }
+
+         if (ImGui::Button("Import Object"))
+            ImGui::OpenPopup("Objects");
+
+        if (ImGui::BeginPopup("Objects"))
+            {
+
+                const char *path = "obj-files/";
+
+                for (const auto &entry : std::filesystem::directory_iterator(path))
+                {
+
+                    if (EndsWithObj(entry.path().string()) && ImGui::MenuItem(entry.path().generic_string().c_str()))
+                        renderer.meshes_c.push_back(LoadObj(entry.path().generic_string().c_str()));
+
+                }
+
+                ImGui::EndPopup();
+
+            }
+
         if (mousePicker.GetClickedObj())
         {
 
