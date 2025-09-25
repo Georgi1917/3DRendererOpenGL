@@ -52,4 +52,5 @@ struct Mesh
 
 Mesh* ConstructCube();
 Mesh* ConstructSphere();
+Mesh* ConstructPyramid();
 Mesh* LoadObj(const char* filepath);
