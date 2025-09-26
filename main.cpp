@@ -53,6 +53,7 @@ int main()
 {
 
     GLFWwindow *window;
+    //GLFWmonitor *monitor;
 
     if (!glfwInit())
     {
@@ -60,6 +61,13 @@ int main()
     }
 
     window = glfwCreateWindow(1280, 720, "Renderer", NULL, NULL);
+    //monitor = glfwGetPrimaryMonitor();
+
+    // int width, height;
+
+    // glfwGetMonitorPhysicalSize(monitor, &width, &height);
+
+    // std::cout << width << " " << height << "\n";
 
     if(!window)
     {

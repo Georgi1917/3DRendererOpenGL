@@ -246,6 +246,41 @@ Mesh* ConstructPyramid()
 
 }
 
+Mesh* ConstructSurface()
+{
+
+    std::vector<Vertex> vertices = {
+        {{0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},  
+        {{0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}},  
+        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}},
+        {{-0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}},
+
+        {{0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f}},  
+        {{0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, -1.0f}, {1.0f, 0.0f}},  
+        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}},
+        {{-0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f}},
+
+    };
+
+    std::vector<unsigned int> indices = {
+        0, 1, 2,
+        2, 3, 0,
+
+        6, 5, 4,
+        4, 7, 6,
+    };
+
+    Mesh* mesh = new Mesh();
+    mesh->Init(vertices, indices);
+    mesh->rotation.x = -90.0f;
+    mesh->trans = glm::vec3(3.0f, -2.0f, 0.0f);
+    mesh->scale = glm::vec3(6.0f, 6.0f, 6.0f);
+    mesh->SetUpMatrix();
+    currTrans.x -= 2.0f;
+    return mesh;
+
+}
+
 Mesh* LoadObj(const char* filepath)
 {
 

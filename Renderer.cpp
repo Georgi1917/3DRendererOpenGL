@@ -15,6 +15,7 @@ Renderer::Renderer()
     meshes_c.push_back(ConstructCube());
     meshes_c.push_back(ConstructSphere());
     meshes_c.push_back(ConstructPyramid());
+    meshes_c.push_back(ConstructSurface());
     // meshes_c.push_back(LoadObj("obj-files/teapot.obj"));
     // meshes_c.push_back(LoadObj("obj-files/teacup.obj"));
     // meshes_c.push_back(LoadObj("obj-files/spoon.obj"));
