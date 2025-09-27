@@ -113,6 +113,8 @@ int main()
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
+    bool wireFrameMode = false;
+
     while(!glfwWindowShouldClose(window))
     {
 
@@ -177,6 +179,11 @@ int main()
                 ImGui::EndPopup();
 
             }
+
+        if (ImGui::Checkbox("Wireframe Mode", &wireFrameMode))
+            if (wireFrameMode) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        
 
         if (mousePicker.GetClickedObj())
         {
