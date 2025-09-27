@@ -18,10 +18,15 @@ void main()
     float ambientStrenght = 0.35;
     float specStrenght = 0.5;
 
+    float constant = 1.0f;
+    float linear = 0.09f;
+    float quadratic = 0.032f;
+
     vec3 ambient = lColor * ambientStrenght;
 
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(lPos - FragPos);
+    
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lColor;
 
@@ -29,6 +34,13 @@ void main()
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
     vec3 specular = specStrenght * spec * lColor;
+
+    float distance = length(lPos - FragPos);
+    float attenuation = 1.0f / (constant + linear * distance + quadratic * (distance * distance));
+
+    ambient  *= attenuation;
+    diffuse  *= attenuation;
+    specular *= attenuation;
 
     if (hasTex)
     {
