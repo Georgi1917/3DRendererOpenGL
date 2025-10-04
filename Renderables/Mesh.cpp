@@ -273,7 +273,7 @@ Mesh* ConstructSurface()
     Mesh* mesh = new Mesh();
     mesh->Init(vertices, indices);
     mesh->rotation.x = -90.0f;
-    mesh->trans = glm::vec3(3.0f, -2.0f, 0.0f);
+    mesh->trans = glm::vec3(3.8f, -1.4f, 0.0f);
     mesh->scale = glm::vec3(6.0f, 6.0f, 6.0f);
     mesh->SetUpMatrix();
     currTrans.x -= 2.0f;

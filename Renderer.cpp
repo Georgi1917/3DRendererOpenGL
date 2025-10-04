@@ -16,9 +16,6 @@ Renderer::Renderer()
     meshes_c.push_back(ConstructSphere());
     meshes_c.push_back(ConstructPyramid());
     meshes_c.push_back(ConstructSurface());
-    // meshes_c.push_back(LoadObj("obj-files/teapot.obj"));
-    // meshes_c.push_back(LoadObj("obj-files/teacup.obj"));
-    // meshes_c.push_back(LoadObj("obj-files/spoon.obj"));
 
 }
 
@@ -43,6 +40,9 @@ void Renderer::DrawMeshes(Shader &shader)
 
         }
         else shader.SetBool("hasTex", false);
+
+        if (hasAttenuation) shader.SetBool("hasAttenuation", true);
+        else shader.SetBool("hasAttenuation", false);
 
         shader.SetVec3f("uColor", mesh->color);
         shader.SetVec3f("lColor", source->color);

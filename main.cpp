@@ -53,7 +53,6 @@ int main()
 {
 
     GLFWwindow *window;
-    //GLFWmonitor *monitor;
 
     if (!glfwInit())
     {
@@ -61,13 +60,6 @@ int main()
     }
 
     window = glfwCreateWindow(1280, 720, "Renderer", NULL, NULL);
-    //monitor = glfwGetPrimaryMonitor();
-
-    // int width, height;
-
-    // glfwGetMonitorPhysicalSize(monitor, &width, &height);
-
-    // std::cout << width << " " << height << "\n";
 
     if(!window)
     {
@@ -147,20 +139,17 @@ int main()
         mousePicker.CheckForLightSourceClick(fbo, renderer.source);
 
         ImGui::Begin("First Window");
-        if (ImGui::Button("Cube"))
-        {
 
+        if (ImGui::Button("Cube"))
             renderer.meshes_c.push_back(ConstructCube());
 
-        }
         if (ImGui::Button("Sphere"))
-        {
-
             renderer.meshes_c.push_back(ConstructSphere());
 
-        }
+        if (ImGui::Button("Pyramid"))
+            renderer.meshes_c.push_back(ConstructPyramid());
 
-         if (ImGui::Button("Import Object"))
+        if (ImGui::Button("Import Object"))
             ImGui::OpenPopup("Objects");
 
         if (ImGui::BeginPopup("Objects"))
@@ -184,7 +173,8 @@ int main()
             if (wireFrameMode) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         
-
+        if (ImGui::Checkbox("Attenuation", &renderer.hasAttenuation))
+            
         if (mousePicker.GetClickedObj())
         {
 

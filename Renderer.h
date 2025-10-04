@@ -17,6 +17,7 @@ struct Renderer
     Camera *cam;
     Mesh *source;
     std::vector<Mesh *> meshes_c;
+    bool hasAttenuation = true;
 
     Renderer();
     ~Renderer();
