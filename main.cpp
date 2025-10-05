@@ -174,6 +174,7 @@ int main()
             else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         
         if (ImGui::Checkbox("Attenuation", &renderer.hasAttenuation))
+        {}
             
         if (mousePicker.GetClickedObj())
         {
