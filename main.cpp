@@ -69,7 +69,7 @@ int main()
     glfwMakeContextCurrent(window);
     glewInit();
 
-    stbi_set_flip_vertically_on_load(true);
+    stbi_set_flip_vertically_on_load(false);
     
     Renderer renderer;
 
@@ -84,6 +84,7 @@ int main()
     Shader basicShader("shaders/basic.vs", "shaders/basic.fs");
     Shader lightingShader("shaders/lighting.vs", "shaders/lighting.fs");
     Shader pickingShader("shaders/picking.vs", "shaders/picking.fs");
+    Shader skyboxShader("shaders/skybox.vs", "shaders/skybox.fs");
 
     Camera camera(glm::vec3(1.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f));
 
@@ -132,6 +133,7 @@ int main()
         renderer.SetViewport(0, 0, 1280, 720);
         renderer.Clear();
 
+        renderer.DrawSkybox(skyboxShader);
         renderer.DrawMeshes(basicShader);
         renderer.DrawLightSource(lightingShader);
 

@@ -6,6 +6,7 @@
 #include "Shader.h"
 #include "Renderables/Mesh.h"
 #include "Camera.h"
+#include "Textures/Cubemap.h"
 #include "include/glm/glm.hpp"
 #include "include/glm/gtc/matrix_transform.hpp"
 #include "include/glm/gtc/type_ptr.hpp"
@@ -16,12 +17,16 @@ struct Renderer
     glm::mat4 projection;
     Camera *cam;
     Mesh *source;
+    Mesh* skyBox;
+    Cubemap* skyBoxTexture;
+
     std::vector<Mesh *> meshes_c;
     bool hasAttenuation = true;
 
     Renderer();
     ~Renderer();
 
+    void DrawSkybox(Shader &shader);
     void DrawMeshes(Shader &shader);
     void DrawMeshesPicking(Shader &shader);
     void DrawLightSource(Shader &shader);

@@ -7,7 +7,7 @@ IMGUI = include/imgui/imgui_demo.cpp include/imgui/imgui_draw.cpp include/imgui/
 ADDITIONAL_OBJS = VertexBuffer.cpp IndexBuffer.cpp VertexArray.cpp BufferLayoutObject.cpp Renderer.cpp Shader.cpp Camera.cpp MousePicker.cpp
 MESH = Renderables/Mesh.cpp
 FRAMEBUFFER_OBJS = Framebuffer/Framebuffer.cpp Framebuffer/PickingTexture.cpp Framebuffer/Renderbuffer.cpp
-TEXTURES = Textures/Texture.cpp
+TEXTURES = Textures/Texture.cpp Textures/Cubemap.cpp
 
 SRC = main.cpp stb_image.cpp tiny_obj_loader.cpp $(IMGUI) $(ADDITIONAL_OBJS) $(MESH) $(FRAMEBUFFER_OBJS) $(TEXTURES)
 

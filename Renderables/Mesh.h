@@ -54,4 +54,5 @@ Mesh* ConstructCube();
 Mesh* ConstructSphere();
 Mesh* ConstructPyramid();
 Mesh* ConstructSurface();
+Mesh* ConstructSkybox();
 Mesh* LoadObj(const char* filepath);

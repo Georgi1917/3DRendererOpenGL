@@ -42,3 +42,17 @@ void Cubemap::Load(std::vector<std::string> faces)
     }
 
 }
+
+void Cubemap::Bind()
+{
+
+    glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapID);
+
+}
+
+void Cubemap::Unbind()
+{
+
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+}

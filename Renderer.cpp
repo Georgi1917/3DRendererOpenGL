@@ -12,6 +12,22 @@ Renderer::Renderer()
 
     projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 100.0f);
 
+    std::vector<std::string> faces = {
+
+        "cubemap-faces/right.jpg",
+        "cubemap-faces/left.jpg",
+        "cubemap-faces/top.jpg",
+        "cubemap-faces/bottom.jpg",
+        "cubemap-faces/front.jpg",
+        "cubemap-faces/back.jpg",
+
+    };
+
+    skyBox = ConstructSkybox();
+    skyBoxTexture = new Cubemap();
+    skyBoxTexture->Init();
+    skyBoxTexture->Load(faces);
+
     meshes_c.push_back(ConstructCube());
     meshes_c.push_back(ConstructSphere());
     meshes_c.push_back(ConstructPyramid());
@@ -24,6 +40,25 @@ Renderer::~Renderer()
 
 }
 
+void Renderer::DrawSkybox(Shader &shader)
+{
+
+    glm::mat4 view = glm::mat4(glm::mat3(cam->GetViewMatrix()));
+
+    glDepthMask(GL_FALSE);
+    glDepthFunc(GL_LEQUAL);
+    shader.Bind();
+    skyBoxTexture->Bind();
+    shader.SetMatrix4fv("projection", projection);
+    shader.SetMatrix4fv("view", view);
+    skyBox->Draw();
+    skyBox->model = glm::mat4(1.0f);
+    skyBox->SetUpMatrix();
+    skyBoxTexture->Unbind();
+    glDepthMask(GL_TRUE);
+    glDepthFunc(GL_LESS);
+
+}
 
 void Renderer::DrawMeshes(Shader &shader)
 {
