@@ -22,6 +22,7 @@ struct Renderer
 
     std::vector<Mesh *> meshes_c;
     bool hasAttenuation = true;
+    bool hasSkybox      = true;
 
     Renderer();
     ~Renderer();

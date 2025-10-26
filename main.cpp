@@ -19,6 +19,7 @@
 #include "Framebuffer/PickingTexture.h"
 #include "Framebuffer/Renderbuffer.h"
 #include "Textures/Texture.h"
+#include "Textures/Cubemap.h"
 #include "include/stb_image.h"
 #include <string>
 #include <iostream>
@@ -70,12 +71,27 @@ int main()
     glewInit();
 
     stbi_set_flip_vertically_on_load(false);
+
+    std::vector<std::string> faces = {
+
+        "cubemap-faces/right.jpg",
+        "cubemap-faces/left.jpg",
+        "cubemap-faces/top.jpg",
+        "cubemap-faces/bottom.jpg",
+        "cubemap-faces/front.jpg",
+        "cubemap-faces/back.jpg",
+
+    };
     
     Renderer renderer;
 
     Framebuffer fbo;
     PickingTexture pickingTex;
     Renderbuffer rbo;
+
+    Cubemap cubemap;
+    cubemap.Init();
+    cubemap.Load(faces);
 
     fbo.CheckStatus();
 
@@ -89,6 +105,7 @@ int main()
     Camera camera(glm::vec3(1.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f));
 
     renderer.cam = &camera;
+    renderer.skyBoxTexture = &cubemap;
 
     MousePicker mousePicker(window, &camera, renderer.GetProjection());
     glfwSetWindowUserPointer(window, &mousePicker);
@@ -176,6 +193,9 @@ int main()
             else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         
         if (ImGui::Checkbox("Attenuation", &renderer.hasAttenuation))
+        {}
+
+        if (ImGui::Checkbox("Draw Skybox", &renderer.hasSkybox))
         {}
             
         if (mousePicker.GetClickedObj())
