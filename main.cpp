@@ -82,16 +82,10 @@ int main()
         "cubemap-faces/back.jpg",
 
     };
-    
-    Renderer renderer;
 
     Framebuffer fbo;
     PickingTexture pickingTex;
     Renderbuffer rbo;
-
-    Cubemap cubemap;
-    cubemap.Init();
-    cubemap.Load(faces);
 
     fbo.CheckStatus();
 
@@ -103,6 +97,12 @@ int main()
     Shader skyboxShader("shaders/skybox.vs", "shaders/skybox.fs");
 
     Camera camera(glm::vec3(1.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+
+    Renderer renderer;
+
+    Cubemap cubemap;
+    cubemap.Init();
+    cubemap.Load(faces);
 
     renderer.cam = &camera;
     renderer.skyBoxTexture = &cubemap;
