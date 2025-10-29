@@ -70,8 +70,6 @@ int main()
     glfwMakeContextCurrent(window);
     glewInit();
 
-    stbi_set_flip_vertically_on_load(false);
-
     std::vector<std::string> faces = {
 
         "cubemap-faces/right.jpg",
