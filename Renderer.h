@@ -5,6 +5,7 @@
 #include "IndexBuffer.h"
 #include "Shader.h"
 #include "Renderables/Mesh.h"
+#include "Renderables/Light.h"
 #include "Camera.h"
 #include "Textures/Cubemap.h"
 #include "include/glm/glm.hpp"
@@ -16,9 +17,9 @@ struct Renderer
 
     glm::mat4 projection;
     Camera *cam;
-    Mesh *source;
-    Mesh* skyBox;
-    Cubemap* skyBoxTexture;
+    Light *source;
+    Mesh *skyBox;
+    Cubemap *skyBoxTexture;
 
     std::vector<Mesh *> meshes_c;
     bool hasAttenuation = true;

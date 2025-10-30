@@ -1,9 +1,21 @@
 #version 330 core
 out vec4 FragColor;
 
+struct Light
+{
+
+    vec3 pos;
+    vec3 color;
+
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+
+};
+
+uniform Light light;
+
 uniform vec3 uColor;
-uniform vec3 lColor;
-uniform vec3 lPos;
 uniform vec3 viewPos;
 
 uniform bool hasTex;
@@ -21,23 +33,23 @@ void main()
     float ambientStrenght = 0.35;
     float specStrenght = 0.5;
 
-    vec3 ambient = lColor * ambientStrenght;
+    vec3 ambient = light.color * ambientStrenght;
 
     vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(lPos - FragPos);
+    vec3 lightDir = normalize(light.pos - FragPos);
     
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * lColor;
+    vec3 diffuse = diff * light.color;
 
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-    vec3 specular = specStrenght * spec * lColor;
+    vec3 specular = specStrenght * spec * light.color;
 
     if (hasAttenuation)
     {
 
-        float distance = length(lPos - FragPos);
+        float distance = length(light.pos - FragPos);
 
         float constant = 1.0f;
         float linear = 0.09f;

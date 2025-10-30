@@ -4,11 +4,9 @@
 Renderer::Renderer()
 {
 
-    source = ConstructCube();
-    source->scale = glm::vec3(0.5f, 0.5f, 0.5f);
-    source->trans = glm::vec3(2.0f, 2.0f, 0.0f);
-    source->color = glm::vec3(1.0f, 1.0f, 1.0f);
-    source->SetUpMatrix();
+    Light *l = new Light();
+    l->Init();
+    source = l;
 
     projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 100.0f);
 
@@ -72,8 +70,8 @@ void Renderer::DrawMeshes(Shader &shader)
         else shader.SetBool("hasAttenuation", false);
 
         shader.SetVec3f("uColor", mesh->color);
-        shader.SetVec3f("lColor", source->color);
-        shader.SetVec3f("lPos", source->trans);
+        shader.SetVec3f("light.color", source->mesh->color);
+        shader.SetVec3f("light.pos", source->mesh->trans);
         shader.SetVec3f("viewPos", cam->GetPosition());
         shader.SetMatrix4fv("model", mesh->model);
         shader.SetMatrix4fv("projection", projection);
@@ -115,14 +113,14 @@ void Renderer::DrawLightSource(Shader &shader)
 {
 
     shader.Bind();
-    shader.SetVec3f("lightColor", source->color);
-    shader.SetMatrix4fv("model", source->model);
+    shader.SetVec3f("lightColor", source->mesh->color);
+    shader.SetMatrix4fv("model", source->mesh->model);
     shader.SetMatrix4fv("projection", projection);
     shader.SetMatrix4fv("view", cam->GetViewMatrix());
-    source->Draw();
+    source->mesh->Draw();
 
-    source->model = glm::mat4(1.0f);
-    source->SetUpMatrix();
+    source->mesh->model = glm::mat4(1.0f);
+    source->mesh->SetUpMatrix();
 
 }
 
@@ -130,14 +128,14 @@ void Renderer::DrawLightSourcePicking(Shader& shader)
 {
 
     shader.Bind();
-    shader.SetVec3f("lightColor", source->pickingColor);
-    shader.SetMatrix4fv("model", source->model);
+    shader.SetVec3f("lightColor", source->mesh->pickingColor);
+    shader.SetMatrix4fv("model", source->mesh->model);
     shader.SetMatrix4fv("projection", projection);
     shader.SetMatrix4fv("view", cam->GetViewMatrix());
-    source->Draw();
+    source->mesh->Draw();
     
-    source->model = glm::mat4(1.0f);
-    source->SetUpMatrix();
+    source->mesh->model = glm::mat4(1.0f);
+    source->mesh->SetUpMatrix();
 
 }
 

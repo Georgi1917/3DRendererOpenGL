@@ -153,7 +153,7 @@ int main()
         renderer.DrawLightSource(lightingShader);
 
         mousePicker.CheckForMouseClick(fbo, renderer.meshes_c);
-        mousePicker.CheckForLightSourceClick(fbo, renderer.source);
+        mousePicker.CheckForLightSourceClick(fbo, renderer.source->mesh);
 
         ImGui::Begin("First Window");
 

@@ -8,6 +8,7 @@
 #include "Framebuffer/Framebuffer.h"
 #include "Camera.h"
 #include "Renderables/Mesh.h"
+#include "Renderables/Light.h"
 #include <vector>
 #include <memory>
 
