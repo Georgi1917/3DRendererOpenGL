@@ -344,9 +344,11 @@ Mesh* LoadObj(const char* filepath)
 
     const tinyobj::attrib_t attrib = reader.GetAttrib();
     std::vector<tinyobj::shape_t> shapes = reader.GetShapes();
+    std::vector<tinyobj::material_t> materials = reader.GetMaterials();
 
     std::vector<Vertex> vertices;
     std::vector<unsigned int > indices;
+    int lastId = -5;
 
     for (const auto& shape : shapes)
     {
@@ -399,9 +401,29 @@ Mesh* LoadObj(const char* filepath)
 
             indexOffset += fv;
 
+            if (f > 0 && shape.mesh.material_ids[f] != lastId)
+            {
+
+                std::cout << shape.mesh.material_ids[f] << "\n";
+                lastId = shape.mesh.material_ids[f];
+
+            }
+        
         }
 
     }
+
+    // for (const auto& mat : materials)
+    // {
+
+    //     std::cout << "----------------------" << "\n";
+    //     std::cout << mat.name << "\n";
+    //     std::cout << mat.ambient[0] << " " << mat.ambient[1] << " " << mat.ambient[2] << "\n";
+    //     std::cout << mat.diffuse[0] << " " << mat.diffuse[1] << " " << mat.diffuse[2] << "\n";
+    //     std::cout << mat.specular[0] << " " << mat.specular[1] << " " << mat.specular[2] << "\n";
+    //     std::cout << "----------------------" << "\n";
+
+    // }
 
     Mesh* mesh = new Mesh();
     mesh->Init(vertices, indices);
