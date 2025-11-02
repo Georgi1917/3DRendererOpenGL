@@ -10,6 +10,7 @@
 #include "../IndexBuffer.h"
 #include "../BufferLayoutObject.h"
 #include "../Textures/Texture.h"
+#include "../Shader.h"
 #include <vector>
 
 struct Vertex
@@ -18,6 +19,16 @@ struct Vertex
     glm::vec3 points;
     glm::vec3 normals;
     glm::vec2 texCoords;
+
+};
+
+struct Material
+{
+
+    std::string name;
+    glm::vec3 ambient;
+    glm::vec3 diffuse;
+    glm::vec3 specular;
 
 };
 
@@ -34,6 +45,7 @@ struct Mesh
 
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
+    Material material;
 
     glm::vec3 color = glm::vec3(0.5f, 0.5f, 0.5f);
     glm::vec3 pickingColor;
@@ -44,7 +56,7 @@ struct Mesh
     glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f);
 
     void Init(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
-    void Draw();
+    void Draw(Shader &shader);
     void SetUpMatrix();
     bool CompareIdToColor(unsigned char r, unsigned char g, unsigned char b);
 

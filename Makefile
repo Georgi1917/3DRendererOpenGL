@@ -5,7 +5,7 @@ LDFLAGS = -Llib -lglfw3 -lglew32 -lgdi32 -lopengl32
 
 IMGUI = include/imgui/imgui_demo.cpp include/imgui/imgui_draw.cpp include/imgui/imgui_impl_glfw.cpp include/imgui/imgui_impl_opengl3.cpp include/imgui/imgui_tables.cpp include/imgui/imgui_widgets.cpp include/imgui/imgui.cpp
 ADDITIONAL_OBJS = VertexBuffer.cpp IndexBuffer.cpp VertexArray.cpp BufferLayoutObject.cpp Renderer.cpp Shader.cpp Camera.cpp MousePicker.cpp
-MESH = Renderables/Mesh.cpp Renderables/Light.cpp
+MESH = Renderables/Mesh.cpp Renderables/Light.cpp Renderables/Model.cpp
 FRAMEBUFFER_OBJS = Framebuffer/Framebuffer.cpp Framebuffer/PickingTexture.cpp Framebuffer/Renderbuffer.cpp
 TEXTURES = Textures/Texture.cpp Textures/Cubemap.cpp
 

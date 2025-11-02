@@ -39,7 +39,7 @@ void Renderer::DrawSkybox(Shader &shader)
     skyBoxTexture->Bind();
     shader.SetMatrix4fv("projection", projection);
     shader.SetMatrix4fv("view", view);
-    skyBox->Draw();
+    skyBox->Draw(shader);
     skyBox->model = glm::mat4(1.0f);
     skyBox->SetUpMatrix();
     skyBoxTexture->Unbind();
@@ -54,6 +54,10 @@ void Renderer::DrawMeshes(Shader &shader)
 {
 
     shader.Bind();
+
+    shader.SetMatrix4fv("projection", projection);
+    shader.SetMatrix4fv("view", cam->GetViewMatrix());
+
     for (auto &mesh : meshes_c)
     {
 
@@ -74,9 +78,7 @@ void Renderer::DrawMeshes(Shader &shader)
         shader.SetVec3f("light.pos", source->mesh->trans);
         shader.SetVec3f("viewPos", cam->GetPosition());
         shader.SetMatrix4fv("model", mesh->model);
-        shader.SetMatrix4fv("projection", projection);
-        shader.SetMatrix4fv("view", cam->GetViewMatrix());
-        mesh->Draw();
+        mesh->Draw(shader);
 
         mesh->model = glm::mat4(1.0f);
         mesh->SetUpMatrix();
@@ -93,14 +95,15 @@ void Renderer::DrawMeshesPicking(Shader &shader)
 
     shader.Bind();
 
+    shader.SetMatrix4fv("projection", projection);
+    shader.SetMatrix4fv("view", cam->GetViewMatrix());
+
     for (auto& mesh : meshes_c)
     {
 
         shader.SetVec3f("uColor", mesh->pickingColor);
         shader.SetMatrix4fv("model", mesh->model);
-        shader.SetMatrix4fv("projection", projection);
-        shader.SetMatrix4fv("view", cam->GetViewMatrix());
-        mesh->Draw();
+        mesh->Draw(shader);
 
         mesh->model = glm::mat4(1.0f);
         mesh->SetUpMatrix();
@@ -117,7 +120,7 @@ void Renderer::DrawLightSource(Shader &shader)
     shader.SetMatrix4fv("model", source->mesh->model);
     shader.SetMatrix4fv("projection", projection);
     shader.SetMatrix4fv("view", cam->GetViewMatrix());
-    source->mesh->Draw();
+    source->mesh->Draw(shader);
 
     source->mesh->model = glm::mat4(1.0f);
     source->mesh->SetUpMatrix();
@@ -132,7 +135,7 @@ void Renderer::DrawLightSourcePicking(Shader& shader)
     shader.SetMatrix4fv("model", source->mesh->model);
     shader.SetMatrix4fv("projection", projection);
     shader.SetMatrix4fv("view", cam->GetViewMatrix());
-    source->mesh->Draw();
+    source->mesh->Draw(shader);
     
     source->mesh->model = glm::mat4(1.0f);
     source->mesh->SetUpMatrix();

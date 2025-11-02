@@ -45,7 +45,7 @@ void Mesh::Init(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 
 }
 
-void Mesh::Draw()
+void Mesh::Draw(Shader &shader)
 {
 
     vao.Bind();
@@ -348,7 +348,7 @@ Mesh* LoadObj(const char* filepath)
 
     std::vector<Vertex> vertices;
     std::vector<unsigned int > indices;
-    int lastId = -5;
+    //int lastId = -5;
 
     for (const auto& shape : shapes)
     {
@@ -401,13 +401,13 @@ Mesh* LoadObj(const char* filepath)
 
             indexOffset += fv;
 
-            if (f > 0 && shape.mesh.material_ids[f] != lastId)
-            {
+            // if (f > 0 && shape.mesh.material_ids[f] != lastId)
+            // {
 
-                std::cout << shape.mesh.material_ids[f] << "\n";
-                lastId = shape.mesh.material_ids[f];
+            //     std::cout << shape.mesh.material_ids[f] << "\n";
+            //     lastId = shape.mesh.material_ids[f];
 
-            }
+            // }
         
         }
 
