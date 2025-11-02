@@ -6,6 +6,7 @@
 #include "Shader.h"
 #include "Renderables/Mesh.h"
 #include "Renderables/Light.h"
+#include "Renderables/Model.h"
 #include "Camera.h"
 #include "Textures/Cubemap.h"
 #include "include/glm/glm.hpp"
@@ -19,9 +20,11 @@ struct Renderer
     Camera *cam;
     Light *source;
     Mesh *skyBox;
+    Model *skyBoxM;
     Cubemap *skyBoxTexture;
 
-    std::vector<Mesh *> meshes_c;
+    std::vector<Mesh *>  meshes_c;
+    std::vector<Model *> models_c;
     bool hasAttenuation = true;
     bool hasSkybox      = true;
 
@@ -29,10 +32,15 @@ struct Renderer
     ~Renderer();
 
     void DrawSkybox(Shader &shader);
+    void DrawSkyboxM(Shader &shader);
     void DrawMeshes(Shader &shader);
+    void DrawMeshesM(Shader &shader);
     void DrawMeshesPicking(Shader &shader);
+    void DrawMeshesPickingM(Shader &shader);
     void DrawLightSource(Shader &shader);
+    void DrawLightSourceM(Shader &shader);
     void DrawLightSourcePicking(Shader &shader);
+    void DrawLightSourcePickingM(Shader &shader);
     void Clear();
     void EnableDepthTesting();
     void SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height);

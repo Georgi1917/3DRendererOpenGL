@@ -148,8 +148,8 @@ int main()
         renderer.SetViewport(0, 0, 1280, 720);
         renderer.Clear();
 
-        renderer.DrawSkybox(skyboxShader);
-        renderer.DrawMeshes(basicShader);
+        renderer.DrawSkyboxM(skyboxShader);
+        renderer.DrawMeshesM(basicShader);
         renderer.DrawLightSource(lightingShader);
 
         mousePicker.CheckForMouseClick(fbo, renderer.meshes_c);
