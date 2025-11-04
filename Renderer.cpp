@@ -22,7 +22,7 @@ Renderer::Renderer()
     models_c.push_back(ConstructSphereM());
     models_c.push_back(ConstructPyramidM());
     models_c.push_back(ConstructSurfaceM());
-    //models_c.push_back(LoadObjM("obj-files/IronMan.obj"));
+    models_c.push_back(LoadObjM("obj-files/Grenade.obj"));
 
 }
 
