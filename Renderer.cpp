@@ -175,6 +175,27 @@ void Renderer::DrawMeshesPicking(Shader &shader)
 
 }
 
+void Renderer::DrawMeshesPickingM(Shader &shader)
+{
+
+    shader.Bind();
+    shader.SetMatrix4fv("projection", projection);
+    shader.SetMatrix4fv("view", cam->GetViewMatrix());
+
+    for (auto& model : models_c)
+    {
+
+        shader.SetVec3f("uColor", model->pickingColor);
+        shader.SetMatrix4fv("model", model->model);
+        model->Draw(shader);
+
+        model->model = glm::mat4(1.0f);
+        model->SetUpMatrix();
+
+    }
+
+}
+
 void Renderer::DrawLightSource(Shader &shader)
 {
 

@@ -140,7 +140,8 @@ int main()
 
         camera.Update(window, deltaTime);
 
-        renderer.DrawMeshesPicking(pickingShader);
+        //renderer.DrawMeshesPicking(pickingShader);
+        renderer.DrawMeshesPickingM(pickingShader);
         renderer.DrawLightSourcePicking(lightingShader);
 
         fbo.Unbind();
@@ -152,7 +153,8 @@ int main()
         renderer.DrawMeshesM(basicShader);
         renderer.DrawLightSource(lightingShader);
 
-        mousePicker.CheckForMouseClick(fbo, renderer.meshes_c);
+        //mousePicker.CheckForMouseClick(fbo, renderer.meshes_c);
+        mousePicker.CheckForMouseClickM(fbo, renderer.models_c);
         mousePicker.CheckForLightSourceClick(fbo, renderer.source->mesh);
 
         ImGui::Begin("First Window");
@@ -202,7 +204,7 @@ int main()
             if (ImGui::Button("Remove Texture"))
             {
 
-                mousePicker.GetClickedObj()->tex = nullptr;
+                //mousePicker.GetClickedObj()->tex = nullptr;
 
             }
 
@@ -219,7 +221,7 @@ int main()
                     if(ImGui::MenuItem(entry.path().generic_string().c_str()))
                     {
 
-                        mousePicker.GetClickedObj()->tex = new Texture(entry.path().generic_string().c_str());
+                        //mousePicker.GetClickedObj()->tex = new Texture(entry.path().generic_string().c_str());
 
                     }
 
@@ -232,14 +234,14 @@ int main()
             if (ImGui::Button("Delete Object"))
             {
 
-                for (auto it = renderer.meshes_c.begin(); it != renderer.meshes_c.end();)
+                for (auto it = renderer.models_c.begin(); it != renderer.models_c.end();)
                 {
 
                     if (*it == mousePicker.GetClickedObj())
                     {
 
                         delete *it;
-                        it = renderer.meshes_c.erase(it);
+                        it = renderer.models_c.erase(it);
 
                     }
                     else it++;

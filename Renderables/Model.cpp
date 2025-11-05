@@ -7,9 +7,18 @@ glm::vec3 currTransM = glm::vec3(0.0f, 0.0f, 0.0f);
 Model::Model(std::vector<Mesh*> meshes)
 {
 
+    id = currIdM;
+    currIdM++;
+
     modelMeshes = meshes;
     trans = currTransM;
     currTransM.x += 2.0f;
+
+    pickingColor = glm::vec3(
+        (id & 0x000000FF) / 255.0f,
+        ((id & 0x0000FF00) >> 8) / 255.0f,
+        ((id & 0x00FF0000) >> 16) / 255.0f
+    );
 
 }
 
@@ -33,6 +42,15 @@ void Model::SetUpMatrix()
     model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
     model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
     model = glm::scale(model, scale);
+
+}
+
+bool Model::CompareIdToColor(unsigned char r, unsigned char g, unsigned char b)
+{
+
+    unsigned int id = r + (g << 8) + (b << 16);
+
+    return id == this->id;
 
 }
 

@@ -18,7 +18,7 @@ void MousePicker::ScrollCallback(GLFWwindow *window, double xoffset, double yoff
 void MousePicker::HandleScroll(double xoffset, double yoffset)
 {
 
-    if (!currObjectDrag) return;
+    if (!currModelDrag) return;
 
     if (yoffset == -1)
     {
@@ -39,6 +39,8 @@ MousePicker::MousePicker(GLFWwindow *window, Camera *cam, glm::mat4 projectionMa
     projMatrix = projectionMatrix;
     currObjectDrag = nullptr;
     currObjectData = nullptr;
+    currModelDrag = nullptr;
+    currModelData = nullptr;
     glfwSetScrollCallback(glfwWindow, ScrollCallback);
 
 }
@@ -52,7 +54,7 @@ void MousePicker::Update()
 {
 
     currentRay = CalculateRay();
-    currObjectDrag->trans = currentRay;
+    currModelDrag->trans = currentRay;
 
 }
 
@@ -133,6 +135,41 @@ void MousePicker::CheckForMouseClick(Framebuffer& fbo, std::vector<Mesh*>& meshe
 
 }
 
+void MousePicker::CheckForMouseClickM(Framebuffer &fbo, std::vector<Model*> &models)
+{
+
+    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !currModelDrag)
+    {
+
+        double mx, my;
+        char pixel[3];
+        glfwGetCursorPos(glfwWindow, &mx, &my);
+        fbo.Bind();
+        glReadPixels((int)mx, 720 - (int)my, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
+        fbo.Unbind();
+
+        for (auto &model : models)
+        {
+
+            if (model->CompareIdToColor(pixel[0], pixel[1], pixel[2]))
+            {
+
+                currModelDrag = model;
+                currModelData = model;
+                objWorldToView = camera->GetViewMatrix() * glm::vec4(currModelDrag->trans, 1.0f);
+
+            }
+
+        }
+
+    }
+
+    if (currModelDrag && glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) Update();
+
+    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE && currModelDrag) currModelDrag = nullptr;
+
+}
+
 void MousePicker::CheckForLightSourceClick(Framebuffer& fbo, Mesh*& source)
 {
 
@@ -163,9 +200,9 @@ void MousePicker::CheckForLightSourceClick(Framebuffer& fbo, Mesh*& source)
 
 }
 
-Mesh* MousePicker::GetClickedObj()
+Model* MousePicker::GetClickedObj()
 {
 
-    return currObjectData;
+    return currModelData;
 
 }

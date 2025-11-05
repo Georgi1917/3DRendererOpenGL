@@ -5,6 +5,8 @@
 struct Model
 {
 
+    unsigned int id;
+
     std::vector<Mesh*> modelMeshes;
 
     glm::mat4 model = glm::mat4(1.0f);
@@ -13,10 +15,12 @@ struct Model
     glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f);
 
     glm::vec3 color = glm::vec3(0.5f, 0.5f, 0.5f);
+    glm::vec3 pickingColor;
 
     Model(std::vector<Mesh*> meshes);
     void Draw(Shader &shader);
     void SetUpMatrix();
+    bool CompareIdToColor(unsigned char r, unsigned char g, unsigned char b);
 
 };
 
