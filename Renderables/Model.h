@@ -1,11 +1,13 @@
 #pragma once
 #include "Mesh.h"
+#include "../Textures/Texture.h"
 #include "../Shader.h"
 
 struct Model
 {
 
     unsigned int id;
+    Texture *tex = nullptr;
 
     std::vector<Mesh*> modelMeshes;
 

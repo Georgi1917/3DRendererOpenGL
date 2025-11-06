@@ -36,7 +36,6 @@ struct Mesh
 {
 
     unsigned int id;
-    Texture *tex = nullptr;
 
     VertexArray        vao = VertexArray();
     VertexBuffer       vbo = VertexBuffer();

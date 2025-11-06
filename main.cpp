@@ -140,8 +140,7 @@ int main()
 
         camera.Update(window, deltaTime);
 
-        //renderer.DrawMeshesPicking(pickingShader);
-        renderer.DrawMeshesPickingM(pickingShader);
+        renderer.DrawMeshesPicking(pickingShader);
         renderer.DrawLightSourcePicking(lightingShader);
 
         fbo.Unbind();
@@ -149,24 +148,23 @@ int main()
         renderer.SetViewport(0, 0, 1280, 720);
         renderer.Clear();
 
-        renderer.DrawSkyboxM(skyboxShader);
-        renderer.DrawMeshesM(basicShader);
+        renderer.DrawSkybox(skyboxShader);
+        renderer.DrawMeshes(basicShader);
         renderer.DrawLightSource(lightingShader);
 
-        //mousePicker.CheckForMouseClick(fbo, renderer.meshes_c);
-        mousePicker.CheckForMouseClickM(fbo, renderer.models_c);
+        mousePicker.CheckForMouseClick(fbo, renderer.models_c);
         mousePicker.CheckForLightSourceClick(fbo, renderer.source->mesh);
-
+        
         ImGui::Begin("First Window");
 
         if (ImGui::Button("Cube"))
-            renderer.meshes_c.push_back(ConstructCube());
+            renderer.models_c.push_back(ConstructCubeM());
 
         if (ImGui::Button("Sphere"))
-            renderer.meshes_c.push_back(ConstructSphere());
+            renderer.models_c.push_back(ConstructSphereM());
 
         if (ImGui::Button("Pyramid"))
-            renderer.meshes_c.push_back(ConstructPyramid());
+            renderer.models_c.push_back(ConstructPyramidM());
 
         if (ImGui::Button("Import Object"))
             ImGui::OpenPopup("Objects");
@@ -180,7 +178,7 @@ int main()
                 {
 
                     if (EndsWithObj(entry.path().string()) && ImGui::MenuItem(entry.path().generic_string().c_str()))
-                        renderer.meshes_c.push_back(LoadObj(entry.path().generic_string().c_str()));
+                        renderer.models_c.push_back(LoadObjM(entry.path().generic_string().c_str()));
 
                 }
 
@@ -198,64 +196,64 @@ int main()
         if (ImGui::Checkbox("Draw Skybox", &renderer.hasSkybox))
         {}
             
-    //     if (mousePicker.GetClickedObj())
-    //     {
+        if (mousePicker.GetClickedObj())
+        {
 
-    //         if (ImGui::Button("Remove Texture"))
-    //         {
+            if (ImGui::Button("Remove Texture"))
+            {
 
-    //             //mousePicker.GetClickedObj()->tex = nullptr;
+                mousePicker.GetClickedObj()->tex = nullptr;
 
-    //         }
+            }
 
-    //         if (ImGui::Button("Select Texture"))
-    //             ImGui::OpenPopup("Textures");
+            if (ImGui::Button("Select Texture"))
+                ImGui::OpenPopup("Textures");
 
-    //         if (ImGui::BeginPopup("Textures"))
-    //         {
+            if (ImGui::BeginPopup("Textures"))
+            {
 
-    //             const char *path = "texture-files/";
-    //             for (const auto &entry : std::filesystem::directory_iterator(path))
-    //             {
+                const char *path = "texture-files/";
+                for (const auto &entry : std::filesystem::directory_iterator(path))
+                {
 
-    //                 if(ImGui::MenuItem(entry.path().generic_string().c_str()))
-    //                 {
+                    if(ImGui::MenuItem(entry.path().generic_string().c_str()))
+                    {
 
-    //                     //mousePicker.GetClickedObj()->tex = new Texture(entry.path().generic_string().c_str());
+                        mousePicker.GetClickedObj()->tex = new Texture(entry.path().generic_string().c_str());
 
-    //                 }
+                    }
 
-    //             }
+                }
 
-    //             ImGui::EndPopup();
+                ImGui::EndPopup();
 
-    //         }
+            }
 
-    //         if (ImGui::Button("Delete Object"))
-    //         {
+            if (ImGui::Button("Delete Object"))
+            {
 
-    //             for (auto it = renderer.models_c.begin(); it != renderer.models_c.end();)
-    //             {
+                for (auto it = renderer.models_c.begin(); it != renderer.models_c.end();)
+                {
 
-    //                 if (*it == mousePicker.GetClickedObj())
-    //                 {
+                    if (*it == mousePicker.GetClickedObj())
+                    {
 
-    //                     delete *it;
-    //                     it = renderer.models_c.erase(it);
+                        delete *it;
+                        it = renderer.models_c.erase(it);
 
-    //                 }
-    //                 else it++;
+                    }
+                    else it++;
 
-    //             }
+                }
 
-    //         }
+            }
 
-    //         ImGui::DragFloat3("Translation", &(mousePicker.GetClickedObj()->trans.x), 1.0f * deltaTime, -100, 100);
-    //         ImGui::DragFloat3("Rotation", &(mousePicker.GetClickedObj()->rotation.x), 10.0f, -360, 360);
-    //         ImGui::DragFloat3("Scale", &(mousePicker.GetClickedObj()->scale.x), 2.0f * deltaTime, 1.0f, 100.0f);
-    //         ImGui::ColorPicker3("Color", &(mousePicker.GetClickedObj()->color.r));
+            ImGui::DragFloat3("Translation", &(mousePicker.GetClickedObj()->trans.x), 1.0f * deltaTime, -100, 100);
+            ImGui::DragFloat3("Rotation", &(mousePicker.GetClickedObj()->rotation.x), 10.0f, -360, 360);
+            ImGui::DragFloat3("Scale", &(mousePicker.GetClickedObj()->scale.x), 2.0f * deltaTime, 1.0f, 100.0f);
+            ImGui::ColorPicker3("Color", &(mousePicker.GetClickedObj()->color.r));
             
-    //     }
+        }
         
         ImGui::End();
 

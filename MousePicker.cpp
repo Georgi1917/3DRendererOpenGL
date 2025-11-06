@@ -37,10 +37,10 @@ MousePicker::MousePicker(GLFWwindow *window, Camera *cam, glm::mat4 projectionMa
     glfwWindow = window;
     camera = cam;
     projMatrix = projectionMatrix;
-    currObjectDrag = nullptr;
-    currObjectData = nullptr;
+
     currModelDrag = nullptr;
     currModelData = nullptr;
+
     glfwSetScrollCallback(glfwWindow, ScrollCallback);
 
 }
@@ -101,41 +101,7 @@ glm::vec2 MousePicker::NormalizeMouseCoords(double mouseX, double mouseY)
 
 }
 
-void MousePicker::CheckForMouseClick(Framebuffer& fbo, std::vector<Mesh*>& meshes)
-{
-
-    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !currObjectDrag)
-    {
-
-        double mx, my;
-        char pixel[3];
-        glfwGetCursorPos(glfwWindow, &mx, &my);
-        fbo.Bind();
-        glReadPixels((int)mx, 720 - (int)my, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
-        fbo.Unbind();
-
-        for (auto &mesh : meshes)
-        {
-
-            if (mesh->CompareIdToColor(pixel[0], pixel[1], pixel[2]))
-            {
-
-                currObjectDrag = mesh;
-                currObjectData = mesh;
-                objWorldToView = camera->GetViewMatrix() * glm::vec4(currObjectDrag->trans, 1.0f);
-
-            } 
-        }
-
-    }
-
-    if (currObjectDrag && glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) Update();
-
-    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE && currObjectDrag) currObjectDrag = nullptr;
-
-}
-
-void MousePicker::CheckForMouseClickM(Framebuffer &fbo, std::vector<Model*> &models)
+void MousePicker::CheckForMouseClick(Framebuffer &fbo, std::vector<Model*> &models)
 {
 
     if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !currModelDrag)
@@ -170,10 +136,10 @@ void MousePicker::CheckForMouseClickM(Framebuffer &fbo, std::vector<Model*> &mod
 
 }
 
-void MousePicker::CheckForLightSourceClick(Framebuffer& fbo, Mesh*& source)
+void MousePicker::CheckForLightSourceClick(Framebuffer& fbo, Model*& source)
 {
 
-    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !currObjectDrag)
+    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !currModelDrag)
     {
 
         double mx, my;
@@ -186,17 +152,17 @@ void MousePicker::CheckForLightSourceClick(Framebuffer& fbo, Mesh*& source)
         if (source->CompareIdToColor(pixel[0], pixel[1], pixel[2]))
         {
 
-            currObjectDrag = source;
-            currObjectData = source;
-            objWorldToView = camera->GetViewMatrix() * glm::vec4(currObjectDrag->trans, 1.0f);
+            currModelDrag = source;
+            currModelData = source;
+            objWorldToView = camera->GetViewMatrix() * glm::vec4(currModelDrag->trans, 1.0f);
 
         }
 
     }
 
-    if (currObjectDrag && glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) Update();
+    if (currModelDrag && glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) Update();
 
-    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE && currObjectDrag) currObjectDrag = nullptr;
+    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE && currModelDrag) currModelDrag = nullptr;
 
 }
 

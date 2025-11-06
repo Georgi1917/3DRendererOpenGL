@@ -1,11 +1,11 @@
 #pragma once
-#include "Mesh.h"
+#include "Model.h"
 
 struct Light
 {
 
     void Init();
-    Mesh *mesh;
+    Model *mesh;
     
     glm::vec3 ambient;
     glm::vec3 diffuse;

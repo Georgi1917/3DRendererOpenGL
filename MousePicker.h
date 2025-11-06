@@ -22,9 +22,6 @@ class MousePicker
         glm::mat4 projMatrix;
         Camera *camera;
 
-        Mesh *currObjectDrag;
-        Mesh *currObjectData;
-
         Model *currModelDrag;
         Model *currModelData;
 
@@ -41,9 +38,8 @@ class MousePicker
         ~MousePicker();
 
         void Update();
-        void CheckForMouseClick(Framebuffer &fbo, std::vector<Mesh*> &meshes);
-        void CheckForMouseClickM(Framebuffer &fbo, std::vector<Model*> &meshes);
-        void CheckForLightSourceClick(Framebuffer &fbo, Mesh*& source);
+        void CheckForMouseClick(Framebuffer &fbo, std::vector<Model*> &meshes);
+        void CheckForLightSourceClick(Framebuffer &fbo, Model*& source);
         Model* GetClickedObj();
         static void ScrollCallback(GLFWwindow *window, double xoffset, double yoffset);
 
