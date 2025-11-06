@@ -13,7 +13,18 @@ struct Light
 
 };
 
+struct Material
+{
+
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    float shininess;
+
+};
+
 uniform Light light;
+uniform Material material;
 
 uniform vec3 uColor;
 uniform vec3 viewPos;
