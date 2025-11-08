@@ -262,11 +262,6 @@ Model* ConstructSurfaceM()
 
     Mesh* mesh = new Mesh();
     mesh->Init(vertices, indices);
-    mesh->rotation.x = -90.0f;
-    mesh->trans = glm::vec3(3.8f, -1.4f, 0.0f);
-    mesh->scale = glm::vec3(6.0f, 6.0f, 6.0f);
-    mesh->SetUpMatrix();
-    currTransM.x -= 2.0f;
 
     return new Model( {mesh} );
 
@@ -391,8 +386,24 @@ Model* LoadObjM(const char* filepath)
 
             }
 
+            Material mat;
+
+            if (shape.mesh.material_ids[f] >= 0)
+            {
+                tinyobj::material_t currMat = materials[shape.mesh.material_ids[f]];
+                mat.name = currMat.name;
+                mat.ambient = glm::vec3(currMat.ambient[0], currMat.ambient[1], currMat.ambient[2]);
+                mat.diffuse = glm::vec3(currMat.diffuse[0], currMat.diffuse[1], currMat.diffuse[2]);
+                mat.specular = glm::vec3(currMat.specular[0], currMat.specular[1], currMat.specular[2]);
+                mat.shininess = currMat.shininess;
+            }
+
             Mesh *mesh = new Mesh();
             mesh->Init(vertices, indices);
+
+            if (shape.mesh.material_ids[f] >= 0)
+                mesh->material = mat;
+
             meshes.push_back(mesh);
 
             indexOffset += fv;
@@ -400,23 +411,6 @@ Model* LoadObjM(const char* filepath)
         }
 
     }
-
-    // for (const auto& mat : materials)
-    // {
-
-    //     std::cout << "----------------------" << "\n";
-    //     std::cout << mat.name << "\n";
-    //     std::cout << mat.ambient[0] << " " << mat.ambient[1] << " " << mat.ambient[2] << "\n";
-    //     std::cout << mat.diffuse[0] << " " << mat.diffuse[1] << " " << mat.diffuse[2] << "\n";
-    //     std::cout << mat.specular[0] << " " << mat.specular[1] << " " << mat.specular[2] << "\n";
-    //     std::cout << "----------------------" << "\n";
-
-    // }
-
-    // Mesh* mesh = new Mesh();
-    // mesh->Init(vertices, indices);
-
-    //return mesh;
 
     return new Model(meshes);
 

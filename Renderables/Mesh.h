@@ -30,6 +30,8 @@ struct Material
     glm::vec3 diffuse;
     glm::vec3 specular;
 
+    float shininess;
+
 };
 
 struct Mesh
@@ -47,23 +49,8 @@ struct Mesh
     Material material;
 
     glm::vec3 color = glm::vec3(0.5f, 0.5f, 0.5f);
-    glm::vec3 pickingColor;
-
-    glm::mat4 model = glm::mat4(1.0f);
-    glm::vec3 trans = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
-    glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f);
 
     void Init(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
     void Draw(Shader &shader);
-    void SetUpMatrix();
-    bool CompareIdToColor(unsigned char r, unsigned char g, unsigned char b);
 
 };
-
-Mesh* ConstructCube();
-Mesh* ConstructSphere();
-Mesh* ConstructPyramid();
-Mesh* ConstructSurface();
-Mesh* ConstructSkybox();
-Mesh* LoadObj(const char* filepath);
