@@ -71,9 +71,10 @@ void Renderer::DrawMeshes(Shader &shader)
         if (hasAttenuation) shader.SetBool("hasAttenuation", true);
         else shader.SetBool("hasAttenuation", false);
 
-        shader.SetVec3f("uColor", model->color);
-        shader.SetVec3f("light.color", source->mesh->color);
         shader.SetVec3f("light.pos", source->mesh->trans);
+        shader.SetVec3f("light.ambient", source->ambient);
+        shader.SetVec3f("light.diffuse", source->diffuse);
+        shader.SetVec3f("light.specular", source->specular);
         shader.SetVec3f("viewPos", cam->GetPosition());
         shader.SetMatrix4fv("model", model->model);
         model->Draw(shader);

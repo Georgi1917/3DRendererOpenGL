@@ -9,4 +9,8 @@ void Light::Init()
     mesh->color = glm::vec3(1.0f, 1.0f, 1.0f);
     mesh->SetUpMatrix();
 
+    ambient = glm::vec3(0.35f, 0.35f, 0.35f);
+    diffuse = glm::vec3(0.7f, 0.7f, 0.7f);
+    specular = glm::vec3(1.0f, 1.0f, 1.0f);
+
 }

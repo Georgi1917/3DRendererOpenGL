@@ -28,6 +28,10 @@ void Model::Draw(Shader& shader)
     for (auto& mesh : modelMeshes)
     {
 
+        shader.SetVec3f("material.ambient", mesh->material.ambient);
+        shader.SetVec3f("material.diffuse", mesh->material.diffuse);
+        shader.SetVec3f("material.specular", mesh->material.specular);
+        shader.Set1F("material.shininess", mesh->material.shininess);
         mesh->Draw(shader);
 
     }
@@ -110,8 +114,15 @@ Model* ConstructCubeM()
        20,21,22, 22,23,20
     };
 
+    Material mat;
     Mesh* mesh = new Mesh();
     mesh->Init(vertices, indices);
+
+    mat.ambient = glm::vec3(1.0f, 0.5f, 0.31f);
+    mat.diffuse = glm::vec3(1.0f, 0.5f, 0.31f);
+    mat.specular = glm::vec3(0.5f, 0.5f, 0.5f);
+    mat.shininess = 32.0f;
+    mesh->material = mat;
 
     return new Model( {mesh} );
 
@@ -184,8 +195,15 @@ Model* ConstructSphereM()
 
     }
 
+    Material mat;
     Mesh* mesh = new Mesh();
     mesh->Init(vertices, indices);
+
+    mat.ambient = glm::vec3(1.0f, 0.5f, 0.31f);
+    mat.diffuse = glm::vec3(1.0f, 0.5f, 0.31f);
+    mat.specular = glm::vec3(0.5f, 0.5f, 0.5f);
+    mat.shininess = 32.0f;
+    mesh->material = mat;
 
     return new Model({ mesh });
 
@@ -229,8 +247,15 @@ Model* ConstructPyramidM()
         13, 15, 14
     };
 
+    Material mat;
     Mesh* mesh = new Mesh();
     mesh->Init(vertices, indices);
+
+    mat.ambient = glm::vec3(1.0f, 0.5f, 0.31f);
+    mat.diffuse = glm::vec3(1.0f, 0.5f, 0.31f);
+    mat.specular = glm::vec3(0.5f, 0.5f, 0.5f);
+    mat.shininess = 32.0f;
+    mesh->material = mat;
 
     return new Model( {mesh} );
 

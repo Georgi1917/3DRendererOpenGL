@@ -24,6 +24,7 @@ class Shader
         void SetVec3f(std::string uniformName, glm::vec3 &vector3);
         void SetBool(std::string uniformName, bool b);
         void Set1I(std::string uniformName, int i);
+        void Set1F(std::string uniformName, float i);
         int GetProgram();
 
 };

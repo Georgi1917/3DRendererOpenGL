@@ -44,18 +44,18 @@ void main()
     float ambientStrenght = 0.35;
     float specStrenght = 0.5;
 
-    vec3 ambient = light.color * ambientStrenght;
+    vec3 ambient = light.ambient * material.ambient;
 
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(light.pos - FragPos);
     
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * light.color;
+    vec3 diffuse = light.diffuse * (diff * material.diffuse);
 
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-    vec3 specular = specStrenght * spec * light.color;
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 specular = light.specular * (spec * material.specular);
 
     if (hasAttenuation)
     {
@@ -84,7 +84,7 @@ void main()
     else
     {
 
-        vec3 result = (ambient + diffuse + specular) * uColor;
+        vec3 result = (ambient + diffuse + specular);
         FragColor = vec4(result, 1.0f);
 
     }
