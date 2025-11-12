@@ -466,6 +466,8 @@ Model* LoadObjM(const char* filepath)
             }
 
             Material mat;
+            Mesh *mesh = new Mesh();
+            mesh->Init(vertices, indices);
 
             if (shape.mesh.material_ids[f] >= 0)
             {
@@ -475,13 +477,8 @@ Model* LoadObjM(const char* filepath)
                 mat.diffuse = glm::vec3(currMat.diffuse[0], currMat.diffuse[1], currMat.diffuse[2]);
                 mat.specular = glm::vec3(currMat.specular[0], currMat.specular[1], currMat.specular[2]);
                 mat.shininess = currMat.shininess;
-            }
-
-            Mesh *mesh = new Mesh();
-            mesh->Init(vertices, indices);
-
-            if (shape.mesh.material_ids[f] >= 0)
                 mesh->material = mat;
+            }
 
             meshes.push_back(mesh);
 
