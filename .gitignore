@@ -3,4 +3,5 @@ imgui.ini
 obj-files/*.obj
 obj-files/*.mtl
 obj-files/*.png
+obj-files/*.jpg
 .vscode
