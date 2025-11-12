@@ -58,6 +58,60 @@ bool Model::CompareIdToColor(unsigned char r, unsigned char g, unsigned char b)
 
 }
 
+Model* AssembleModel(std::vector<Mesh*> &meshes, std::vector<tinyobj::material_t> materials)
+{
+
+    std::vector<Mesh*> newMeshes;
+
+    for (auto it = materials.begin(); it != materials.end(); it++)
+    {
+
+        std::string matName = it->name;
+        std::vector<Vertex> newVertices;
+        std::vector<unsigned int> newIndices;
+
+        for (auto mesh : meshes)
+        {
+
+            if (mesh->material.name == matName)
+            {
+
+                unsigned int idxOffset = newIndices.size();
+
+                newVertices.insert(newVertices.end(), mesh->vertices.begin(), mesh->vertices.end());
+
+                for (unsigned int i : mesh->indices)
+                {
+
+                    newIndices.push_back(i + idxOffset);
+
+                }
+
+            }   
+
+        }
+
+        if (newVertices.empty() || newIndices.empty())
+            continue;
+
+        Material mat;
+        Mesh *mesh = new Mesh();
+        mesh->Init(newVertices, newIndices);
+        mat.name = it->name;
+        mat.ambient = glm::vec3(it->ambient[0], it->ambient[1], it->ambient[2]);
+        mat.diffuse = glm::vec3(it->diffuse[0], it->diffuse[1], it->diffuse[2]);
+        mat.specular = glm::vec3(it->specular[0], it->specular[1], it->specular[2]);
+        mat.shininess = it->shininess;
+        mesh->material = mat;
+
+        newMeshes.push_back(mesh);
+
+    }
+
+    return new Model(newMeshes);
+
+}
+
 Model* ConstructCubeM()
 {
 
@@ -437,6 +491,6 @@ Model* LoadObjM(const char* filepath)
 
     }
 
-    return new Model(meshes);
+    return AssembleModel(meshes, materials);
 
 }

@@ -32,3 +32,4 @@ Model* ConstructPyramidM();
 Model* ConstructSurfaceM();
 Model* ConstructSkyboxM();
 Model* LoadObjM(const char* filepath);
+Model* AssembleModel();
