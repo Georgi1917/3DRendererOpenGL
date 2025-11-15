@@ -104,6 +104,15 @@ Model* AssembleModel(std::vector<Mesh*> &meshes, std::vector<tinyobj::material_t
         mat.shininess = it->shininess;
         mesh->material = mat;
 
+        if (it->ambient_texname != "")
+            std::cout << it->ambient_texname << "\n";
+        
+        if (it->diffuse_texname != "")
+            std::cout << it->diffuse_texname << "\n";
+
+        if (it->specular_texname != "")
+            std::cout << it->specular_texname << "\n";
+
         newMeshes.push_back(mesh);
 
     }
