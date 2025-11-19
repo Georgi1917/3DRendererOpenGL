@@ -1,7 +1,7 @@
 #include "Texture.h"
 #include <iostream>
 
-Texture::Texture(const char* loc)
+Texture::Texture(const char* loc, TextureType texType)
 {
 
     glGenTextures(1, &textureID);

@@ -60,13 +60,6 @@ void Renderer::DrawMeshes(Shader &shader)
 
     for (auto& model : models_c)
     {
-        if (model->tex)
-        {
-            shader.SetBool("hasTex", true);
-            model->tex->Bind();
-        }
-        else
-            shader.SetBool("hasTex", false);
 
         if (hasAttenuation) shader.SetBool("hasAttenuation", true);
         else shader.SetBool("hasAttenuation", false);
@@ -81,8 +74,6 @@ void Renderer::DrawMeshes(Shader &shader)
 
         model->model = glm::mat4(1.0f);
         model->SetUpMatrix();
-
-        if (model->tex) model->tex->Unbind();
 
     }
 
