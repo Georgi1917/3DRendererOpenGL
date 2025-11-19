@@ -53,8 +53,6 @@ struct Mesh
     std::vector<unsigned int> indices;
     Material material;
 
-    glm::vec3 color = glm::vec3(0.5f, 0.5f, 0.5f);
-
     void Init(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
     void Draw(Shader &shader);
 

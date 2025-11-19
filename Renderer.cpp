@@ -104,7 +104,7 @@ void Renderer::DrawLightSource(Shader &shader)
 {
 
     shader.Bind();
-    shader.SetVec3f("lightColor", source->mesh->color);
+    shader.SetVec3f("lightColor", source->lightColor);
     shader.SetMatrix4fv("model", source->mesh->model);
     shader.SetMatrix4fv("projection", projection);
     shader.SetMatrix4fv("view", cam->GetViewMatrix());
