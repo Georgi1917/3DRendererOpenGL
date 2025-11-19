@@ -7,7 +7,6 @@ struct Model
 {
 
     unsigned int id;
-    Texture *tex = nullptr;
 
     std::vector<Mesh*> modelMeshes;
 
