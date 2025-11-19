@@ -11,6 +11,10 @@ struct Light
     vec3 diffuse;
     vec3 specular;
 
+    sampler2D ambientTexture;
+    sampler2D diffuseTexture;
+    sampler2D specularTexture;
+
 };
 
 struct Material
@@ -26,13 +30,9 @@ struct Material
 uniform Light light;
 uniform Material material;
 
-uniform vec3 uColor;
 uniform vec3 viewPos;
 
-uniform bool hasTex;
 uniform bool hasAttenuation;
-
-uniform sampler2D Tex;
 
 in vec3 Normal;
 in vec3 FragPos;
@@ -40,9 +40,6 @@ in vec2 TexCoord;
 
 void main()
 {
-
-    float ambientStrenght = 0.35;
-    float specStrenght = 0.5;
 
     vec3 ambient = light.ambient * material.ambient;
 
@@ -74,20 +71,8 @@ void main()
 
     }
 
-    if (hasTex)
-    {
-
-        vec3 result = (ambient + diffuse + specular);
-        FragColor = texture(Tex, TexCoord) * vec4(result, 1.0f);
-
-    }
-    else
-    {
-
-        vec3 result = (ambient + diffuse + specular);
-        FragColor = vec4(result, 1.0f);
-
-    }
+    vec3 result = (ambient + diffuse + specular);
+    FragColor = vec4(result, 1.0f);
 
 
 }

@@ -1,7 +1,7 @@
 #include "Texture.h"
 #include <iostream>
 
-Texture::Texture(const char* loc, TextureType texType)
+Texture::Texture(const char* loc, std::string texType)
 {
 
     glGenTextures(1, &textureID);
@@ -29,6 +29,8 @@ Texture::Texture(const char* loc, TextureType texType)
 
     }
     else std::cout << "Failed to create texture!" << "\n";
+
+    textureType = texType;
 
     stbi_image_free(data);
 

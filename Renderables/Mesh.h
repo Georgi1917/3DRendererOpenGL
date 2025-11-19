@@ -31,10 +31,6 @@ struct Material
     glm::vec3 diffuse;
     glm::vec3 specular;
 
-    std::string ambientTexName;
-    std::string diffuseTexName;
-    std::string specularTexName;
-
     float shininess;
 
 };
@@ -52,6 +48,7 @@ struct Mesh
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     Material material;
+    std::vector<Texture> textures;
 
     void Init(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
     void Draw(Shader &shader);

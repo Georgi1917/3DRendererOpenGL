@@ -105,13 +105,13 @@ Model* AssembleModel(std::vector<Mesh*> &meshes, std::vector<tinyobj::material_t
         mesh->material = mat;
 
         if (it->ambient_texname != "")
-            std::cout << it->ambient_texname << "\n";
+            mesh->textures.push_back(Texture(("obj-files/" + it->ambient_texname).c_str(), "ambientTexture"));
         
         if (it->diffuse_texname != "")
-            std::cout << it->diffuse_texname << "\n";
+            mesh->textures.push_back(Texture(("obj-files/" + it->diffuse_texname).c_str(), "diffuseTexture"));
 
         if (it->specular_texname != "")
-            std::cout << it->specular_texname << "\n";
+            mesh->textures.push_back(Texture(("obj-files/" + it->specular_texname).c_str(), "specularTexture"));
 
         newMeshes.push_back(mesh);
 

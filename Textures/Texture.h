@@ -2,22 +2,15 @@
 #define GLEW_STATIC
 #include "../include/glew.h"
 #include "../include/stb_image.h"
-
-enum TextureType
-{
-
-    AMBIENT_TEXTURE ,
-    DIFFUSE_TEXTURE ,
-    SPECULAR_TEXTURE
-
-};
+#include <string>
 
 struct Texture
 {
     
     unsigned int textureID;
+    std::string textureType;
 
-    Texture(const char* loc, TextureType texType);
+    Texture(const char* loc, std::string texType);
     ~Texture();
     void Bind();
     void Unbind();
