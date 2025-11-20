@@ -33,29 +33,29 @@ void Model::Draw(Shader& shader)
         shader.SetVec3f("material.specular", mesh->material.specular);
         shader.Set1F("material.shininess", mesh->material.shininess);
 
-        // for (int i = 0; i < mesh->textures.size(); i++)
-        // {
+        for (int i = 0; i < mesh->textures.size(); i++)
+        {
 
-        //     glActiveTexture(GL_TEXTURE0 + i);
-        //     mesh->textures[i].Bind();
-        //     shader.SetBool("has" + mesh->textures[i].textureType, true);
-        //     shader.Set1I(mesh->textures[i].textureType, i);
+            glActiveTexture(GL_TEXTURE0 + i);
+            mesh->textures[i].Bind();
+            shader.SetBool("material.has" + mesh->textures[i].textureType, true);
+            shader.Set1I("material." + mesh->textures[i].textureType, i);
 
-        // }
+        }
 
-        shader.SetBool("hasAmbientTexture", false);
-        shader.SetBool("hasDiffuseTexture", false);
-        shader.SetBool("hasSpecularTexture", false);
+        // shader.SetBool("hasAmbientTexture", false);
+        // shader.SetBool("hasDiffuseTexture", false);
+        // shader.SetBool("hasSpecularTexture", false);
 
         mesh->Draw(shader);
 
-        // for (int i = 0; i < mesh->textures.size(); i++)
-        // {
+        for (int i = 0; i < mesh->textures.size(); i++)
+        {
 
-        //     glActiveTexture(GL_TEXTURE0 + i);
-        //     mesh->textures[i].Unbind();
+            glActiveTexture(GL_TEXTURE0 + i);
+            mesh->textures[i].Unbind();
 
-        // }
+        }
 
     }
 
@@ -128,13 +128,20 @@ Model* AssembleModel(std::vector<Mesh*> &meshes, std::vector<tinyobj::material_t
         mesh->material = mat;
 
         if (it->ambient_texname != "")
+        {
             mesh->textures.push_back(Texture(("obj-files/" + it->ambient_texname).c_str(), "AmbientTexture"));
-        
+            std::cout << "ambient : " << it->ambient_texname << "\n";
+        }
         if (it->diffuse_texname != "")
+        {
             mesh->textures.push_back(Texture(("obj-files/" + it->diffuse_texname).c_str(), "DiffuseTexture"));
-
+            std::cout << "diffuse : " << it->diffuse_texname << "\n";
+        }
         if (it->specular_texname != "")
+        {
             mesh->textures.push_back(Texture(("obj-files/" + it->specular_texname).c_str(), "SpecularTexture"));
+            std::cout << "specular : " << it->specular_texname << "\n";
+        }
 
         newMeshes.push_back(mesh);
 

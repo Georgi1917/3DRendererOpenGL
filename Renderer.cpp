@@ -35,6 +35,7 @@ void Renderer::DrawSkybox(Shader &shader)
     glDepthMask(GL_FALSE);
     glDepthFunc(GL_LEQUAL);
     shader.Bind();
+    glActiveTexture(GL_TEXTURE0);
     skyBoxTexture->Bind();
     shader.SetMatrix4fv("projection", projection);
     shader.SetMatrix4fv("view", view);
