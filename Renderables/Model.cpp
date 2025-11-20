@@ -33,19 +33,30 @@ void Model::Draw(Shader& shader)
         shader.SetVec3f("material.specular", mesh->material.specular);
         shader.Set1F("material.shininess", mesh->material.shininess);
 
-        for (int i = 0; i < mesh->textures.size(); i++)
+        if (mesh->textures.size() <= 0)
         {
 
-            glActiveTexture(GL_TEXTURE0 + i);
-            mesh->textures[i].Bind();
-            shader.SetBool("material.has" + mesh->textures[i].textureType, true);
-            shader.Set1I("material." + mesh->textures[i].textureType, i);
+            shader.SetBool("material.hasAmbientTexture", false);
+            shader.SetBool("material.hasDiffuseTexture", false);
+            shader.SetBool("material.hasSpecularTexture", false);
+
 
         }
 
-        // shader.SetBool("hasAmbientTexture", false);
-        // shader.SetBool("hasDiffuseTexture", false);
-        // shader.SetBool("hasSpecularTexture", false);
+        else
+        {
+
+            for (int i = 0; i < mesh->textures.size(); i++)
+            {
+
+                glActiveTexture(GL_TEXTURE0 + i);
+                mesh->textures[i].Bind();
+                shader.SetBool("material.has" + mesh->textures[i].textureType, true);
+                shader.Set1I("material." + mesh->textures[i].textureType, i);
+
+            }
+
+        }
 
         mesh->Draw(shader);
 
