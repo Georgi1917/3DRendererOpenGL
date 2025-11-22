@@ -49,10 +49,10 @@ void Model::Draw(Shader& shader)
             for (int i = 0; i < mesh->textures.size(); i++)
             {
 
-                glActiveTexture(GL_TEXTURE0 + i);
-                mesh->textures[i].Bind();
                 shader.SetBool("material.has" + mesh->textures[i].textureType, true);
                 shader.Set1I("material." + mesh->textures[i].textureType, i);
+                glActiveTexture(GL_TEXTURE0 + i);
+                mesh->textures[i].Bind();
 
             }
 
@@ -60,13 +60,7 @@ void Model::Draw(Shader& shader)
 
         mesh->Draw(shader);
 
-        for (int i = 0; i < mesh->textures.size(); i++)
-        {
-
-            glActiveTexture(GL_TEXTURE0 + i);
-            mesh->textures[i].Unbind();
-
-        }
+        glActiveTexture(GL_TEXTURE0);
 
     }
 
