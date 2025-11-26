@@ -18,6 +18,7 @@ struct Model
     glm::vec3 pickingColor;
 
     Model(std::vector<Mesh*> meshes);
+    ~Model();
     void Draw(Shader &shader);
     void SetUpMatrix();
     bool CompareIdToColor(unsigned char r, unsigned char g, unsigned char b);

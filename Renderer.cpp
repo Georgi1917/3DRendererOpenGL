@@ -21,6 +21,13 @@ Renderer::Renderer()
 Renderer::~Renderer()
 {
 
+    for (auto m : models_c)
+    {
+
+        delete m;
+
+    }
+
 }
 
 void Renderer::DrawSkybox(Shader &shader)

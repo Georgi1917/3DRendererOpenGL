@@ -22,6 +22,18 @@ Model::Model(std::vector<Mesh*> meshes)
 
 }
 
+Model::~Model()
+{
+
+    for (auto m : modelMeshes)
+    {
+
+        delete m;
+
+    }
+
+}
+
 void Model::Draw(Shader& shader)
 {
 

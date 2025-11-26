@@ -34,3 +34,15 @@ void Mesh::Draw(Shader &shader)
     ibo.Unbind();
 
 }
+
+Mesh::~Mesh()
+{
+
+    for (auto tex : textures)
+    {
+
+        delete tex;
+
+    }
+
+}
