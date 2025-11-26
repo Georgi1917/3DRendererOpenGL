@@ -170,21 +170,21 @@ int main()
             ImGui::OpenPopup("Objects");
 
         if (ImGui::BeginPopup("Objects"))
+        {
+
+            const char *path = "obj-files/";
+
+            for (const auto &entry : std::filesystem::directory_iterator(path))
             {
 
-                const char *path = "obj-files/";
-
-                for (const auto &entry : std::filesystem::directory_iterator(path))
-                {
-
-                    if (EndsWithObj(entry.path().string()) && ImGui::MenuItem(entry.path().generic_string().c_str()))
-                        renderer.models_c.push_back(LoadObjM(entry.path().generic_string().c_str()));
-
-                }
-
-                ImGui::EndPopup();
+                if (EndsWithObj(entry.path().string()) && ImGui::MenuItem(entry.path().generic_string().c_str()))
+                    renderer.models_c.push_back(LoadObjM(entry.path().generic_string().c_str()));
 
             }
+
+            ImGui::EndPopup();
+
+        }
 
         if (ImGui::Checkbox("Wireframe Mode", &wireFrameMode))
             if (wireFrameMode) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
