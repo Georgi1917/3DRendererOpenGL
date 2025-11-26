@@ -48,7 +48,7 @@ struct Mesh
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     Material material;
-    std::vector<Texture> textures;
+    std::vector<Texture*> textures;
 
     void Init(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
     void Draw(Shader &shader);

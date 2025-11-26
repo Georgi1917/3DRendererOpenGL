@@ -14,8 +14,8 @@ Texture::Texture(const char* loc, std::string texType)
 
     int width, height, nChannels;
 
-    unsigned char *data = stbi_load(loc, &width, &height, &nChannels, 0);
     stbi_set_flip_vertically_on_load(true);
+    unsigned char *data = stbi_load(loc, &width, &height, &nChannels, 0);
 
     if (data)
     {
@@ -39,6 +39,7 @@ Texture::Texture(const char* loc, std::string texType)
 Texture::~Texture()
 {
 
+    std::cout << "Texture Destructor called : " << textureID << "\n";
     glDeleteTextures(1, &textureID);
 
 }
