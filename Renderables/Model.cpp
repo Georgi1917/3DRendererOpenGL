@@ -37,7 +37,7 @@ Model::~Model()
 void Model::Draw(Shader& shader)
 {
 
-    stbi_set_flip_vertically_on_load(true);
+    stbi_set_flip_vertically_on_load(uvFlipped);
 
     for (auto& mesh : modelMeshes)
     {

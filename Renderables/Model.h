@@ -16,6 +16,7 @@ struct Model
     glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f);
 
     glm::vec3 pickingColor;
+    bool uvFlipped = false;
 
     Model(std::vector<Mesh*> meshes);
     ~Model();

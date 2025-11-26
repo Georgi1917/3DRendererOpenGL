@@ -218,6 +218,9 @@ int main()
 
             }
 
+            if (ImGui::Checkbox("Flip UVs", &mousePicker.GetClickedObj()->uvFlipped))
+            {}
+
             ImGui::DragFloat3("Translation", &(mousePicker.GetClickedObj()->trans.x), 1.0f * deltaTime, -100, 100);
             ImGui::DragFloat3("Rotation", &(mousePicker.GetClickedObj()->rotation.x), 10.0f, -360, 360);
             ImGui::DragFloat3("Scale", &(mousePicker.GetClickedObj()->scale.x), 2.0f * deltaTime, 1.0f, 100.0f);
