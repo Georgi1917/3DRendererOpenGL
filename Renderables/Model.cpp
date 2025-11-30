@@ -73,13 +73,6 @@ void Model::Draw(Shader& shader)
 
         mesh->Draw(shader);
 
-        for (int i = 0; i < mesh->textures.size(); i++)
-        {
-
-            mesh->textures[i]->Unbind();
-
-        }
-
         glActiveTexture(GL_TEXTURE0);
 
     }
