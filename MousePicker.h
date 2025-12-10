@@ -13,34 +13,32 @@
 #include <vector>
 #include <memory>
 
-class MousePicker
+struct MousePicker
 {
 
-    private:
-        glm::vec3 currentRay;
-        GLFWwindow *glfwWindow;
-        glm::mat4 projMatrix;
-        Camera *camera;
+    glm::vec3 currentRay;
+    GLFWwindow *glfwWindow;
+    glm::mat4 projMatrix;
+    Camera *camera;
 
-        Model *currModelDrag;
-        Model *currModelData;
+    Model *currModelDrag;
+    Model *currModelData;
 
-        glm::vec3 objWorldToView;
+    glm::vec3 objWorldToView;
 
-        glm::vec3 CalculateRay();
-        glm::vec2 NormalizeMouseCoords(double mouseX, double mouseY);
-        glm::vec4 ToEyeCoords(glm::vec4 clipCoords);
-        glm::vec3 ToWorldCoords(glm::vec4 eyeCoords);
-        void HandleScroll(double xoffset, double yoffset);
+    glm::vec3 CalculateRay();
+    glm::vec2 NormalizeMouseCoords(double mouseX, double mouseY);
+    glm::vec4 ToEyeCoords(glm::vec4 clipCoords);
+    glm::vec3 ToWorldCoords(glm::vec4 eyeCoords);
+    void HandleScroll(double xoffset, double yoffset);
 
-    public:
-        MousePicker(GLFWwindow *window, Camera *cam, glm::mat4 projectionMatrix);
-        ~MousePicker();
+    MousePicker(GLFWwindow *window, Camera *cam, glm::mat4 projectionMatrix);
+    ~MousePicker();
 
-        void Update();
-        void CheckForMouseClick(Framebuffer &fbo, std::vector<Model*> &meshes);
-        void CheckForLightSourceClick(Framebuffer &fbo, Model*& source);
-        Model* GetClickedObj();
-        static void ScrollCallback(GLFWwindow *window, double xoffset, double yoffset);
+    void Update();
+    void CheckForMouseClick(Framebuffer &fbo, std::vector<Model*> &meshes);
+    void CheckForLightSourceClick(Framebuffer &fbo, Model*& source);
+    Model* GetClickedObj();
+    static void ScrollCallback(GLFWwindow *window, double xoffset, double yoffset);
 
 };

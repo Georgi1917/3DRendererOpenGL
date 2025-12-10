@@ -210,6 +210,10 @@ int main()
 
                         delete *it;
                         it = renderer.models_c.erase(it);
+            
+                        mousePicker.currModelData = nullptr;
+
+                        break;
 
                     }
                     else it++;
@@ -217,7 +221,12 @@ int main()
                 }
 
             }
+            
+        }
 
+        if (mousePicker.GetClickedObj())
+        {
+            
             if (ImGui::Button("Flip UVs"))
             {}
 
