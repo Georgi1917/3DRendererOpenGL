@@ -8,9 +8,10 @@ struct Texture
 {
     
     unsigned int textureID;
+    std::string loc;
     std::string textureType;
 
-    Texture(const char* loc, std::string texType);
+    Texture(const char* loc, std::string texType, bool flip = true);
     ~Texture();
     void Bind();
     void Unbind();

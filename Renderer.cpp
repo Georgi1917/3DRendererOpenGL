@@ -35,8 +35,6 @@ void Renderer::DrawSkybox(Shader &shader)
 
     if (!hasSkybox) return;
 
-    stbi_set_flip_vertically_on_load(false);
-
     glm::mat4 view = glm::mat4(glm::mat3(cam->GetViewMatrix()));
 
     glDepthMask(GL_FALSE);
@@ -52,8 +50,6 @@ void Renderer::DrawSkybox(Shader &shader)
     skyBoxTexture->Unbind();
     glDepthMask(GL_TRUE);
     glDepthFunc(GL_LESS);
-
-    stbi_set_flip_vertically_on_load(true);
 
 }
 

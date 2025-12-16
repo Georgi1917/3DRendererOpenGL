@@ -1,7 +1,7 @@
 #include "Texture.h"
 #include <iostream>
 
-Texture::Texture(const char* loc, std::string texType)
+Texture::Texture(const char* loc, std::string texType, bool flip)
 {
 
     glGenTextures(1, &textureID);
@@ -14,7 +14,7 @@ Texture::Texture(const char* loc, std::string texType)
 
     int width, height, nChannels;
 
-    stbi_set_flip_vertically_on_load(true);
+    stbi_set_flip_vertically_on_load(flip);
     unsigned char *data = stbi_load(loc, &width, &height, &nChannels, 0);
 
     if (data)
@@ -31,6 +31,7 @@ Texture::Texture(const char* loc, std::string texType)
     else std::cout << "Failed to create texture!" << "\n";
 
     textureType = texType;
+    this->loc = loc;
 
     stbi_image_free(data);
 

@@ -231,10 +231,52 @@ int main()
             ImGui::DragFloat3("Rotation", &(mousePicker.GetClickedObj()->rotation.x), 10.0f, -360, 360);
             ImGui::DragFloat3("Scale", &(mousePicker.GetClickedObj()->scale.x), 2.0f * deltaTime, 1.0f, 100.0f);
 
+            ImGui::Text("\n\nMATERIAL INFO:");
             for (auto mesh : mousePicker.GetClickedObj()->modelMeshes)
             {
                 ImGui::Text(mesh->material.name.c_str());
-                ImGui::InputFloat3("ambient", &(mesh->material.ambient.x), "%.3f", ImGuiInputTextFlags_ReadOnly);
+                ImGui::InputFloat3("Ambient", &(mesh->material.ambient.x), "%.3f", ImGuiInputTextFlags_ReadOnly);
+                ImGui::InputFloat3("Diffuse", &(mesh->material.diffuse.x), "%.3f", ImGuiInputTextFlags_ReadOnly);
+                ImGui::InputFloat3("Specular", &(mesh->material.specular.x), "%.3f", ImGuiInputTextFlags_ReadOnly);
+
+                ImGui::Text("\nTextures:");
+                int i = 0;
+                for (auto tex: mesh->textures)
+                {
+
+                    ImGui::Text(tex->textureType.c_str());
+                    ImGui::InputText("Texture Location" + i++, &tex->loc[0], 40, ImGuiInputTextFlags_ReadOnly);
+
+                }
+
+            }
+
+            if (ImGui::Button("Flip Textures"))
+            {
+
+                for (auto mesh : mousePicker.GetClickedObj()->modelMeshes)
+                {
+
+                    std::string location;
+                    std::string texType;
+                    std::vector<Texture*> flippedTextures;
+
+                    for (auto it = mesh->textures.begin(); it != mesh->textures.end();)
+                    {
+
+                        location = (*it)->loc;
+                        texType  = (*it)->textureType;
+
+                        delete *it;
+                        it = mesh->textures.erase(it);
+                        flippedTextures.push_back(new Texture(location.c_str(), texType, false));
+
+                    }
+
+                    mesh->textures = flippedTextures;
+
+                }
+
             }
             
         }
