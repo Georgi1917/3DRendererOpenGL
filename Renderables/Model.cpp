@@ -49,25 +49,18 @@ void Model::Draw(Shader& shader)
 
         if (mesh->textures.size() <= 0)
         {
-
             shader.SetBool("material.hasAmbientTexture", false);
             shader.SetBool("material.hasDiffuseTexture", false);
             shader.SetBool("material.hasSpecularTexture", false);
-
         }
 
-        else
+        for (int i = 0; i < mesh->textures.size(); i++)
         {
 
-            for (int i = 0; i < mesh->textures.size(); i++)
-            {
-
-                shader.SetBool("material.has" + mesh->textures[i]->textureType, true);
-                shader.Set1I("material." + mesh->textures[i]->textureType, i);
-                glActiveTexture(GL_TEXTURE0 + i);
-                mesh->textures[i]->Bind();
-
-            }
+            shader.SetBool("material.has" + mesh->textures[i]->textureType, true);
+            shader.Set1I("material." + mesh->textures[i]->textureType, i);
+            glActiveTexture(GL_TEXTURE0 + i);
+            mesh->textures[i]->Bind();
 
         }
 
@@ -164,6 +157,9 @@ Model* AssembleModel(std::vector<Mesh*> &meshes, std::vector<tinyobj::material_t
         newMeshes.push_back(mesh);
 
     }
+
+    for (auto mesh: meshes)
+        delete mesh;
 
     return new Model(newMeshes);
 

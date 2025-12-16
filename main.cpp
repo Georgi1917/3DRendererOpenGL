@@ -226,13 +226,16 @@ int main()
 
         if (mousePicker.GetClickedObj())
         {
-            
-            if (ImGui::Button("Flip UVs"))
-            {}
 
             ImGui::DragFloat3("Translation", &(mousePicker.GetClickedObj()->trans.x), 1.0f * deltaTime, -100, 100);
             ImGui::DragFloat3("Rotation", &(mousePicker.GetClickedObj()->rotation.x), 10.0f, -360, 360);
             ImGui::DragFloat3("Scale", &(mousePicker.GetClickedObj()->scale.x), 2.0f * deltaTime, 1.0f, 100.0f);
+
+            for (auto mesh : mousePicker.GetClickedObj()->modelMeshes)
+            {
+                ImGui::Text(mesh->material.name.c_str());
+                ImGui::InputFloat3("ambient", &(mesh->material.ambient.x), "%.3f", ImGuiInputTextFlags_ReadOnly);
+            }
             
         }
         
