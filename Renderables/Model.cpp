@@ -37,8 +37,6 @@ Model::~Model()
 void Model::Draw(Shader& shader)
 {
 
-    stbi_set_flip_vertically_on_load(uvFlipped);
-
     for (auto& mesh : modelMeshes)
     {
 
@@ -47,13 +45,10 @@ void Model::Draw(Shader& shader)
         shader.SetVec3f("material.specular", mesh->material.specular);
         shader.Set1F("material.shininess", mesh->material.shininess);
 
-        if (mesh->textures.size() <= 0)
-        {
-            shader.SetBool("material.hasAmbientTexture", false);
-            shader.SetBool("material.hasDiffuseTexture", false);
-            shader.SetBool("material.hasSpecularTexture", false);
-        }
-
+        shader.SetBool("material.hasAmbientTexture", false);
+        shader.SetBool("material.hasDiffuseTexture", false);
+        shader.SetBool("material.hasSpecularTexture", false);
+        
         for (int i = 0; i < mesh->textures.size(); i++)
         {
 
