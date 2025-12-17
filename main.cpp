@@ -253,6 +253,7 @@ int main()
 
             if (ImGui::Button("Flip Textures"))
             {
+                static bool flipState = false;
 
                 for (auto mesh : mousePicker.GetClickedObj()->modelMeshes)
                 {
@@ -269,9 +270,11 @@ int main()
 
                         delete *it;
                         it = mesh->textures.erase(it);
-                        flippedTextures.push_back(new Texture(location.c_str(), texType, false));
+                        flippedTextures.push_back(new Texture(location.c_str(), texType, flipState));
 
                     }
+
+                    flipState = flipState ? false : true;
 
                     mesh->textures = flippedTextures;
 
