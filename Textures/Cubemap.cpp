@@ -1,16 +1,11 @@
 #include "Cubemap.h"
 #include <iostream>
 
-void Cubemap::Init()
+Cubemap::Cubemap(std::vector<std::string> faces)
 {
 
     glGenTextures(1, &cubemapID);
     glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapID);
-
-}
-
-void Cubemap::Load(std::vector<std::string> faces)
-{
 
     int width, height, nrChannels;
     unsigned char* data;
@@ -36,8 +31,6 @@ void Cubemap::Load(std::vector<std::string> faces)
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-
 
     }
 

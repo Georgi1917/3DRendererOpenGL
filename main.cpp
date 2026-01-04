@@ -1,9 +1,7 @@
-#define GLEW_STATIC
 #include "include/imgui/imgui.h"
 #include "include/imgui/imgui_impl_glfw.h"
 #include "include/imgui/imgui_impl_opengl3.h"
-#include "include/glew.h"
-#include "include/GLFW/glfw3.h"
+#include "Window/Window.h"
 #include "include/glm/glm.hpp"
 #include "include/glm/gtc/matrix_transform.hpp"
 #include "include/glm/gtc/type_ptr.hpp"
@@ -53,22 +51,7 @@ bool EndsWithObj(std::string filepath)
 int main()
 {
 
-    GLFWwindow *window;
-
-    if (!glfwInit())
-    {
-        return -1;
-    }
-
-    window = glfwCreateWindow(1280, 720, "Renderer", NULL, NULL);
-
-    if(!window)
-    {
-        return -1;
-    }
-
-    glfwMakeContextCurrent(window);
-    glewInit();
+    Window win = Window(1280, 720, "Renderer");
 
     std::vector<std::string> faces = {
 
@@ -98,16 +81,14 @@ int main()
 
     Renderer renderer;
 
-    Cubemap cubemap;
-    cubemap.Init();
-    cubemap.Load(faces);
+    Cubemap cubemap = Cubemap(faces);
 
     renderer.cam = &camera;
     renderer.skyBoxTexture = &cubemap;
 
-    MousePicker mousePicker(window, &camera, renderer.GetProjection());
-    glfwSetWindowUserPointer(window, &mousePicker);
-    glfwSetScrollCallback(window, MousePicker::ScrollCallback);
+    MousePicker mousePicker(win.window, &camera, renderer.GetProjection());
+    glfwSetWindowUserPointer(win.window, &mousePicker);
+    glfwSetScrollCallback(win.window, MousePicker::ScrollCallback);
 
     renderer.EnableDepthTesting();
 
@@ -118,12 +99,12 @@ int main()
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO(); (void)io;
     ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplGlfw_InitForOpenGL(win.window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
     bool wireFrameMode = false;
 
-    while(!glfwWindowShouldClose(window))
+    while(!win.ShouldClose())
     {
 
         fbo.Bind();
@@ -138,7 +119,7 @@ int main()
         deltaTime = currTime - lastTime;
         lastTime = currTime;
 
-        camera.Update(window, deltaTime);
+        camera.Update(win.window, deltaTime);
 
         renderer.DrawMeshesPicking(pickingShader);
         renderer.DrawLightSourcePicking(lightingShader);
@@ -289,9 +270,8 @@ int main()
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-        glfwSwapBuffers(window);
-
-        glfwPollEvents();
+        win.SwapBuffers();
+        win.PollEvents();
 
     }
 
@@ -299,7 +279,7 @@ int main()
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
-    glfwTerminate();
+    win.Terminate();
     return 0;
 
 }

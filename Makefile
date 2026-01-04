@@ -8,8 +8,9 @@ ADDITIONAL_OBJS = VertexBuffer.cpp IndexBuffer.cpp VertexArray.cpp BufferLayoutO
 MESH = Renderables/Mesh.cpp Renderables/Light.cpp Renderables/Model.cpp
 FRAMEBUFFER_OBJS = Framebuffer/Framebuffer.cpp Framebuffer/PickingTexture.cpp Framebuffer/Renderbuffer.cpp
 TEXTURES = Textures/Texture.cpp Textures/Cubemap.cpp
+WINDOW = Window/Window.cpp
 
-SRC = main.cpp stb_image.cpp tiny_obj_loader.cpp $(IMGUI) $(ADDITIONAL_OBJS) $(MESH) $(FRAMEBUFFER_OBJS) $(TEXTURES)
+SRC = main.cpp stb_image.cpp tiny_obj_loader.cpp $(IMGUI) $(ADDITIONAL_OBJS) $(MESH) $(FRAMEBUFFER_OBJS) $(TEXTURES) $(WINDOW)
 
 TARGET = main.exe
 
