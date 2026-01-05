@@ -4,9 +4,7 @@
 Renderer::Renderer()
 {
 
-    Light *l = new Light();
-    l->Init();
-    source = l;
+    source = new Light();
 
     projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 100.0f);
 

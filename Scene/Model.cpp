@@ -124,13 +124,14 @@ Model* AssembleModel(std::vector<Mesh*> &meshes, std::vector<tinyobj::material_t
             continue;
 
         Material mat;
-        Mesh *mesh = new Mesh();
-        mesh->Init(newVertices, newIndices);
+        Mesh *mesh = new Mesh(newVertices, newIndices);
+
         mat.name = it->name;
         mat.ambient = glm::vec3(it->ambient[0], it->ambient[1], it->ambient[2]);
         mat.diffuse = glm::vec3(it->diffuse[0], it->diffuse[1], it->diffuse[2]);
         mat.specular = glm::vec3(it->specular[0], it->specular[1], it->specular[2]);
         mat.shininess = it->shininess;
+        
         mesh->material = mat;
 
         if (it->ambient_texname != "")
@@ -217,8 +218,7 @@ Model* ConstructCubeM()
     };
 
     Material mat;
-    Mesh* mesh = new Mesh();
-    mesh->Init(vertices, indices);
+    Mesh* mesh = new Mesh(vertices, indices);
 
     mat.ambient = glm::vec3(1.0f, 0.5f, 0.31f);
     mat.diffuse = glm::vec3(1.0f, 0.5f, 0.31f);
@@ -298,8 +298,7 @@ Model* ConstructSphereM()
     }
 
     Material mat;
-    Mesh* mesh = new Mesh();
-    mesh->Init(vertices, indices);
+    Mesh* mesh = new Mesh(vertices, indices);
 
     mat.ambient = glm::vec3(1.0f, 0.5f, 0.31f);
     mat.diffuse = glm::vec3(1.0f, 0.5f, 0.31f);
@@ -350,8 +349,7 @@ Model* ConstructPyramidM()
     };
 
     Material mat;
-    Mesh* mesh = new Mesh();
-    mesh->Init(vertices, indices);
+    Mesh* mesh = new Mesh(vertices, indices);
 
     mat.ambient = glm::vec3(1.0f, 0.5f, 0.31f);
     mat.diffuse = glm::vec3(1.0f, 0.5f, 0.31f);
@@ -387,8 +385,7 @@ Model* ConstructSurfaceM()
         4, 7, 6,
     };
 
-    Mesh* mesh = new Mesh();
-    mesh->Init(vertices, indices);
+    Mesh* mesh = new Mesh(vertices, indices);
 
     return new Model( {mesh} );
 
@@ -429,8 +426,7 @@ Model* ConstructSkyboxM()
         6, 2, 3
     };
 
-    Mesh* mesh = new Mesh();
-    mesh->Init(skyboxVertices, skyboxIndices);
+    Mesh* mesh = new Mesh(skyboxVertices, skyboxIndices);
 
     return new Model( {mesh} );
 
@@ -514,8 +510,7 @@ Model* LoadObjM(const char* filepath)
             }
 
             Material mat;
-            Mesh *mesh = new Mesh();
-            mesh->Init(vertices, indices);
+            Mesh *mesh = new Mesh(vertices, indices);
 
             if (shape.mesh.material_ids[f] >= 0)
             {

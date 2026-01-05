@@ -1,6 +1,6 @@
 #include "Light.h"
 
-void Light::Init()
+Light::Light()
 {
 
     mesh = ConstructCubeM();

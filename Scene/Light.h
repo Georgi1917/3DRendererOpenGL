@@ -4,7 +4,7 @@
 struct Light
 {
 
-    void Init();
+    Light();
     Model *mesh;
     
     glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
