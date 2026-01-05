@@ -16,10 +16,10 @@
 struct MousePicker
 {
 
-    glm::vec3 currentRay;
+    glm::vec3  currentRay;
     GLFWwindow *glfwWindow;
-    glm::mat4 projMatrix;
-    Camera *camera;
+    glm::mat4  projMatrix;
+    Camera     *camera;
 
     Model *currModelDrag;
     Model *currModelData;

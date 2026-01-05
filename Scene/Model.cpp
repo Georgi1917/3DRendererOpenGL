@@ -131,7 +131,7 @@ Model* AssembleModel(std::vector<Mesh*> &meshes, std::vector<tinyobj::material_t
         mat.diffuse = glm::vec3(it->diffuse[0], it->diffuse[1], it->diffuse[2]);
         mat.specular = glm::vec3(it->specular[0], it->specular[1], it->specular[2]);
         mat.shininess = it->shininess;
-        
+
         mesh->material = mat;
 
         if (it->ambient_texname != "")
@@ -465,8 +465,7 @@ Model* LoadObjM(const char* filepath)
         for (unsigned int f = 0; f < shape.mesh.num_face_vertices.size(); f++)
         {
 
-            unsigned int fv = shape.mesh.num_face_vertices[f];
-
+            unsigned int fv = shape.mesh.num_face_vertices[f];        
             std::vector<Vertex> vertices;
             std::vector<unsigned int > indices;
 

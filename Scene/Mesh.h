@@ -41,18 +41,14 @@ struct Mesh
     unsigned int id;
 
     VertexArray        vao = VertexArray();
-    VertexBuffer       vbo = VertexBuffer();
     IndexBuffer        ibo = IndexBuffer();
-    BufferLayoutObject layout = BufferLayoutObject();
 
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     Material material;
     std::vector<Texture*> textures;
 
-    void Init(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
     void Draw(Shader &shader);
-    Mesh();
     Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
     ~Mesh();
 
