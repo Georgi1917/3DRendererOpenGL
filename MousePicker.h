@@ -7,9 +7,9 @@
 #include "include/glm/gtc/type_ptr.hpp"
 #include "Framebuffer/Framebuffer.h"
 #include "Camera.h"
-#include "Renderables/Mesh.h"
-#include "Renderables/Light.h"
-#include "Renderables/Model.h"
+#include "Scene/Mesh.h"
+#include "Scene/Light.h"
+#include "Scene/Model.h"
 #include <vector>
 #include <memory>
 

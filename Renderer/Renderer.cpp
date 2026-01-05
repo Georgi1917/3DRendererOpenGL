@@ -27,6 +27,7 @@ Renderer::~Renderer()
         delete m;
 
     }
+    models_c.clear();
 
 }
 
