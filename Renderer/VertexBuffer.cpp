@@ -1,5 +1,5 @@
 #define GLEW_STATIC
-#include "include/glew.h"
+#include "../include/glew.h"
 #include "VertexBuffer.h"
 
 void VertexBuffer::init(const void* data, unsigned int size)

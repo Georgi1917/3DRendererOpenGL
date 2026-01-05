@@ -1,5 +1,5 @@
 #define GLEW_STATIC
-#include "include/glew.h"
+#include "../include/glew.h"
 #include "IndexBuffer.h"
 
 void IndexBuffer::init(const unsigned int* data, unsigned int count)

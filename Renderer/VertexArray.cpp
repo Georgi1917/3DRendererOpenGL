@@ -1,5 +1,5 @@
 #define GLEW_STATIC
-#include "include/glew.h"
+#include "../include/glew.h"
 #include "VertexArray.h"
 #include <cstddef>
 

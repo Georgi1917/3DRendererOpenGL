@@ -1,6 +1,6 @@
 #pragma once
 #define GLEW_STATIC
-#include "include/glew.h"
+#include "../include/glew.h"
 #include <vector>
 
 struct LayoutElement

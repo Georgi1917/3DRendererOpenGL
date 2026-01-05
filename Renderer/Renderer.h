@@ -1,17 +1,17 @@
 #pragma once
 #define GLEW_STATIC
-#include "include/glew.h"
+#include "../include/glew.h"
 #include "VertexArray.h"
 #include "IndexBuffer.h"
-#include "Shader.h"
-#include "Renderables/Mesh.h"
-#include "Renderables/Light.h"
-#include "Renderables/Model.h"
-#include "Camera.h"
-#include "Textures/Cubemap.h"
-#include "include/glm/glm.hpp"
-#include "include/glm/gtc/matrix_transform.hpp"
-#include "include/glm/gtc/type_ptr.hpp"
+#include "../Shader.h"
+#include "../Renderables/Mesh.h"
+#include "../Renderables/Light.h"
+#include "../Renderables/Model.h"
+#include "../Camera.h"
+#include "../Textures/Cubemap.h"
+#include "../include/glm/glm.hpp"
+#include "../include/glm/gtc/matrix_transform.hpp"
+#include "../include/glm/gtc/type_ptr.hpp"
 
 struct Renderer
 {
