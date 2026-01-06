@@ -7,7 +7,7 @@ IMGUI = include/imgui/imgui_demo.cpp include/imgui/imgui_draw.cpp include/imgui/
 RENDERER = Renderer/VertexArray.cpp Renderer/VertexBuffer.cpp Renderer/Renderer.cpp Renderer/IndexBuffer.cpp Renderer/BufferLayoutObject.cpp
 ADDITIONAL_OBJS = Shader.cpp Camera.cpp MousePicker.cpp
 SCENE = Scene/Mesh.cpp Scene/Light.cpp Scene/Model.cpp Scene/Scene.cpp
-FRAMEBUFFER_OBJS = Framebuffer/Framebuffer.cpp Framebuffer/PickingTexture.cpp Framebuffer/Renderbuffer.cpp
+FRAMEBUFFER_OBJS = Framebuffer/PickingFramebuffer.cpp
 TEXTURES = Textures/Texture.cpp Textures/Cubemap.cpp
 WINDOW = Window/Window.cpp
 

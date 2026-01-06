@@ -101,7 +101,7 @@ glm::vec2 MousePicker::NormalizeMouseCoords(double mouseX, double mouseY)
 
 }
 
-void MousePicker::CheckForMouseClick(Framebuffer &fbo, std::vector<Model*> &models)
+void MousePicker::CheckForMouseClick(PickingFramebuffer &fbo, std::vector<Model*> &models)
 {
 
     if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !currModelDrag)
@@ -136,7 +136,7 @@ void MousePicker::CheckForMouseClick(Framebuffer &fbo, std::vector<Model*> &mode
 
 }
 
-void MousePicker::CheckForLightSourceClick(Framebuffer& fbo, Model*& source)
+void MousePicker::CheckForLightSourceClick(PickingFramebuffer& fbo, Model*& source)
 {
 
     if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !currModelDrag)

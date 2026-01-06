@@ -16,6 +16,7 @@
 #include "Framebuffer/Framebuffer.h"
 #include "Framebuffer/PickingTexture.h"
 #include "Framebuffer/Renderbuffer.h"
+#include "Framebuffer/PickingFramebuffer.h"
 #include "Textures/Texture.h"
 #include "Textures/Cubemap.h"
 #include "include/stb_image.h"
@@ -64,13 +65,15 @@ int main()
 
     };
 
-    Framebuffer fbo;
-    PickingTexture pickingTex;
-    Renderbuffer rbo;
+    // Framebuffer fbo;
+    // PickingTexture pickingTex;
+    // Renderbuffer rbo;
 
-    fbo.CheckStatus();
+    // fbo.CheckStatus();
 
-    fbo.Unbind();
+    // fbo.Unbind();
+
+    PickingFramebuffer fbo;
 
     Shader basicShader("shaders/basic.vs", "shaders/basic.fs");
     Shader lightingShader("shaders/lighting.vs", "shaders/lighting.fs");

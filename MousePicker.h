@@ -5,7 +5,7 @@
 #include "include/glm/glm.hpp"
 #include "include/glm/gtc/matrix_transform.hpp"
 #include "include/glm/gtc/type_ptr.hpp"
-#include "Framebuffer/Framebuffer.h"
+#include "Framebuffer/PickingFramebuffer.h"
 #include "Camera.h"
 #include "Scene/Mesh.h"
 #include "Scene/Light.h"
@@ -36,8 +36,8 @@ struct MousePicker
     ~MousePicker();
 
     void Update();
-    void CheckForMouseClick(Framebuffer &fbo, std::vector<Model*> &meshes);
-    void CheckForLightSourceClick(Framebuffer &fbo, Model*& source);
+    void CheckForMouseClick(PickingFramebuffer &fbo, std::vector<Model*> &meshes);
+    void CheckForLightSourceClick(PickingFramebuffer &fbo, Model*& source);
     Model* GetClickedObj();
     static void ScrollCallback(GLFWwindow *window, double xoffset, double yoffset);
 
