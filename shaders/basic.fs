@@ -11,6 +11,8 @@ struct Light
     vec3 diffuse;
     vec3 specular;
 
+    bool hasAttenuation;
+
 };
 
 struct Material
@@ -36,8 +38,6 @@ uniform Light light;
 uniform Material material;
 
 uniform vec3 viewPos;
-
-uniform bool hasAttenuation;
 
 in vec3 Normal;
 in vec3 FragPos;
@@ -85,7 +85,7 @@ void main()
         specular = light.specular * (spec * material.specular);
     }
     
-    if (hasAttenuation)
+    if (light.hasAttenuation)
     {
 
         float distance = length(light.pos - FragPos);

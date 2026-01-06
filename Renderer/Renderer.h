@@ -3,6 +3,7 @@
 #include "../include/glew.h"
 #include "VertexArray.h"
 #include "IndexBuffer.h"
+#include "../Framebuffer/PickingFramebuffer.h"
 #include "../Shader.h"
 #include "../Scene/Mesh.h"
 #include "../Scene/Light.h"
@@ -21,14 +22,16 @@ struct Renderer
     Light *source;
     Model *skyBoxM;
     Cubemap *skyBoxTexture;
-
+    
+    PickingFramebuffer fbo;
     std::vector<Model *> models_c;
-    bool hasAttenuation = true;
     bool hasSkybox      = true;
 
     Renderer();
     ~Renderer();
 
+    void BeginFrame();
+    void PickingPass(Shader& shader);
     void DrawSkybox(Shader &shader);
     void DrawMeshes(Shader &shader);
     void DrawMeshesPicking(Shader &shader);

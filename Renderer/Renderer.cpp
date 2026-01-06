@@ -29,6 +29,26 @@ Renderer::~Renderer()
 
 }
 
+void Renderer::BeginFrame()
+{
+
+    glViewport(0, 0, 1280, 720);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+}
+
+void Renderer::PickingPass(Shader& shader)
+{
+
+    fbo.Bind();
+    glViewport(0, 0, 1280, 720);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    DrawMeshesPicking(shader);
+    DrawLightSourcePicking(shader);
+    fbo.Unbind();
+
+}
+
 void Renderer::DrawSkybox(Shader &shader)
 {
 
@@ -63,13 +83,12 @@ void Renderer::DrawMeshes(Shader &shader)
     for (auto& model : models_c)
     {
 
-        if (hasAttenuation) shader.SetBool("hasAttenuation", true);
-        else shader.SetBool("hasAttenuation", false);
-
         shader.SetVec3f("light.pos", source->mesh->trans);
         shader.SetVec3f("light.ambient", source->ambient);
         shader.SetVec3f("light.diffuse", source->diffuse);
         shader.SetVec3f("light.specular", source->specular);
+        source->hasAttenuation ? shader.SetBool("light.hasAttenuation", true) 
+                               : shader.SetBool("light.hasAttenuation", false);
         shader.SetVec3f("viewPos", cam->GetPosition());
         shader.SetMatrix4fv("model", model->model);
         model->Draw(shader);
@@ -106,7 +125,7 @@ void Renderer::DrawLightSource(Shader &shader)
 {
 
     shader.Bind();
-    shader.SetVec3f("lightColor", source->lightColor);
+    shader.SetVec3f("uColor", source->lightColor);
     shader.SetMatrix4fv("model", source->mesh->model);
     shader.SetMatrix4fv("projection", projection);
     shader.SetMatrix4fv("view", cam->GetViewMatrix());
@@ -121,7 +140,7 @@ void Renderer::DrawLightSourcePicking(Shader& shader)
 {
 
     shader.Bind();
-    shader.SetVec3f("lightColor", source->mesh->pickingColor);
+    shader.SetVec3f("uColor", source->mesh->pickingColor);
     shader.SetMatrix4fv("model", source->mesh->model);
     shader.SetMatrix4fv("projection", projection);
     shader.SetMatrix4fv("view", cam->GetViewMatrix());

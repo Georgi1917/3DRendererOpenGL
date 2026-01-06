@@ -14,6 +14,8 @@ struct Scene
     Cubemap   *skyBoxTexture;
     glm::mat4  projection;
 
+    bool hasSkybox = true;
+
     std::vector<Model *> entities;
 
     Scene();

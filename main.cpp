@@ -13,9 +13,6 @@
 #include "Camera.h"
 #include "MousePicker.h"
 #include "Renderer/Renderer.h"
-#include "Framebuffer/Framebuffer.h"
-#include "Framebuffer/PickingTexture.h"
-#include "Framebuffer/Renderbuffer.h"
 #include "Framebuffer/PickingFramebuffer.h"
 #include "Textures/Texture.h"
 #include "Textures/Cubemap.h"
@@ -65,14 +62,6 @@ int main()
 
     };
 
-    // Framebuffer fbo;
-    // PickingTexture pickingTex;
-    // Renderbuffer rbo;
-
-    // fbo.CheckStatus();
-
-    // fbo.Unbind();
-
     PickingFramebuffer fbo;
 
     Shader basicShader("shaders/basic.vs", "shaders/basic.fs");
@@ -88,6 +77,7 @@ int main()
 
     renderer.cam = &camera;
     renderer.skyBoxTexture = &cubemap;
+    renderer.fbo = fbo;
 
     MousePicker mousePicker(win.window, &camera, renderer.GetProjection());
     glfwSetWindowUserPointer(win.window, &mousePicker);
@@ -110,9 +100,8 @@ int main()
     while(!win.ShouldClose())
     {
 
-        fbo.Bind();
-        renderer.SetViewport(0, 0, 1280, 720);
-        renderer.Clear();
+        //fbo.Bind();
+        renderer.BeginFrame();
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -124,10 +113,12 @@ int main()
 
         camera.Update(win.window, deltaTime);
 
-        renderer.DrawMeshesPicking(pickingShader);
-        renderer.DrawLightSourcePicking(lightingShader);
+        // renderer.DrawMeshesPicking(pickingShader);
+        // renderer.DrawLightSourcePicking(lightingShader);
 
-        fbo.Unbind();
+        renderer.PickingPass(pickingShader);
+
+        //fbo.Unbind();
 
         renderer.SetViewport(0, 0, 1280, 720);
         renderer.Clear();
@@ -174,7 +165,7 @@ int main()
             if (wireFrameMode) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         
-        if (ImGui::Checkbox("Attenuation", &renderer.hasAttenuation))
+        if (ImGui::Checkbox("Attenuation", &renderer.source->hasAttenuation))
         {}
 
         if (ImGui::Checkbox("Draw Skybox", &renderer.hasSkybox))
