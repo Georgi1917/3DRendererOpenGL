@@ -1,6 +1,7 @@
 #pragma once
 #define GLEW_STATIC
 #include "../include/glew.h"
+#include "../Scene/Scene.h"
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "../Framebuffer/PickingFramebuffer.h"
@@ -22,6 +23,8 @@ struct Renderer
     Light *source;
     Model *skyBoxM;
     Cubemap *skyBoxTexture;
+
+    Scene scene;
     
     PickingFramebuffer fbo;
     std::vector<Model *> models_c;
@@ -32,6 +35,9 @@ struct Renderer
 
     void BeginFrame();
     void PickingPass(Shader& shader);
+    void SkyboxPass(Shader& shader);
+    void MainPass(Shader& shader);
+    void LightPass(Shader& shader);
     void DrawSkybox(Shader &shader);
     void DrawMeshes(Shader &shader);
     void DrawMeshesPicking(Shader &shader);

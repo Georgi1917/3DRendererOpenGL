@@ -9,7 +9,7 @@ ADDITIONAL_OBJS = Shader.cpp Camera.cpp MousePicker.cpp
 SCENE = Scene/Mesh.cpp Scene/Light.cpp Scene/Model.cpp Scene/Scene.cpp
 FRAMEBUFFER_OBJS = Framebuffer/PickingFramebuffer.cpp
 TEXTURES = Textures/Texture.cpp Textures/Cubemap.cpp
-WINDOW = Window/Window.cpp
+WINDOW = Window/Window.cpp Window/Time.cpp
 
 SRC = main.cpp stb_image.cpp tiny_obj_loader.cpp $(IMGUI) $(RENDERER) $(ADDITIONAL_OBJS) $(SCENE) $(FRAMEBUFFER_OBJS) $(TEXTURES) $(WINDOW)
 

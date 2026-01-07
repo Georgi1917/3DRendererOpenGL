@@ -49,6 +49,46 @@ void Renderer::PickingPass(Shader& shader)
 
 }
 
+void Renderer::MainPass(Shader& shader)
+{
+
+    DrawMeshes(shader);
+
+}
+
+void Renderer::SkyboxPass(Shader& shader)
+{
+
+    glViewport(0, 0, 1280, 720);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    if (!hasSkybox) return;
+
+    glm::mat4 view = glm::mat4(glm::mat3(cam->GetViewMatrix()));
+
+    glDepthMask(GL_FALSE);
+    glDepthFunc(GL_LEQUAL);
+    shader.Bind();
+    skyBoxTexture->Bind();
+    shader.SetMatrix4fv("projection", projection);
+    shader.SetMatrix4fv("view", view);
+    shader.SetMatrix4fv("model", skyBoxM->model);
+    skyBoxM->Draw(shader);
+    skyBoxM->model = glm::mat4(1.0f);
+    skyBoxM->SetUpMatrix();
+    skyBoxTexture->Unbind();
+    glDepthMask(GL_TRUE);
+    glDepthFunc(GL_LESS);
+
+}
+
+void Renderer::LightPass(Shader &shader)
+{
+
+    DrawLightSource(shader);
+
+}
+
 void Renderer::DrawSkybox(Shader &shader)
 {
 

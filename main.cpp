@@ -2,6 +2,7 @@
 #include "include/imgui/imgui_impl_glfw.h"
 #include "include/imgui/imgui_impl_opengl3.h"
 #include "Window/Window.h"
+#include "Window/Time.h"
 #include "include/glm/glm.hpp"
 #include "include/glm/gtc/matrix_transform.hpp"
 #include "include/glm/gtc/type_ptr.hpp"
@@ -22,9 +23,6 @@
 #include <vector>
 #include <memory>
 #include <filesystem>
-
-float deltaTime = 0.0f;
-float lastTime = 0.0f;
 
 void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
                                 const GLchar* message, const void* userParam) 
@@ -51,17 +49,6 @@ int main()
 
     Window win = Window(1280, 720, "Renderer");
 
-    std::vector<std::string> faces = {
-
-        "cubemap-faces/right.jpg",
-        "cubemap-faces/left.jpg",
-        "cubemap-faces/top.jpg",
-        "cubemap-faces/bottom.jpg",
-        "cubemap-faces/front.jpg",
-        "cubemap-faces/back.jpg",
-
-    };
-
     PickingFramebuffer fbo;
 
     Shader basicShader("shaders/basic.vs", "shaders/basic.fs");
@@ -73,7 +60,16 @@ int main()
 
     Renderer renderer;
 
-    Cubemap cubemap = Cubemap(faces);
+    Cubemap cubemap = Cubemap({
+
+        "cubemap-faces/right.jpg",
+        "cubemap-faces/left.jpg",
+        "cubemap-faces/top.jpg",
+        "cubemap-faces/bottom.jpg",
+        "cubemap-faces/front.jpg",
+        "cubemap-faces/back.jpg",
+
+    });
 
     renderer.cam = &camera;
     renderer.skyBoxTexture = &cubemap;
@@ -100,32 +96,20 @@ int main()
     while(!win.ShouldClose())
     {
 
-        //fbo.Bind();
+        float deltaTime = GetDeltaTime();
+
+        camera.Update(win.window, deltaTime);
+
         renderer.BeginFrame();
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        float currTime = glfwGetTime();
-        deltaTime = currTime - lastTime;
-        lastTime = currTime;
-
-        camera.Update(win.window, deltaTime);
-
-        // renderer.DrawMeshesPicking(pickingShader);
-        // renderer.DrawLightSourcePicking(lightingShader);
-
         renderer.PickingPass(pickingShader);
-
-        //fbo.Unbind();
-
-        renderer.SetViewport(0, 0, 1280, 720);
-        renderer.Clear();
-
-        renderer.DrawSkybox(skyboxShader);
-        renderer.DrawMeshes(basicShader);
-        renderer.DrawLightSource(lightingShader);
+        renderer.SkyboxPass(skyboxShader);
+        renderer.MainPass(basicShader);
+        renderer.LightPass(lightingShader);
 
         mousePicker.CheckForMouseClick(fbo, renderer.models_c);
         mousePicker.CheckForLightSourceClick(fbo, renderer.source->mesh);

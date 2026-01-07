@@ -428,6 +428,7 @@ Model* ConstructSkyboxM()
 
     Mesh* mesh = new Mesh(skyboxVertices, skyboxIndices);
 
+    currTransM.x -= 2.0f;
     return new Model( {mesh} );
 
 }
