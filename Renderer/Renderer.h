@@ -18,11 +18,11 @@
 struct Renderer
 {
 
-    glm::mat4 projection;
-    Camera *cam;
-    Light *source;
-    Model *skyBoxM;
-    Cubemap *skyBoxTexture;
+    // glm::mat4 projection;
+    // Camera *cam;
+    // Light *source;
+    // Model *skyBoxM;
+    // Cubemap *skyBoxTexture;
 
     Scene scene;
     
@@ -34,18 +34,19 @@ struct Renderer
     ~Renderer();
 
     void BeginFrame();
+
     void PickingPass(Shader& shader);
     void SkyboxPass(Shader& shader);
     void MainPass(Shader& shader);
     void LightPass(Shader& shader);
-    void DrawSkybox(Shader &shader);
+
     void DrawMeshes(Shader &shader);
     void DrawMeshesPicking(Shader &shader);
     void DrawLightSource(Shader &shader);
     void DrawLightSourcePicking(Shader &shader);
+
     void Clear();
     void EnableDepthTesting();
     void SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
-    glm::mat4& GetProjection();
     
 };

@@ -56,26 +56,13 @@ int main()
     Shader pickingShader("shaders/picking.vs", "shaders/picking.fs");
     Shader skyboxShader("shaders/skybox.vs", "shaders/skybox.fs");
 
-    Camera camera(glm::vec3(1.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+    // Camera camera(glm::vec3(1.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f));
 
     Renderer renderer;
 
-    Cubemap cubemap = Cubemap({
-
-        "cubemap-faces/right.jpg",
-        "cubemap-faces/left.jpg",
-        "cubemap-faces/top.jpg",
-        "cubemap-faces/bottom.jpg",
-        "cubemap-faces/front.jpg",
-        "cubemap-faces/back.jpg",
-
-    });
-
-    renderer.cam = &camera;
-    renderer.skyBoxTexture = &cubemap;
     renderer.fbo = fbo;
 
-    MousePicker mousePicker(win.window, &camera, renderer.GetProjection());
+    MousePicker mousePicker(win.window, renderer.scene.camera, renderer.scene.projection);
     glfwSetWindowUserPointer(win.window, &mousePicker);
     glfwSetScrollCallback(win.window, MousePicker::ScrollCallback);
 
@@ -98,7 +85,7 @@ int main()
 
         float deltaTime = GetDeltaTime();
 
-        camera.Update(win.window, deltaTime);
+        renderer.scene.camera->Update(win.window, deltaTime);
 
         renderer.BeginFrame();
 
@@ -111,19 +98,19 @@ int main()
         renderer.MainPass(basicShader);
         renderer.LightPass(lightingShader);
 
-        mousePicker.CheckForMouseClick(fbo, renderer.models_c);
-        mousePicker.CheckForLightSourceClick(fbo, renderer.source->mesh);
+        mousePicker.CheckForMouseClick(fbo, renderer.scene.entities);
+        mousePicker.CheckForLightSourceClick(fbo, renderer.scene.lightSource->mesh);
         
         ImGui::Begin("First Window");
 
         if (ImGui::Button("Cube"))
-            renderer.models_c.push_back(ConstructCubeM());
+            renderer.scene.entities.push_back(ConstructCubeM());
 
         if (ImGui::Button("Sphere"))
-            renderer.models_c.push_back(ConstructSphereM());
+            renderer.scene.entities.push_back(ConstructSphereM());
 
         if (ImGui::Button("Pyramid"))
-            renderer.models_c.push_back(ConstructPyramidM());
+            renderer.scene.entities.push_back(ConstructPyramidM());
 
         if (ImGui::Button("Import Object"))
             ImGui::OpenPopup("Objects");
@@ -137,7 +124,7 @@ int main()
             {
 
                 if (EndsWithObj(entry.path().string()) && ImGui::MenuItem(entry.path().generic_string().c_str()))
-                    renderer.models_c.push_back(LoadObjM(entry.path().generic_string().c_str()));
+                    renderer.scene.entities.push_back(LoadObjM(entry.path().generic_string().c_str()));
 
             }
 
@@ -149,7 +136,7 @@ int main()
             if (wireFrameMode) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         
-        if (ImGui::Checkbox("Attenuation", &renderer.source->hasAttenuation))
+        if (ImGui::Checkbox("Attenuation", &renderer.scene.lightSource->hasAttenuation))
         {}
 
         if (ImGui::Checkbox("Draw Skybox", &renderer.hasSkybox))
@@ -161,14 +148,14 @@ int main()
             if (ImGui::Button("Delete Object"))
             {
 
-                for (auto it = renderer.models_c.begin(); it != renderer.models_c.end();)
+                for (auto it = renderer.scene.entities.begin(); it != renderer.scene.entities.end();)
                 {
 
                     if (*it == mousePicker.GetClickedObj())
                     {
 
                         delete *it;
-                        it = renderer.models_c.erase(it);
+                        it = renderer.scene.entities.erase(it);
             
                         mousePicker.currModelData = nullptr;
 

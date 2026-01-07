@@ -4,15 +4,15 @@
 Renderer::Renderer()
 {
 
-    source = new Light();
+    // source = new Light();
 
-    projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 100.0f);
+    // projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 100.0f);
 
-    skyBoxM = ConstructSkyboxM();
+    // skyBoxM = ConstructSkyboxM();
 
-    models_c.push_back(ConstructCubeM());
-    models_c.push_back(ConstructSphereM());
-    models_c.push_back(ConstructPyramidM());
+    // models_c.push_back(ConstructCubeM());
+    // models_c.push_back(ConstructSphereM());
+    // models_c.push_back(ConstructPyramidM());
 
 }
 
@@ -64,19 +64,19 @@ void Renderer::SkyboxPass(Shader& shader)
 
     if (!hasSkybox) return;
 
-    glm::mat4 view = glm::mat4(glm::mat3(cam->GetViewMatrix()));
+    glm::mat4 view = glm::mat4(glm::mat3(scene.camera->GetViewMatrix()));
 
     glDepthMask(GL_FALSE);
     glDepthFunc(GL_LEQUAL);
     shader.Bind();
-    skyBoxTexture->Bind();
-    shader.SetMatrix4fv("projection", projection);
+    scene.skyBoxTexture->Bind();
+    shader.SetMatrix4fv("projection", scene.projection);
     shader.SetMatrix4fv("view", view);
-    shader.SetMatrix4fv("model", skyBoxM->model);
-    skyBoxM->Draw(shader);
-    skyBoxM->model = glm::mat4(1.0f);
-    skyBoxM->SetUpMatrix();
-    skyBoxTexture->Unbind();
+    shader.SetMatrix4fv("model", scene.skyBoxModel->model);
+    scene.skyBoxModel->Draw(shader);
+    scene.skyBoxModel->model = glm::mat4(1.0f);
+    scene.skyBoxModel->SetUpMatrix();
+    scene.skyBoxTexture->Unbind();
     glDepthMask(GL_TRUE);
     glDepthFunc(GL_LESS);
 
@@ -89,52 +89,36 @@ void Renderer::LightPass(Shader &shader)
 
 }
 
-void Renderer::DrawSkybox(Shader &shader)
-{
-
-    if (!hasSkybox) return;
-
-    glm::mat4 view = glm::mat4(glm::mat3(cam->GetViewMatrix()));
-
-    glDepthMask(GL_FALSE);
-    glDepthFunc(GL_LEQUAL);
-    shader.Bind();
-    skyBoxTexture->Bind();
-    shader.SetMatrix4fv("projection", projection);
-    shader.SetMatrix4fv("view", view);
-    shader.SetMatrix4fv("model", skyBoxM->model);
-    skyBoxM->Draw(shader);
-    skyBoxM->model = glm::mat4(1.0f);
-    skyBoxM->SetUpMatrix();
-    skyBoxTexture->Unbind();
-    glDepthMask(GL_TRUE);
-    glDepthFunc(GL_LESS);
-
-}
-
 void Renderer::DrawMeshes(Shader &shader)
 {
 
     shader.Bind();
 
-    shader.SetMatrix4fv("projection", projection);
-    shader.SetMatrix4fv("view", cam->GetViewMatrix());
+    shader.SetMatrix4fv("projection", scene.projection);
+    shader.SetMatrix4fv("view", scene.camera->GetViewMatrix());
 
-    for (auto& model : models_c)
+    if (scene.entities.empty())
     {
 
-        shader.SetVec3f("light.pos", source->mesh->trans);
-        shader.SetVec3f("light.ambient", source->ambient);
-        shader.SetVec3f("light.diffuse", source->diffuse);
-        shader.SetVec3f("light.specular", source->specular);
-        source->hasAttenuation ? shader.SetBool("light.hasAttenuation", true) 
-                               : shader.SetBool("light.hasAttenuation", false);
-        shader.SetVec3f("viewPos", cam->GetPosition());
-        shader.SetMatrix4fv("model", model->model);
-        model->Draw(shader);
+        std::cout << "YESS" << "\n";
 
-        model->model = glm::mat4(1.0f);
-        model->SetUpMatrix();
+    }
+
+    for (auto& entity : scene.entities)
+    {
+
+        shader.SetVec3f("light.pos", scene.lightSource->mesh->trans);
+        shader.SetVec3f("light.ambient", scene.lightSource->ambient);
+        shader.SetVec3f("light.diffuse", scene.lightSource->diffuse);
+        shader.SetVec3f("light.specular", scene.lightSource->specular);
+        scene.lightSource->hasAttenuation ? shader.SetBool("light.hasAttenuation", true) 
+                                          : shader.SetBool("light.hasAttenuation", false);
+        shader.SetVec3f("viewPos", scene.camera->GetPosition());
+        shader.SetMatrix4fv("model", entity->model);
+        entity->Draw(shader);
+
+        entity->model = glm::mat4(1.0f);
+        entity->SetUpMatrix();
 
     }
 
@@ -144,10 +128,10 @@ void Renderer::DrawMeshesPicking(Shader &shader)
 {
 
     shader.Bind();
-    shader.SetMatrix4fv("projection", projection);
-    shader.SetMatrix4fv("view", cam->GetViewMatrix());
+    shader.SetMatrix4fv("projection", scene.projection);
+    shader.SetMatrix4fv("view", scene.camera->GetViewMatrix());
 
-    for (auto& model : models_c)
+    for (auto& model : scene.entities)
     {
 
         shader.SetVec3f("uColor", model->pickingColor);
@@ -165,14 +149,14 @@ void Renderer::DrawLightSource(Shader &shader)
 {
 
     shader.Bind();
-    shader.SetVec3f("uColor", source->lightColor);
-    shader.SetMatrix4fv("model", source->mesh->model);
-    shader.SetMatrix4fv("projection", projection);
-    shader.SetMatrix4fv("view", cam->GetViewMatrix());
-    source->mesh->Draw(shader);
+    shader.SetVec3f("uColor", scene.lightSource->lightColor);
+    shader.SetMatrix4fv("model", scene.lightSource->mesh->model);
+    shader.SetMatrix4fv("projection", scene.projection);
+    shader.SetMatrix4fv("view", scene.camera->GetViewMatrix());
+    scene.lightSource->mesh->Draw(shader);
 
-    source->mesh->model = glm::mat4(1.0f);
-    source->mesh->SetUpMatrix();
+    scene.lightSource->mesh->model = glm::mat4(1.0f);
+    scene.lightSource->mesh->SetUpMatrix();
 
 }
 
@@ -180,14 +164,14 @@ void Renderer::DrawLightSourcePicking(Shader& shader)
 {
 
     shader.Bind();
-    shader.SetVec3f("uColor", source->mesh->pickingColor);
-    shader.SetMatrix4fv("model", source->mesh->model);
-    shader.SetMatrix4fv("projection", projection);
-    shader.SetMatrix4fv("view", cam->GetViewMatrix());
-    source->mesh->Draw(shader);
+    shader.SetVec3f("uColor", scene.lightSource->mesh->pickingColor);
+    shader.SetMatrix4fv("model", scene.lightSource->mesh->model);
+    shader.SetMatrix4fv("projection", scene.projection);
+    shader.SetMatrix4fv("view", scene.camera->GetViewMatrix());
+    scene.lightSource->mesh->Draw(shader);
     
-    source->mesh->model = glm::mat4(1.0f);
-    source->mesh->SetUpMatrix();
+    scene.lightSource->mesh->model = glm::mat4(1.0f);
+    scene.lightSource->mesh->SetUpMatrix();
 
 }
 
@@ -212,7 +196,3 @@ void Renderer::EnableDepthTesting()
 
 }
 
-glm::mat4& Renderer::GetProjection()
-{
-    return projection;
-}
