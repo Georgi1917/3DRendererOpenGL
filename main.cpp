@@ -139,7 +139,7 @@ int main()
         if (ImGui::Checkbox("Attenuation", &renderer.scene.lightSource->hasAttenuation))
         {}
 
-        if (ImGui::Checkbox("Draw Skybox", &renderer.hasSkybox))
+        if (ImGui::Checkbox("Draw Skybox", &renderer.scene.hasSkybox))
         {}
             
         if (mousePicker.GetClickedObj())

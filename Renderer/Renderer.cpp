@@ -1,34 +1,6 @@
 #include "Renderer.h"
 #include <iostream>
 
-Renderer::Renderer()
-{
-
-    // source = new Light();
-
-    // projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 100.0f);
-
-    // skyBoxM = ConstructSkyboxM();
-
-    // models_c.push_back(ConstructCubeM());
-    // models_c.push_back(ConstructSphereM());
-    // models_c.push_back(ConstructPyramidM());
-
-}
-
-Renderer::~Renderer()
-{
-
-    for (auto m : models_c)
-    {
-
-        delete m;
-
-    }
-    models_c.clear();
-
-}
-
 void Renderer::BeginFrame()
 {
 
@@ -62,7 +34,7 @@ void Renderer::SkyboxPass(Shader& shader)
     glViewport(0, 0, 1280, 720);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    if (!hasSkybox) return;
+    if (!scene.hasSkybox) return;
 
     glm::mat4 view = glm::mat4(glm::mat3(scene.camera->GetViewMatrix()));
 
@@ -172,20 +144,6 @@ void Renderer::DrawLightSourcePicking(Shader& shader)
     
     scene.lightSource->mesh->model = glm::mat4(1.0f);
     scene.lightSource->mesh->SetUpMatrix();
-
-}
-
-void Renderer::SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height)
-{
-
-    glViewport(x, y, width, height);
-
-}
-
-void Renderer::Clear()
-{
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 }
 

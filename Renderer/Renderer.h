@@ -18,20 +18,9 @@
 struct Renderer
 {
 
-    // glm::mat4 projection;
-    // Camera *cam;
-    // Light *source;
-    // Model *skyBoxM;
-    // Cubemap *skyBoxTexture;
-
     Scene scene;
     
     PickingFramebuffer fbo;
-    std::vector<Model *> models_c;
-    bool hasSkybox      = true;
-
-    Renderer();
-    ~Renderer();
 
     void BeginFrame();
 
@@ -45,8 +34,6 @@ struct Renderer
     void DrawLightSource(Shader &shader);
     void DrawLightSourcePicking(Shader &shader);
 
-    void Clear();
     void EnableDepthTesting();
-    void SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
     
 };
