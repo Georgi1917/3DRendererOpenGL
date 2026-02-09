@@ -40,8 +40,8 @@ struct Mesh
 
     unsigned int id;
 
-    VertexArray        vao = VertexArray();
-    IndexBuffer        ibo = IndexBuffer();
+    VertexArray  vao = VertexArray();
+    IndexBuffer  ibo = IndexBuffer();
 
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;

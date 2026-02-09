@@ -29,11 +29,13 @@ struct Renderer
     void MainPass(Shader& shader);
     void LightPass(Shader& shader);
 
-    void DrawMeshes(Shader &shader);
-    void DrawMeshesPicking(Shader &shader);
-    void DrawLightSource(Shader &shader);
-    void DrawLightSourcePicking(Shader &shader);
-
     void EnableDepthTesting();
+
+    private:
+
+        void DrawMeshes(Shader &shader);
+        void DrawMeshesPicking(Shader &shader);
+        void DrawLightSource(Shader &shader);
+        void DrawLightSourcePicking(Shader &shader);
     
 };

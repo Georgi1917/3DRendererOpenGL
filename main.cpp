@@ -56,8 +56,6 @@ int main()
     Shader pickingShader("shaders/picking.vs", "shaders/picking.fs");
     Shader skyboxShader("shaders/skybox.vs", "shaders/skybox.fs");
 
-    // Camera camera(glm::vec3(1.0f, 0.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f));
-
     Renderer renderer;
 
     renderer.fbo = fbo;
