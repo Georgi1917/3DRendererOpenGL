@@ -179,9 +179,9 @@ int main()
             for (auto mesh : mousePicker.GetClickedObj()->modelMeshes)
             {
                 ImGui::Text(mesh->material.name.c_str());
-                ImGui::InputFloat3("Ambient", &(mesh->material.ambient.x), "%.3f", ImGuiInputTextFlags_ReadOnly);
-                ImGui::InputFloat3("Diffuse", &(mesh->material.diffuse.x), "%.3f", ImGuiInputTextFlags_ReadOnly);
-                ImGui::InputFloat3("Specular", &(mesh->material.specular.x), "%.3f", ImGuiInputTextFlags_ReadOnly);
+                ImGui::InputFloat3("Ambient", &(mesh->material.ambient.x), "%.3f");
+                ImGui::InputFloat3("Diffuse", &(mesh->material.diffuse.x), "%.3f");
+                ImGui::InputFloat3("Specular", &(mesh->material.specular.x), "%.3f");
 
                 ImGui::Text("\nTextures:");
                 int i = 0;
