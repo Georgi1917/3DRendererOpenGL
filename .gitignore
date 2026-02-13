@@ -6,4 +6,5 @@ obj-files/*.png
 obj-files/*.jpg
 obj-files/*.jpeg
 obj-files/*.txt
+obj-files/*.fbx
 .vscode
