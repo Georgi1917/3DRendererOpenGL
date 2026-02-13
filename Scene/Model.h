@@ -21,6 +21,7 @@ struct Model
     glm::vec3 pickingColor;
 
     Model(std::vector<Mesh*> meshes);
+    Model(const char* filepath);
     ~Model();
     
     void Draw(Shader &shader);
@@ -28,7 +29,10 @@ struct Model
     bool CompareIdToColor(unsigned char r, unsigned char g, unsigned char b);
 
     void LoadModel(const char* filepath);
-
+    void ProccessNode(aiNode *node, const aiScene *scene);
+    Mesh* ProccessMesh(aiMesh *mesh, const aiScene *scene);
+    std::vector<Texture*> LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
+    Material LoadMaterial(aiMaterial *mat);
 
 };
 

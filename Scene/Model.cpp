@@ -22,6 +22,25 @@ Model::Model(std::vector<Mesh*> meshes)
 
 }
 
+Model::Model(const char* filepath)
+{
+
+    id = currIdM;
+    currIdM++;
+
+    trans = currTransM;
+    currTransM.x += 2.0f;
+
+    pickingColor = glm::vec3(
+        (id & 0x000000FF) / 255.0f,
+        ((id & 0x0000FF00) >> 8) / 255.0f,
+        ((id & 0x00FF0000) >> 16) / 255.0f
+    );
+
+    LoadModel(filepath);
+
+}
+
 Model::~Model()
 {
 
@@ -99,6 +118,134 @@ void Model::LoadModel(const char* filepath)
         return;
     }
     
+    ProccessNode(scene->mRootNode, scene);
+
+}
+
+void Model::ProccessNode(aiNode *node, const aiScene *scene)
+{
+
+    for (int i = 0; i < node->mNumMeshes; i++)
+    {
+
+        aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
+        modelMeshes.push_back(ProccessMesh(mesh, scene));
+
+    }
+
+    for (int i = 0; i < node->mNumChildren; i++)
+    {
+
+        ProccessNode(node->mChildren[i], scene);
+
+    }
+
+}
+
+std::vector<Texture*> Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName)
+{
+
+    std::vector<Texture*> textures;
+
+    for (int i = 0; i < mat->GetTextureCount(type); i++)
+    {
+
+        aiString path;
+        mat->GetTexture(type, i, &path);
+        Texture *texture = new Texture(path.C_Str(), typeName);
+        textures.push_back(texture);
+
+    }
+
+    return textures;
+
+}
+
+Material Model::LoadMaterial(aiMaterial *mat)
+{
+
+    Material material;
+
+    aiColor3D color(0.0f);
+    float shinniness;
+
+    material.name = mat->GetName().C_Str();
+
+    mat->Get(AI_MATKEY_COLOR_AMBIENT, color);
+    material.ambient = glm::vec3(color.r, color.g, color.b);
+
+    mat->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+    material.diffuse = glm::vec3(color.r, color.g, color.b);
+
+    mat->Get(AI_MATKEY_COLOR_SPECULAR, color);
+    material.specular = glm::vec3(color.r, color.g, color.b);
+
+    mat->Get(AI_MATKEY_SHININESS, shinniness);
+    material.shininess = shinniness;
+
+    return material;
+
+}
+
+Mesh* Model::ProccessMesh(aiMesh *mesh, const aiScene *scene)
+{
+
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
+    std::vector<Texture*> textures;
+    Material mat;
+
+    for (int i = 0; i < mesh->mNumVertices; i++)
+    {
+        Vertex vertex;
+        vertex.points = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+        vertex.normals = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
+
+        if (mesh->mTextureCoords[0])
+        {
+
+            vertex.texCoords = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+
+        }
+        else vertex.texCoords = glm::vec2(0.0f, 0.0f);
+
+        vertices.push_back(vertex);
+
+    }
+
+    for (int i = 0; i < mesh->mNumFaces; i++)
+    {
+
+        aiFace face = mesh->mFaces[i];
+
+        for (int j = 0; j < face.mNumIndices; j++)
+            indices.push_back(face.mIndices[j]);
+
+    }
+
+    if (mesh->mMaterialIndex >= 0)
+    {
+
+        aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+
+        std::vector<Texture*> ambientTex = LoadMaterialTextures(material, aiTextureType_AMBIENT, "AmbientTexture");
+        textures.insert(textures.end(), ambientTex.begin(), ambientTex.end());
+
+        std::vector<Texture*> diffuseTex = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "DiffuseTexture");
+        textures.insert(textures.end(), diffuseTex.begin(), diffuseTex.end());
+
+        std::vector<Texture*> specularTex = LoadMaterialTextures(material, aiTextureType_SPECULAR, "SpecularTexture");
+        textures.insert(textures.end(), specularTex.begin(), specularTex.end());
+
+        mat = LoadMaterial(material);
+
+    }
+
+    Mesh* m = new Mesh(vertices, indices);
+    m->textures = textures;
+    m->material = mat;
+
+    return m;
 
 }
 

@@ -21,6 +21,7 @@ Scene::Scene()
     entities.push_back(ConstructCubeM());
     entities.push_back(ConstructSphereM());
     entities.push_back(ConstructPyramidM());
+    entities.push_back(new Model("obj-files/backpack.obj"));
 
 }
 
