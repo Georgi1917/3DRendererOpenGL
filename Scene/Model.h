@@ -2,6 +2,9 @@
 #include "Mesh.h"
 #include "../Textures/Texture.h"
 #include "../Shader.h"
+#include "../include/assimp/Importer.hpp"
+#include "../include/assimp/scene.h"
+#include "../include/assimp/postprocess.h"
 
 struct Model
 {
@@ -23,6 +26,9 @@ struct Model
     void Draw(Shader &shader);
     void SetUpMatrix();
     bool CompareIdToColor(unsigned char r, unsigned char g, unsigned char b);
+
+    void LoadModel(const char* filepath);
+
 
 };
 

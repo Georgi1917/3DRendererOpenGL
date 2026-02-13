@@ -87,77 +87,18 @@ bool Model::CompareIdToColor(unsigned char r, unsigned char g, unsigned char b)
 
 }
 
-Model* AssembleModel(std::vector<Mesh*> &meshes, std::vector<tinyobj::material_t> materials)
+void Model::LoadModel(const char* filepath)
 {
 
-    std::vector<Mesh*> newMeshes;
-
-    for (auto it = materials.begin(); it != materials.end(); it++)
+    Assimp::Importer import;
+    const aiScene *scene = import.ReadFile(filepath, aiProcess_Triangulate | aiProcess_FlipUVs);	
+	
+    if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) 
     {
-
-        std::string matName = it->name;
-        std::vector<Vertex> newVertices;
-        std::vector<unsigned int> newIndices;
-
-        for (auto mesh : meshes)
-        {
-
-            if (mesh->material.name == matName)
-            {
-
-                unsigned int idxOffset = newIndices.size();
-
-                newVertices.insert(newVertices.end(), mesh->vertices.begin(), mesh->vertices.end());
-
-                for (unsigned int i : mesh->indices)
-                {
-
-                    newIndices.push_back(i + idxOffset);
-
-                }
-
-            }   
-
-        }
-
-        if (newVertices.empty() || newIndices.empty())
-            continue;
-
-        Material mat;
-        Mesh *mesh = new Mesh(newVertices, newIndices);
-
-        mat.name = it->name;
-        mat.ambient = glm::vec3(it->ambient[0], it->ambient[1], it->ambient[2]);
-        mat.diffuse = glm::vec3(it->diffuse[0], it->diffuse[1], it->diffuse[2]);
-        mat.specular = glm::vec3(it->specular[0], it->specular[1], it->specular[2]);
-        mat.shininess = it->shininess;
-
-        mesh->material = mat;
-
-        if (it->ambient_texname != "")
-        {
-            mesh->textures.push_back(new Texture(("obj-files/" + it->ambient_texname).c_str(), "AmbientTexture"));
-            std::cout << "ambient : " << it->ambient_texname << "\n";
-        }
-        if (it->diffuse_texname != "")
-        {
-            mesh->textures.push_back(new Texture(("obj-files/" + it->diffuse_texname).c_str(), "DiffuseTexture"));
-            std::cout << "diffuse : " << it->diffuse_texname << "\n";
-        }
-        if (it->specular_texname != "")
-        {
-            mesh->textures.push_back(new Texture(("obj-files/" + it->specular_texname).c_str(), "SpecularTexture"));
-            std::cout << "specular : " << it->specular_texname << "\n";
-        }
-
-        newMeshes.push_back(mesh);
-
+        std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
+        return;
     }
-
-    for (auto mesh: meshes)
-        delete mesh;
-
-    return new Model(newMeshes);
+    
 
 }
 
@@ -433,6 +374,80 @@ Model* ConstructSkyboxM()
 
 }
 
+Model* AssembleModel(std::vector<Mesh*> &meshes, std::vector<tinyobj::material_t> materials)
+{
+
+    std::vector<Mesh*> newMeshes;
+
+    for (auto it = materials.begin(); it != materials.end(); it++)
+    {
+
+        std::string matName = it->name;
+        std::vector<Vertex> newVertices;
+        std::vector<unsigned int> newIndices;
+
+        for (auto mesh : meshes)
+        {
+
+            if (mesh->material.name == matName)
+            {
+
+                unsigned int idxOffset = newIndices.size();
+
+                newVertices.insert(newVertices.end(), mesh->vertices.begin(), mesh->vertices.end());
+
+                for (unsigned int i : mesh->indices)
+                {
+
+                    newIndices.push_back(i + idxOffset);
+
+                }
+
+            }   
+
+        }
+
+        if (newVertices.empty() || newIndices.empty())
+            continue;
+
+        Material mat;
+        Mesh *mesh = new Mesh(newVertices, newIndices);
+
+        mat.name = it->name;
+        mat.ambient = glm::vec3(it->ambient[0], it->ambient[1], it->ambient[2]);
+        mat.diffuse = glm::vec3(it->diffuse[0], it->diffuse[1], it->diffuse[2]);
+        mat.specular = glm::vec3(it->specular[0], it->specular[1], it->specular[2]);
+        mat.shininess = it->shininess;
+
+        mesh->material = mat;
+
+        if (it->ambient_texname != "")
+        {
+            mesh->textures.push_back(new Texture(("obj-files/" + it->ambient_texname).c_str(), "AmbientTexture"));
+            std::cout << "ambient : " << it->ambient_texname << "\n";
+        }
+        if (it->diffuse_texname != "")
+        {
+            mesh->textures.push_back(new Texture(("obj-files/" + it->diffuse_texname).c_str(), "DiffuseTexture"));
+            std::cout << "diffuse : " << it->diffuse_texname << "\n";
+        }
+        if (it->specular_texname != "")
+        {
+            mesh->textures.push_back(new Texture(("obj-files/" + it->specular_texname).c_str(), "SpecularTexture"));
+            std::cout << "specular : " << it->specular_texname << "\n";
+        }
+
+        newMeshes.push_back(mesh);
+
+    }
+
+    for (auto mesh: meshes)
+        delete mesh;
+
+    return new Model(newMeshes);
+
+}
+
 Model* LoadObjM(const char* filepath)
 {
 
@@ -534,3 +549,4 @@ Model* LoadObjM(const char* filepath)
     return AssembleModel(meshes, materials);
 
 }
+
