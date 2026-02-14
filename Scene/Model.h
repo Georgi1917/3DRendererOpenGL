@@ -12,6 +12,7 @@ struct Model
     unsigned int id;
 
     std::vector<Mesh*> modelMeshes;
+    std::vector<Texture*> loadedTextures;
 
     glm::mat4 model = glm::mat4(1.0f);
     glm::vec3 trans = glm::vec3(0.0f, 0.0f, 0.0f);

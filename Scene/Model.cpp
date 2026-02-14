@@ -146,14 +146,38 @@ std::vector<Texture*> Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType
 {
 
     std::vector<Texture*> textures;
-
+    bool skip = false;
     for (int i = 0; i < mat->GetTextureCount(type); i++)
     {
 
+        bool skip = false;
+        aiString texPath("obj-files/");
         aiString path;
         mat->GetTexture(type, i, &path);
-        Texture *texture = new Texture(path.C_Str(), typeName);
-        textures.push_back(texture);
+        texPath.Append(path.C_Str());
+
+        for (int j = 0; j < loadedTextures.size(); j++)
+        {
+
+            if (std::strcmp(loadedTextures[j]->loc.c_str(), path.C_Str()) == 0)
+            {
+
+                textures.push_back(loadedTextures[j]);
+                skip = true;
+                break;
+
+            }
+
+        }
+
+        if (!skip)
+        {
+
+            Texture *texture = new Texture(texPath.C_Str(), typeName);
+            textures.push_back(texture);
+            loadedTextures.push_back(texture);
+
+        }
 
     }
 
