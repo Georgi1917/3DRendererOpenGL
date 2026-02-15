@@ -34,6 +34,7 @@ struct Model
     Mesh* ProccessMesh(aiMesh *mesh, const aiScene *scene);
     std::vector<Texture*> LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
     Material LoadMaterial(aiMaterial *mat);
+    void OrderMeshesByMaterial(const aiScene *scene);
 
 };
 

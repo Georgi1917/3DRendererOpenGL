@@ -119,6 +119,7 @@ void Model::LoadModel(const char* filepath)
     }
     
     ProccessNode(scene->mRootNode, scene);
+    OrderMeshesByMaterial(scene);
 
 }
 
@@ -208,6 +209,21 @@ Material Model::LoadMaterial(aiMaterial *mat)
     material.shininess = shinniness;
 
     return material;
+
+}
+
+void Model::OrderMeshesByMaterial(const aiScene *scene)
+{
+
+    std::cout << "Mesh Number : " << scene->mNumMeshes << "\n";
+    std::cout << "Mat number : " << scene->mNumMaterials << "\n";
+
+    for (int i = 0; i < scene->mNumMaterials; i++)
+    {
+
+        std::cout << "Mat Name : " << scene->mMaterials[i]->GetName().C_Str() << "\n";
+
+    }
 
 }
 
