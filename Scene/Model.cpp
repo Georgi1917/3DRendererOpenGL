@@ -218,12 +218,65 @@ void Model::OrderMeshesByMaterial(const aiScene *scene)
     std::cout << "Mesh Number : " << scene->mNumMeshes << "\n";
     std::cout << "Mat number : " << scene->mNumMaterials << "\n";
 
+    std::vector<Mesh*> newMeshes;
+
     for (int i = 0; i < scene->mNumMaterials; i++)
     {
 
         std::cout << "Mat Name : " << scene->mMaterials[i]->GetName().C_Str() << "\n";
+        std::vector<Vertex> newVertices;
+        std::vector<unsigned int> newIndices;
+        std::vector<Texture*> newTextures;
+
+        for (Mesh* mesh: modelMeshes)
+        {
+
+            if (mesh->material.name != scene->mMaterials[i]->GetName().C_Str())
+                continue;
+
+            unsigned int idxOffset = newIndices.size();
+            newVertices.insert(newVertices.end(), mesh->vertices.begin(), mesh->vertices.end());
+            
+            for (unsigned int i : mesh->indices)
+            {
+
+                newIndices.push_back(i + idxOffset);
+
+            }
+
+        }
+
+        if (newVertices.empty() || newIndices.empty())
+            continue;
+
+        Mesh* mesh = new Mesh(newVertices, newIndices);
+        mesh->material = LoadMaterial(scene->mMaterials[i]);
+
+        std::vector<Texture*> ambientTextures = LoadMaterialTextures(scene->mMaterials[i], aiTextureType_AMBIENT, "AmbientTexture");
+        std::vector<Texture*> diffuseTextures = LoadMaterialTextures(scene->mMaterials[i], aiTextureType_DIFFUSE, "DiffuseTexture");
+        std::vector<Texture*> specularTextures = LoadMaterialTextures(scene->mMaterials[i], aiTextureType_SPECULAR, "SpecularTexture");
+
+        newTextures.insert(newTextures.end(), ambientTextures.begin(), ambientTextures.end());
+        newTextures.insert(newTextures.end(), diffuseTextures.begin(), diffuseTextures.end());
+        newTextures.insert(newTextures.end(), specularTextures.begin(), specularTextures.end());
+
+        mesh->textures = std::move(newTextures);
+
+        newMeshes.push_back(mesh);
 
     }
+
+    for (auto it = modelMeshes.begin(); it != modelMeshes.end();)
+    {
+
+        delete (*it);
+        it = modelMeshes.erase(it);
+
+    }
+
+    modelMeshes = std::move(newMeshes);
+
+    std::cout << "New number of Meshes : " << modelMeshes.size() << "\n";
 
 }
 
@@ -232,7 +285,6 @@ Mesh* Model::ProccessMesh(aiMesh *mesh, const aiScene *scene)
 
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<Texture*> textures;
     Material mat;
 
     for (int i = 0; i < mesh->mNumVertices; i++)
@@ -268,21 +320,11 @@ Mesh* Model::ProccessMesh(aiMesh *mesh, const aiScene *scene)
 
         aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 
-        std::vector<Texture*> ambientTex = LoadMaterialTextures(material, aiTextureType_AMBIENT, "AmbientTexture");
-        textures.insert(textures.end(), ambientTex.begin(), ambientTex.end());
-
-        std::vector<Texture*> diffuseTex = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "DiffuseTexture");
-        textures.insert(textures.end(), diffuseTex.begin(), diffuseTex.end());
-
-        std::vector<Texture*> specularTex = LoadMaterialTextures(material, aiTextureType_SPECULAR, "SpecularTexture");
-        textures.insert(textures.end(), specularTex.begin(), specularTex.end());
-
         mat = LoadMaterial(material);
 
     }
 
     Mesh* m = new Mesh(vertices, indices);
-    m->textures = textures;
     m->material = mat;
 
     return m;
