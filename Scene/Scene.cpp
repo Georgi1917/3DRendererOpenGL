@@ -18,10 +18,7 @@ Scene::Scene()
     skyBoxModel = ConstructSkyboxM();
     projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 100.0f);
 
-    entities.push_back(ConstructCubeM());
-    entities.push_back(ConstructSphereM());
-    entities.push_back(ConstructPyramidM());
-    entities.push_back(new Model("obj-files/backpack.obj"));
+    entities.push_back(new Model("obj-files/wizard.blend"));
 
 }
 

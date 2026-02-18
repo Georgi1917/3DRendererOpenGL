@@ -16,3 +16,5 @@ struct Light
     bool hasAttenuation = false;
 
 };
+
+static Model* ConstructCube();

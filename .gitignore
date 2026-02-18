@@ -7,4 +7,5 @@ obj-files/*.jpg
 obj-files/*.jpeg
 obj-files/*.txt
 obj-files/*.fbx
+obj-files/*.blend
 .vscode

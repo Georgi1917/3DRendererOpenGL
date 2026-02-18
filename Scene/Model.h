@@ -38,10 +38,6 @@ struct Model
 
 };
 
-Model* ConstructCubeM();
-Model* ConstructSphereM();
-Model* ConstructPyramidM();
-Model* ConstructSurfaceM();
 Model* ConstructSkyboxM();
 Model* LoadObjM(const char* filepath);
 Model* AssembleModel(std::vector<Mesh*> &meshes, std::vector<tinyobj::material_t> materials);

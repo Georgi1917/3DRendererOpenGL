@@ -12,6 +12,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <set>
 #include <memory>
 #include <filesystem>
 
@@ -21,9 +22,10 @@ void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum se
     fprintf(stderr, "OpenGL Debug: %s\n", message);
 }
 
-bool EndsWithObj(std::string filepath)
+static bool IsValidFile(std::string filepath)
 {
 
+    std::set<std::string> validFormats = { ".obj", ".blend", ".stl", ".fbx" };
     int idx = filepath.find('.', 0);
 
     std::string s = "";
@@ -31,7 +33,7 @@ bool EndsWithObj(std::string filepath)
     for (int i = idx; i < filepath.size(); i++)
         s += filepath[i];
 
-    return s == ".obj";
+    return validFormats.find(s) != validFormats.end();
 
 }
 
@@ -92,15 +94,6 @@ int main()
         
         ImGui::Begin("First Window");
 
-        if (ImGui::Button("Cube"))
-            renderer.scene.entities.push_back(ConstructCubeM());
-
-        if (ImGui::Button("Sphere"))
-            renderer.scene.entities.push_back(ConstructSphereM());
-
-        if (ImGui::Button("Pyramid"))
-            renderer.scene.entities.push_back(ConstructPyramidM());
-
         if (ImGui::Button("Import Object"))
             ImGui::OpenPopup("Objects");
 
@@ -112,8 +105,8 @@ int main()
             for (const auto &entry : std::filesystem::directory_iterator(path))
             {
 
-                if (EndsWithObj(entry.path().string()) && ImGui::MenuItem(entry.path().generic_string().c_str()))
-                    renderer.scene.entities.push_back(LoadObjM(entry.path().generic_string().c_str()));
+                if (IsValidFile(entry.path().string()) && ImGui::MenuItem(entry.path().generic_string().c_str()))
+                    renderer.scene.entities.push_back(new Model(entry.path().generic_string().c_str()));
 
             }
 
@@ -167,20 +160,21 @@ int main()
             ImGui::DragFloat3("Scale", &(mousePicker.GetClickedObj()->scale.x), 2.0f * deltaTime, 1.0f, 100.0f);
 
             ImGui::Text("\n\nMATERIAL INFO:");
+            int i = 0;
             for (auto mesh : mousePicker.GetClickedObj()->modelMeshes)
             {
                 ImGui::Text(mesh->material.name.c_str());
-                ImGui::InputFloat3("Ambient", &(mesh->material.ambient.x), "%.3f");
-                ImGui::InputFloat3("Diffuse", &(mesh->material.diffuse.x), "%.3f");
-                ImGui::InputFloat3("Specular", &(mesh->material.specular.x), "%.3f");
+                ImGui::InputFloat3(("Ambient" + std::to_string(i + 1)).c_str(), &(mesh->material.ambient.x), "%.3f");
+                ImGui::InputFloat3(("Diffuse" + std::to_string(i + 1)).c_str(), &(mesh->material.diffuse.x), "%.3f");
+                ImGui::InputFloat3(("Specular" + std::to_string(i + 1)).c_str(), &(mesh->material.specular.x), "%.3f");
 
                 ImGui::Text("\nTextures:");
-                int i = 0;
                 for (auto tex: mesh->textures)
                 {
 
                     ImGui::Text(tex->textureType.c_str());
-                    ImGui::InputText("Texture Location" + i++, &tex->loc[0], 40, ImGuiInputTextFlags_ReadOnly);
+                    ImGui::InputText(("Texture Location" + std::to_string(i + 1)).c_str(), &tex->loc[0], tex->loc.size() + 1, ImGuiInputTextFlags_ReadOnly);
+                    i++;
 
                 }
 
