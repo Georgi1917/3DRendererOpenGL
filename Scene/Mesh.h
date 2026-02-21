@@ -31,6 +31,10 @@ struct Material
     glm::vec3 diffuse;
     glm::vec3 specular;
 
+    Texture* ambientTexture  = nullptr;
+    Texture* diffuseTexture  = nullptr;
+    Texture* specularTexture = nullptr;
+
     float shininess;
 
 };
