@@ -9,4 +9,6 @@ obj-files/*.txt
 obj-files/*.fbx
 obj-files/*.blend
 obj-files/*.glb
+obj-files/*.gltf
+obj-files/*.bin
 .vscode

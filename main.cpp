@@ -25,7 +25,7 @@ void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum se
 static bool IsValidFile(std::string filepath)
 {
 
-    std::set<std::string> validFormats = { ".obj", ".blend", ".stl", ".fbx", ".glb" };
+    std::set<std::string> validFormats = { ".obj", ".blend", ".stl", ".fbx", ".glb", ".gltf" };
     int idx = filepath.find('.', 0);
 
     std::string s = "";
