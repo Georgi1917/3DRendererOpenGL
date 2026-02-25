@@ -234,13 +234,13 @@ void Model::OrderMeshesByMaterial(const aiScene *scene)
             if (mesh->material.name != scene->mMaterials[i]->GetName().C_Str())
                 continue;
 
-            unsigned int idxOffset = newIndices.size();
+            unsigned int vertexOffset = newVertices.size();
             newVertices.insert(newVertices.end(), mesh->vertices.begin(), mesh->vertices.end());
             
             for (unsigned int i : mesh->indices)
             {
 
-                newIndices.push_back(i + idxOffset);
+                newIndices.push_back(i + vertexOffset);
 
             }
 

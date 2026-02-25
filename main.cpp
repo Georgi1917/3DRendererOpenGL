@@ -161,12 +161,13 @@ int main()
 
             ImGui::Text("\n\nMATERIAL INFO:");
             int i = 0;
+            int j = 0;
             for (auto mesh : mousePicker.GetClickedObj()->modelMeshes)
             {
                 ImGui::Text(mesh->material.name.c_str());
-                ImGui::InputFloat3(("Ambient" + std::to_string(i + 1)).c_str(), &(mesh->material.ambient.x), "%.3f");
-                ImGui::InputFloat3(("Diffuse" + std::to_string(i + 1)).c_str(), &(mesh->material.diffuse.x), "%.3f");
-                ImGui::InputFloat3(("Specular" + std::to_string(i + 1)).c_str(), &(mesh->material.specular.x), "%.3f");
+                ImGui::InputFloat3(("Ambient" + std::to_string(j + 1)).c_str(), &(mesh->material.ambient.x), "%.3f");
+                ImGui::InputFloat3(("Diffuse" + std::to_string(j + 1)).c_str(), &(mesh->material.diffuse.x), "%.3f");
+                ImGui::InputFloat3(("Specular" + std::to_string(j + 1)).c_str(), &(mesh->material.specular.x), "%.3f");
 
                 ImGui::Text("\nTextures:");
                 for (auto tex: mesh->textures)
@@ -177,6 +178,8 @@ int main()
                     i++;
 
                 }
+
+                j++;
 
             }
 
