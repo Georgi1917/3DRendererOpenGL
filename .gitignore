@@ -11,4 +11,5 @@ obj-files/*.blend
 obj-files/*.glb
 obj-files/*.gltf
 obj-files/*.bin
+obj-files/textures
 .vscode
