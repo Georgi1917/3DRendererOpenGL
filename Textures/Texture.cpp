@@ -1,6 +1,14 @@
 #include "Texture.h"
 #include <iostream>
 
+Texture::Texture(std::string texType)
+{
+
+    loc = "None";
+    textureType = texType;
+
+}
+
 Texture::Texture(const char* loc, std::string texType, bool flip)
 {
 
@@ -40,6 +48,7 @@ Texture::Texture(const char* loc, std::string texType, bool flip)
 Texture::~Texture()
 {
 
+    if (loc == "None") return;
     std::cout << "Texture Destructor called : " << textureID << "\n";
     glDeleteTextures(1, &textureID);
 

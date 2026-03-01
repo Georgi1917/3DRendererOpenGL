@@ -32,12 +32,10 @@ struct Model
     void LoadModel(const char* filepath);
     void ProccessNode(aiNode *node, const aiScene *scene);
     Mesh* ProccessMesh(aiMesh *mesh, const aiScene *scene);
-    std::vector<Texture*> LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
+    Texture* LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
     Material LoadMaterial(aiMaterial *mat);
     void OrderMeshesByMaterial(const aiScene *scene);
 
 };
 
 Model* ConstructSkyboxM();
-Model* LoadObjM(const char* filepath);
-Model* AssembleModel(std::vector<Mesh*> &meshes, std::vector<tinyobj::material_t> materials);

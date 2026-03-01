@@ -71,6 +71,8 @@ void Model::Draw(Shader& shader)
         for (int i = 0; i < mesh->textures.size(); i++)
         {
 
+            if (mesh->textures[i]->loc == "None") continue;
+            
             shader.SetBool("material.has" + mesh->textures[i]->textureType, true);
             shader.Set1I("material." + mesh->textures[i]->textureType, i);
             glActiveTexture(GL_TEXTURE0 + i);
@@ -143,46 +145,22 @@ void Model::ProccessNode(aiNode *node, const aiScene *scene)
 
 }
 
-std::vector<Texture*> Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName)
+Texture* Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName)
 {
 
-    std::vector<Texture*> textures;
-    bool skip = false;
-    for (int i = 0; i < mat->GetTextureCount(type); i++)
+    if (mat->GetTextureCount(type) > 0)
     {
 
-        bool skip = false;
         aiString texPath("obj-files/");
         aiString path;
-        mat->GetTexture(type, i, &path);
+        mat->GetTexture(type, 0, &path);
         texPath.Append(path.C_Str());
 
-        for (int j = 0; j < loadedTextures.size(); j++)
-        {
-
-            if (std::strcmp(loadedTextures[j]->loc.c_str(), path.C_Str()) == 0)
-            {
-
-                textures.push_back(loadedTextures[j]);
-                skip = true;
-                break;
-
-            }
-
-        }
-
-        if (!skip)
-        {
-
-            Texture *texture = new Texture(texPath.C_Str(), typeName);
-            textures.push_back(texture);
-            loadedTextures.push_back(texture);
-
-        }
+        return new Texture(texPath.C_Str(), typeName);
 
     }
 
-    return textures;
+    return new Texture(typeName);
 
 }
 
@@ -252,13 +230,9 @@ void Model::OrderMeshesByMaterial(const aiScene *scene)
         Mesh* mesh = new Mesh(newVertices, newIndices);
         mesh->material = LoadMaterial(scene->mMaterials[i]);
 
-        std::vector<Texture*> ambientTextures = LoadMaterialTextures(scene->mMaterials[i], aiTextureType_AMBIENT, "AmbientTexture");
-        std::vector<Texture*> diffuseTextures = LoadMaterialTextures(scene->mMaterials[i], aiTextureType_DIFFUSE, "DiffuseTexture");
-        std::vector<Texture*> specularTextures = LoadMaterialTextures(scene->mMaterials[i], aiTextureType_SPECULAR, "SpecularTexture");
-
-        newTextures.insert(newTextures.end(), ambientTextures.begin(), ambientTextures.end());
-        newTextures.insert(newTextures.end(), diffuseTextures.begin(), diffuseTextures.end());
-        newTextures.insert(newTextures.end(), specularTextures.begin(), specularTextures.end());
+        newTextures.push_back(LoadMaterialTextures(scene->mMaterials[i], aiTextureType_AMBIENT, "AmbientTexture"));
+        newTextures.push_back(LoadMaterialTextures(scene->mMaterials[i], aiTextureType_DIFFUSE, "DiffuseTexture"));
+        newTextures.push_back(LoadMaterialTextures(scene->mMaterials[i], aiTextureType_SPECULAR, "SpecularTexture"));
 
         mesh->textures = std::move(newTextures);
 

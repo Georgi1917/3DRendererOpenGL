@@ -12,7 +12,9 @@ struct Texture
     std::string textureType;
 
     Texture(const char* loc, std::string texType, bool flip = true);
+    Texture(std::string texType);
     ~Texture();
+
     void Bind();
     void Unbind();
 

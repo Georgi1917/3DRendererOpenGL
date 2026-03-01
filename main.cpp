@@ -170,11 +170,23 @@ int main()
                 ImGui::InputFloat3(("Specular" + std::to_string(j + 1)).c_str(), &(mesh->material.specular.x), "%.3f");
 
                 ImGui::Text("\nTextures:");
-                for (auto tex: mesh->textures)
+                for (auto& tex: mesh->textures)
                 {
 
+                    static char buffer[256];
+                    std::strcpy(buffer, tex->loc.c_str());
+
                     ImGui::Text(tex->textureType.c_str());
-                    ImGui::InputText(("Texture Location" + std::to_string(i + 1)).c_str(), &tex->loc[0], tex->loc.size() + 1, ImGuiInputTextFlags_ReadOnly);
+                    if(ImGui::InputText(("Texture Location" + std::to_string(i + 1)).c_str(), buffer, sizeof(buffer)))
+                    {
+
+                        std::string texType = tex->textureType;
+
+                        delete tex;
+                        tex = new Texture(buffer, texType);
+
+                    }
+
                     i++;
 
                 }
@@ -202,13 +214,14 @@ int main()
 
                         delete *it;
                         it = mesh->textures.erase(it);
-                        flippedTextures.push_back(new Texture(location.c_str(), texType, flipState));
+                        if (location == "None") flippedTextures.push_back(new Texture(texType));
+                        else flippedTextures.push_back(new Texture(location.c_str(), texType, flipState));
 
                     }
 
                     flipState = flipState ? false : true;
 
-                    mesh->textures = flippedTextures;
+                    mesh->textures = std::move(flippedTextures);
 
                 }
 
