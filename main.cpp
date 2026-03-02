@@ -1,6 +1,7 @@
 #include "include/imgui/imgui.h"
 #include "include/imgui/imgui_impl_glfw.h"
 #include "include/imgui/imgui_impl_opengl3.h"
+#include "include/imguizmo/ImGuizmo.h"
 #include "Window/Window.h"
 #include "Window/Time.h"
 #include "Shader.h"
@@ -93,6 +94,9 @@ int main()
         mousePicker.CheckForLightSourceClick(fbo, renderer.scene.lightSource->mesh);
         
         ImGui::Begin("First Window");
+
+        ImGuizmo::SetDrawlist();
+        ImGuizmo::SetRect(0, 0, 1280, 720);
 
         if (ImGui::Button("Import Object"))
             ImGui::OpenPopup("Objects");
