@@ -106,7 +106,7 @@ int main()
             ImGuizmo::Manipulate(
                 glm::value_ptr(renderer.scene.camera->GetViewMatrix()),
                 glm::value_ptr(renderer.scene.projection),
-                ImGuizmo::TRANSLATE,
+                ImGuizmo::ROTATE,
                 ImGuizmo::LOCAL,
                 glm::value_ptr(model)
             );
@@ -126,20 +126,13 @@ int main()
                 Model* currObj = mousePicker.GetClickedObj();
 
                 currObj->trans = translation;
-                currObj->rotation = glm::radians(rotation);
+                currObj->rotation = rotation;
                 currObj->scale = scale;
 
                 currObj->model = glm::mat4(1.0f);
                 currObj->SetUpMatrix();
 
             }
-
-            // if (ImGuizmo::IsOver())
-            // {
-
-            //     std::cout << "Is over" << "\n";
-
-            // }
 
         }
         
