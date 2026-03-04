@@ -84,6 +84,9 @@ int main()
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+        ImGuizmo::BeginFrame();
+        ImGuizmo::SetDrawlist(ImGui::GetForegroundDrawList());
+        ImGuizmo::SetRect(0, 0, win.width, win.height);
 
         renderer.PickingPass(pickingShader);
         renderer.SkyboxPass(skyboxShader);
@@ -92,11 +95,55 @@ int main()
 
         mousePicker.CheckForMouseClick(fbo, renderer.scene.entities);
         mousePicker.CheckForLightSourceClick(fbo, renderer.scene.lightSource->mesh);
+
+        if (mousePicker.GetClickedObj())
+        {
+
+            //std::cout << "Has Object" << "\n";
+
+            glm::mat4 model = mousePicker.GetClickedObj()->model;
+
+            ImGuizmo::Manipulate(
+                glm::value_ptr(renderer.scene.camera->GetViewMatrix()),
+                glm::value_ptr(renderer.scene.projection),
+                ImGuizmo::TRANSLATE,
+                ImGuizmo::LOCAL,
+                glm::value_ptr(model)
+            );
+
+            if (ImGuizmo::IsUsing())
+            {
+
+                glm::vec3 translation, rotation, scale;
+
+                ImGuizmo::DecomposeMatrixToComponents(
+                    glm::value_ptr(model),
+                    glm::value_ptr(translation),
+                    glm::value_ptr(rotation),
+                    glm::value_ptr(scale)
+                );
+
+                Model* currObj = mousePicker.GetClickedObj();
+
+                currObj->trans = translation;
+                currObj->rotation = glm::radians(rotation);
+                currObj->scale = scale;
+
+                currObj->model = glm::mat4(1.0f);
+                currObj->SetUpMatrix();
+
+            }
+
+            // if (ImGuizmo::IsOver())
+            // {
+
+            //     std::cout << "Is over" << "\n";
+
+            // }
+
+        }
         
         ImGui::Begin("First Window");
-
-        ImGuizmo::SetDrawlist();
-        ImGuizmo::SetRect(0, 0, 1280, 720);
 
         if (ImGui::Button("Import Object"))
             ImGui::OpenPopup("Objects");

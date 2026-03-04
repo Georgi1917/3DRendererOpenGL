@@ -69,13 +69,6 @@ void Renderer::DrawMeshes(Shader &shader)
     shader.SetMatrix4fv("projection", scene.projection);
     shader.SetMatrix4fv("view", scene.camera->GetViewMatrix());
 
-    if (scene.entities.empty())
-    {
-
-        std::cout << "YESS" << "\n";
-
-    }
-
     for (auto& entity : scene.entities)
     {
 

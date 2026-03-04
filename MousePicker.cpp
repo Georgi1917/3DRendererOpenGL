@@ -120,9 +120,9 @@ void MousePicker::CheckForMouseClick(PickingFramebuffer &fbo, std::vector<Model*
             if (model->CompareIdToColor(pixel[0], pixel[1], pixel[2]))
             {
 
-                currModelDrag = model;
+                //currModelDrag = model;
                 currModelData = model;
-                objWorldToView = camera->GetViewMatrix() * glm::vec4(currModelDrag->trans, 1.0f);
+                // objWorldToView = camera->GetViewMatrix() * glm::vec4(currModelDrag->trans, 1.0f);
 
             }
 
@@ -130,9 +130,9 @@ void MousePicker::CheckForMouseClick(PickingFramebuffer &fbo, std::vector<Model*
 
     }
 
-    if (currModelDrag && glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) Update();
+    // if (currModelDrag && glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) Update();
 
-    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE && currModelDrag) currModelDrag = nullptr;
+    // if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE && currModelDrag) currModelDrag = nullptr;
 
 }
 
@@ -152,17 +152,17 @@ void MousePicker::CheckForLightSourceClick(PickingFramebuffer& fbo, Model*& sour
         if (source->CompareIdToColor(pixel[0], pixel[1], pixel[2]))
         {
 
-            currModelDrag = source;
+            // currModelDrag = source;
             currModelData = source;
-            objWorldToView = camera->GetViewMatrix() * glm::vec4(currModelDrag->trans, 1.0f);
+            // objWorldToView = camera->GetViewMatrix() * glm::vec4(currModelDrag->trans, 1.0f);
 
         }
 
     }
 
-    if (currModelDrag && glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) Update();
+    // if (currModelDrag && glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) Update();
 
-    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE && currModelDrag) currModelDrag = nullptr;
+    // if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE && currModelDrag) currModelDrag = nullptr;
 
 }
 

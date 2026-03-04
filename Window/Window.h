@@ -8,6 +8,8 @@ struct Window
 {
 
     GLFWwindow *window;
+    int width;
+    int height;
 
     Window(int width, int height, const char* title);
 

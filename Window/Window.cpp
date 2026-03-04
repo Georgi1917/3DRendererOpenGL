@@ -1,6 +1,6 @@
 #include "Window.h"
 
-Window::Window(int width, int height, const char* title)
+Window::Window(int width, int height, const char* title) : width(width), height(height)
 {
 
     if (!glfwInit()) throw "GLFW could not be initialized!";
