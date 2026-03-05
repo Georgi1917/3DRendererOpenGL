@@ -51,10 +51,9 @@ int main()
     Shader skyboxShader("shaders/skybox.vs", "shaders/skybox.fs");
 
     Renderer renderer;
-
     renderer.fbo = fbo;
 
-    MousePicker mousePicker(win.window);
+    MousePicker mousePicker;
 
     renderer.EnableDepthTesting();
 
@@ -69,6 +68,7 @@ int main()
     ImGui_ImplOpenGL3_Init("#version 330");
 
     bool wireFrameMode = false;
+    Model* activeEntity = nullptr;
 
     while(!win.ShouldClose())
     {
@@ -91,13 +91,12 @@ int main()
         renderer.MainPass(basicShader);
         renderer.LightPass(lightingShader);
 
-        mousePicker.CheckForMouseClick(fbo, renderer.scene.entities);
-        mousePicker.CheckForLightSourceClick(fbo, renderer.scene.lightSource->mesh);
+        activeEntity = mousePicker.GetClickedEntity(fbo, renderer.scene);
 
-        if (mousePicker.GetClickedObj())
+        if (activeEntity)
         {
 
-            glm::mat4 model = mousePicker.GetClickedObj()->model;
+            glm::mat4 model = activeEntity->model;
 
             ImGuizmo::Manipulate(
                 glm::value_ptr(renderer.scene.camera->GetViewMatrix()),
@@ -119,14 +118,12 @@ int main()
                     glm::value_ptr(scale)
                 );
 
-                Model* currObj = mousePicker.GetClickedObj();
+                activeEntity->trans = translation;
+                activeEntity->rotation = rotation;
+                activeEntity->scale = scale;
 
-                currObj->trans = translation;
-                currObj->rotation = rotation;
-                currObj->scale = scale;
-
-                currObj->model = glm::mat4(1.0f);
-                currObj->SetUpMatrix();
+                activeEntity->model = glm::mat4(1.0f);
+                activeEntity->SetUpMatrix();
 
             }
 
@@ -158,13 +155,14 @@ int main()
             if (wireFrameMode) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         
+
         if (ImGui::Checkbox("Attenuation", &renderer.scene.lightSource->hasAttenuation))
         {}
 
         if (ImGui::Checkbox("Draw Skybox", &renderer.scene.hasSkybox))
         {}
             
-        if (mousePicker.GetClickedObj())
+        if (activeEntity)
         {
 
             if (ImGui::Button("Delete Object"))
@@ -173,13 +171,13 @@ int main()
                 for (auto it = renderer.scene.entities.begin(); it != renderer.scene.entities.end();)
                 {
 
-                    if (*it == mousePicker.GetClickedObj())
+                    if (*it == activeEntity)
                     {
 
                         delete *it;
                         it = renderer.scene.entities.erase(it);
             
-                        mousePicker.currModelData = nullptr;
+                        activeEntity = nullptr;
 
                         break;
 
@@ -192,17 +190,17 @@ int main()
             
         }
 
-        if (mousePicker.GetClickedObj())
+        if (activeEntity)
         {
 
-            ImGui::DragFloat3("Translation", &(mousePicker.GetClickedObj()->trans.x), 1.0f * deltaTime, -100, 100);
-            ImGui::DragFloat3("Rotation", &(mousePicker.GetClickedObj()->rotation.x), 10.0f, -360, 360);
-            ImGui::DragFloat3("Scale", &(mousePicker.GetClickedObj()->scale.x), 2.0f * deltaTime, 1.0f, 100.0f);
+            ImGui::DragFloat3("Translation", &(activeEntity->trans.x), 1.0f * deltaTime, -100, 100);
+            ImGui::DragFloat3("Rotation", &(activeEntity->rotation.x), 10.0f, -360, 360);
+            ImGui::DragFloat3("Scale", &(activeEntity->scale.x), 2.0f * deltaTime, 1.0f, 100.0f);
 
             ImGui::Text("\n\nMATERIAL INFO:");
             int i = 0;
             int j = 0;
-            for (auto mesh : mousePicker.GetClickedObj()->modelMeshes)
+            for (auto mesh : activeEntity->modelMeshes)
             {
                 ImGui::Text(mesh->material.name.c_str());
                 ImGui::InputFloat3(("Ambient" + std::to_string(j + 1)).c_str(), &(mesh->material.ambient.x), "%.3f");
@@ -239,7 +237,7 @@ int main()
             {
                 static bool flipState = false;
 
-                for (auto mesh : mousePicker.GetClickedObj()->modelMeshes)
+                for (auto mesh : activeEntity->modelMeshes)
                 {
 
                     std::string location;

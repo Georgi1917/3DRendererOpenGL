@@ -1,78 +1,48 @@
 #include "MousePicker.h"
 #include <iostream>
 
+Model* MousePicker::activeEntity = nullptr;
 
-MousePicker::MousePicker(GLFWwindow *window)
+Model* MousePicker::GetClickedEntity(PickingFramebuffer &fbo, Scene &scene)
 {
 
-    glfwWindow = window;
-
-    currModelData = nullptr;
-
-}
-
-MousePicker::~MousePicker()
-{
-
-}
-
-void MousePicker::CheckForMouseClick(PickingFramebuffer &fbo, std::vector<Model*> &models)
-{
-
-    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    if (glfwGetMouseButton(glfwGetCurrentContext(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {
 
         double mx, my;
         char pixel[3];
-        GLFWwindow *currContext = glfwGetCurrentContext();
-        glfwGetCursorPos(currContext, &mx, &my);
+        glfwGetCursorPos(glfwGetCurrentContext(), &mx, &my);
         fbo.Bind();
         glReadPixels((int)mx, 720 - (int)my, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
         fbo.Unbind();
 
-        for (auto &model : models)
+        if (scene.lightSource->mesh->CompareIdToColor(pixel[0], pixel[1], pixel[2]))
         {
 
-            if (model->CompareIdToColor(pixel[0], pixel[1], pixel[2]))
+            activeEntity = scene.lightSource->mesh;
+
+        }
+
+        for (auto entity : scene.entities)
+        {
+
+            if (entity->CompareIdToColor(pixel[0], pixel[1], pixel[2]))
             {
-
-                currModelData = model;
-
+                activeEntity = entity;
+                break;
             }
-
+            
         }
 
     }
 
-}
-
-void MousePicker::CheckForLightSourceClick(PickingFramebuffer& fbo, Model*& source)
-{
-
-    if (glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-    {
-
-        double mx, my;
-        char pixel[3];
-        glfwGetCursorPos(glfwWindow, &mx, &my);
-        fbo.Bind();
-        glReadPixels((int)mx, 720 - (int)my, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
-        fbo.Unbind();
-
-        if (source->CompareIdToColor(pixel[0], pixel[1], pixel[2]))
-        {
-
-            currModelData = source;
-
-        }
-
-    }
+    return activeEntity;
 
 }
 
-Model* MousePicker::GetClickedObj()
+Model* MousePicker::GetCurrentActiveEntity()
 {
 
-    return currModelData;
+    return activeEntity;
 
 }

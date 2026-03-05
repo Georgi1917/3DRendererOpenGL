@@ -7,6 +7,7 @@
 #include "include/glm/gtc/type_ptr.hpp"
 #include "Framebuffer/PickingFramebuffer.h"
 #include "Camera.h"
+#include "Scene/Scene.h"
 #include "Scene/Mesh.h"
 #include "Scene/Light.h"
 #include "Scene/Model.h"
@@ -16,15 +17,9 @@
 struct MousePicker
 {
 
-    GLFWwindow *glfwWindow;
+    static Model* activeEntity;
 
-    Model *currModelData;
-
-    MousePicker(GLFWwindow *window);
-    ~MousePicker();
-
-    void CheckForMouseClick(PickingFramebuffer &fbo, std::vector<Model*> &meshes);
-    void CheckForLightSourceClick(PickingFramebuffer &fbo, Model*& source);
-    Model* GetClickedObj();
+    static Model* GetClickedEntity(PickingFramebuffer &fbo, Scene &scene);
+    static Model* GetCurrentActiveEntity();
 
 };
