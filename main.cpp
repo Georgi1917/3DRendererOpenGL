@@ -54,9 +54,7 @@ int main()
 
     renderer.fbo = fbo;
 
-    MousePicker mousePicker(win.window, renderer.scene.camera, renderer.scene.projection);
-    glfwSetWindowUserPointer(win.window, &mousePicker);
-    glfwSetScrollCallback(win.window, MousePicker::ScrollCallback);
+    MousePicker mousePicker(win.window);
 
     renderer.EnableDepthTesting();
 
@@ -99,14 +97,12 @@ int main()
         if (mousePicker.GetClickedObj())
         {
 
-            //std::cout << "Has Object" << "\n";
-
             glm::mat4 model = mousePicker.GetClickedObj()->model;
 
             ImGuizmo::Manipulate(
                 glm::value_ptr(renderer.scene.camera->GetViewMatrix()),
                 glm::value_ptr(renderer.scene.projection),
-                ImGuizmo::ROTATE,
+                ImGuizmo::TRANSLATE,
                 ImGuizmo::LOCAL,
                 glm::value_ptr(model)
             );

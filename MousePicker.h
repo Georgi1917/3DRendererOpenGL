@@ -16,29 +16,15 @@
 struct MousePicker
 {
 
-    glm::vec3  currentRay;
     GLFWwindow *glfwWindow;
-    glm::mat4  projMatrix;
-    Camera     *camera;
 
-    Model *currModelDrag;
     Model *currModelData;
 
-    glm::vec3 objWorldToView;
-
-    glm::vec3 CalculateRay();
-    glm::vec2 NormalizeMouseCoords(double mouseX, double mouseY);
-    glm::vec4 ToEyeCoords(glm::vec4 clipCoords);
-    glm::vec3 ToWorldCoords(glm::vec4 eyeCoords);
-    void HandleScroll(double xoffset, double yoffset);
-
-    MousePicker(GLFWwindow *window, Camera *cam, glm::mat4 projectionMatrix);
+    MousePicker(GLFWwindow *window);
     ~MousePicker();
 
-    void Update();
     void CheckForMouseClick(PickingFramebuffer &fbo, std::vector<Model*> &meshes);
     void CheckForLightSourceClick(PickingFramebuffer &fbo, Model*& source);
     Model* GetClickedObj();
-    static void ScrollCallback(GLFWwindow *window, double xoffset, double yoffset);
 
 };
