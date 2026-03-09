@@ -20,6 +20,13 @@ Model::Model(std::vector<Mesh*> meshes)
         ((id & 0x00FF0000) >> 16) / 255.0f
     );
 
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, trans);
+    model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::scale(model, scale);
+
 }
 
 Model::Model(const char* filepath)
@@ -36,6 +43,13 @@ Model::Model(const char* filepath)
         ((id & 0x0000FF00) >> 8) / 255.0f,
         ((id & 0x00FF0000) >> 16) / 255.0f
     );
+
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, trans);
+    model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::scale(model, scale);
 
     LoadModel(filepath);
 
@@ -88,9 +102,10 @@ void Model::Draw(Shader& shader)
 
 }
 
-void Model::SetUpMatrix()
+void Model::UpdateMatrix()
 {
 
+    model = glm::mat4(1.0f);
     model = glm::translate(model, trans);
     model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
     model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));

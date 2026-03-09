@@ -46,8 +46,7 @@ void Renderer::SkyboxPass(Shader& shader)
     shader.SetMatrix4fv("view", view);
     shader.SetMatrix4fv("model", scene.skyBoxModel->model);
     scene.skyBoxModel->Draw(shader);
-    scene.skyBoxModel->model = glm::mat4(1.0f);
-    scene.skyBoxModel->SetUpMatrix();
+    //scene.skyBoxModel->UpdateMatrix();
     scene.skyBoxTexture->Unbind();
     glDepthMask(GL_TRUE);
     glDepthFunc(GL_LESS);
@@ -68,22 +67,21 @@ void Renderer::DrawMeshes(Shader &shader)
 
     shader.SetMatrix4fv("projection", scene.projection);
     shader.SetMatrix4fv("view", scene.camera->GetViewMatrix());
+    shader.SetVec3f("light.pos", scene.lightSource->mesh->trans);
+    shader.SetVec3f("light.ambient", scene.lightSource->ambient);
+    shader.SetVec3f("light.diffuse", scene.lightSource->diffuse);
+    shader.SetVec3f("light.specular", scene.lightSource->specular);
+    scene.lightSource->hasAttenuation ? shader.SetBool("light.hasAttenuation", true) 
+                                        : shader.SetBool("light.hasAttenuation", false);
+    shader.SetVec3f("viewPos", scene.camera->GetPosition());
 
     for (auto& entity : scene.entities)
     {
 
-        shader.SetVec3f("light.pos", scene.lightSource->mesh->trans);
-        shader.SetVec3f("light.ambient", scene.lightSource->ambient);
-        shader.SetVec3f("light.diffuse", scene.lightSource->diffuse);
-        shader.SetVec3f("light.specular", scene.lightSource->specular);
-        scene.lightSource->hasAttenuation ? shader.SetBool("light.hasAttenuation", true) 
-                                          : shader.SetBool("light.hasAttenuation", false);
-        shader.SetVec3f("viewPos", scene.camera->GetPosition());
         shader.SetMatrix4fv("model", entity->model);
         entity->Draw(shader);
 
-        // entity->model = glm::mat4(1.0f);
-        // entity->SetUpMatrix();
+        //entity->UpdateMatrix();
 
     }
 
@@ -103,8 +101,7 @@ void Renderer::DrawMeshesPicking(Shader &shader)
         shader.SetMatrix4fv("model", model->model);
         model->Draw(shader);
 
-        // model->model = glm::mat4(1.0f);
-        // model->SetUpMatrix();
+        //model->UpdateMatrix();
 
     }
 
@@ -120,8 +117,7 @@ void Renderer::DrawLightSource(Shader &shader)
     shader.SetMatrix4fv("view", scene.camera->GetViewMatrix());
     scene.lightSource->mesh->Draw(shader);
 
-    // scene.lightSource->mesh->model = glm::mat4(1.0f);
-    // scene.lightSource->mesh->SetUpMatrix();
+    //scene.lightSource->mesh->UpdateMatrix();
 
 }
 
@@ -135,8 +131,7 @@ void Renderer::DrawLightSourcePicking(Shader& shader)
     shader.SetMatrix4fv("view", scene.camera->GetViewMatrix());
     scene.lightSource->mesh->Draw(shader);
     
-    // scene.lightSource->mesh->model = glm::mat4(1.0f);
-    // scene.lightSource->mesh->SetUpMatrix();
+    //scene.lightSource->mesh->UpdateMatrix();
 
 }
 

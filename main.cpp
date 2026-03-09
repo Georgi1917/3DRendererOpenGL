@@ -52,8 +52,7 @@ int main()
     ImGuizmoLayer ImGuizmoLayer;
     MousePicker mousePicker;
     PickingFramebuffer fbo;
-    Renderer renderer;
-    renderer.fbo = fbo;
+    Renderer renderer; renderer.fbo = fbo;
 
     renderer.EnableDepthTesting();
 
@@ -142,6 +141,7 @@ int main()
                         it = renderer.scene.entities.erase(it);
             
                         activeEntity = nullptr;
+                        mousePicker.activeEntity = nullptr;
 
                         break;
 
@@ -157,9 +157,11 @@ int main()
         if (activeEntity)
         {
 
-            ImGui::DragFloat3("Translation", &(activeEntity->trans.x), 1.0f * deltaTime, -100, 100);
-            ImGui::DragFloat3("Rotation", &(activeEntity->rotation.x), 10.0f, -360, 360);
-            ImGui::DragFloat3("Scale", &(activeEntity->scale.x), 2.0f * deltaTime, 1.0f, 100.0f);
+            if (
+                ImGui::DragFloat3("Translation", &(activeEntity->trans.x), 1.0f * deltaTime, -100, 100) ||
+                ImGui::DragFloat3("Rotation", &(activeEntity->rotation.x), 10.0f, -360, 360) ||
+                ImGui::DragFloat3("Scale", &(activeEntity->scale.x), 2.0f * deltaTime, 1.0f, 100.0f) 
+               ) activeEntity->UpdateMatrix();
 
             ImGui::Text("\n\nMATERIAL INFO:");
             int i = 0;

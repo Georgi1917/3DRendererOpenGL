@@ -4,6 +4,7 @@ void ImGuizmoLayer::BeginFrame(int x, int y, int width, int height)
 {
 
     ImGuizmo::BeginFrame();
+    ImGuizmo::SetOrthographic(false);
     ImGuizmo::SetDrawlist(ImGui::GetForegroundDrawList());
     ImGuizmo::SetRect(x, y, width, height);
 
@@ -31,7 +32,7 @@ void ImGuizmoLayer::UpdateEntity(Model *entity, glm::mat4 &viewMatrix, glm::mat4
 
     isKeyPressedLastFrame = isKeyPressed;
 
-    glm::mat4 model = entity->model;
+    glm::mat4& model = entity->model;
 
     ImGuizmo::Manipulate(
         glm::value_ptr(viewMatrix),
@@ -57,8 +58,7 @@ void ImGuizmoLayer::UpdateEntity(Model *entity, glm::mat4 &viewMatrix, glm::mat4
         entity->rotation = rotation;
         entity->scale = scale;
 
-        entity->model = glm::mat4(1.0f);
-        entity->SetUpMatrix();
+        //entity->UpdateMatrix();
 
     }
 

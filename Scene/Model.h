@@ -26,7 +26,7 @@ struct Model
     ~Model();
     
     void Draw(Shader &shader);
-    void SetUpMatrix();
+    void UpdateMatrix();
     bool CompareIdToColor(unsigned char r, unsigned char g, unsigned char b);
 
     void LoadModel(const char* filepath);
