@@ -82,8 +82,8 @@ void Renderer::DrawMeshes(Shader &shader)
         shader.SetMatrix4fv("model", entity->model);
         entity->Draw(shader);
 
-        entity->model = glm::mat4(1.0f);
-        entity->SetUpMatrix();
+        // entity->model = glm::mat4(1.0f);
+        // entity->SetUpMatrix();
 
     }
 
@@ -103,8 +103,8 @@ void Renderer::DrawMeshesPicking(Shader &shader)
         shader.SetMatrix4fv("model", model->model);
         model->Draw(shader);
 
-        model->model = glm::mat4(1.0f);
-        model->SetUpMatrix();
+        // model->model = glm::mat4(1.0f);
+        // model->SetUpMatrix();
 
     }
 
@@ -120,8 +120,8 @@ void Renderer::DrawLightSource(Shader &shader)
     shader.SetMatrix4fv("view", scene.camera->GetViewMatrix());
     scene.lightSource->mesh->Draw(shader);
 
-    scene.lightSource->mesh->model = glm::mat4(1.0f);
-    scene.lightSource->mesh->SetUpMatrix();
+    // scene.lightSource->mesh->model = glm::mat4(1.0f);
+    // scene.lightSource->mesh->SetUpMatrix();
 
 }
 
@@ -135,8 +135,8 @@ void Renderer::DrawLightSourcePicking(Shader& shader)
     shader.SetMatrix4fv("view", scene.camera->GetViewMatrix());
     scene.lightSource->mesh->Draw(shader);
     
-    scene.lightSource->mesh->model = glm::mat4(1.0f);
-    scene.lightSource->mesh->SetUpMatrix();
+    // scene.lightSource->mesh->model = glm::mat4(1.0f);
+    // scene.lightSource->mesh->SetUpMatrix();
 
 }
 

@@ -10,6 +10,7 @@
 #include "Renderer/Renderer.h"
 #include "Framebuffer/PickingFramebuffer.h"
 #include "Textures/Texture.h"
+#include "ImGUILayer/ImGuizmoLayer.h"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -43,17 +44,16 @@ int main()
 
     Window win = Window(1280, 720, "Renderer");
 
-    PickingFramebuffer fbo;
-
     Shader basicShader("shaders/basic.vs", "shaders/basic.fs");
     Shader lightingShader("shaders/lighting.vs", "shaders/lighting.fs");
     Shader pickingShader("shaders/picking.vs", "shaders/picking.fs");
     Shader skyboxShader("shaders/skybox.vs", "shaders/skybox.fs");
 
+    ImGuizmoLayer ImGuizmoLayer;
+    MousePicker mousePicker;
+    PickingFramebuffer fbo;
     Renderer renderer;
     renderer.fbo = fbo;
-
-    MousePicker mousePicker;
 
     renderer.EnableDepthTesting();
 
@@ -82,9 +82,6 @@ int main()
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        ImGuizmo::BeginFrame();
-        ImGuizmo::SetDrawlist(ImGui::GetForegroundDrawList());
-        ImGuizmo::SetRect(0, 0, win.width, win.height);
 
         renderer.PickingPass(pickingShader);
         renderer.SkyboxPass(skyboxShader);
@@ -93,41 +90,8 @@ int main()
 
         activeEntity = mousePicker.GetClickedEntity(fbo, renderer.scene);
 
-        if (activeEntity)
-        {
-
-            glm::mat4 model = activeEntity->model;
-
-            ImGuizmo::Manipulate(
-                glm::value_ptr(renderer.scene.camera->GetViewMatrix()),
-                glm::value_ptr(renderer.scene.projection),
-                ImGuizmo::TRANSLATE,
-                ImGuizmo::LOCAL,
-                glm::value_ptr(model)
-            );
-
-            if (ImGuizmo::IsUsing())
-            {
-
-                glm::vec3 translation, rotation, scale;
-
-                ImGuizmo::DecomposeMatrixToComponents(
-                    glm::value_ptr(model),
-                    glm::value_ptr(translation),
-                    glm::value_ptr(rotation),
-                    glm::value_ptr(scale)
-                );
-
-                activeEntity->trans = translation;
-                activeEntity->rotation = rotation;
-                activeEntity->scale = scale;
-
-                activeEntity->model = glm::mat4(1.0f);
-                activeEntity->SetUpMatrix();
-
-            }
-
-        }
+        ImGuizmoLayer.BeginFrame(0, 0, win.width, win.height);
+        ImGuizmoLayer.UpdateEntity(activeEntity, renderer.scene.camera->GetViewMatrix(), renderer.scene.projection);
         
         ImGui::Begin("First Window");
 
