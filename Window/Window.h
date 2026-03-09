@@ -16,6 +16,9 @@ struct Window
     void PollEvents();
     void SwapBuffers();
     void Terminate();
+    void HandleResize(int width, int height);
     bool ShouldClose();
+
+    static void FramebufferResizeCallback(GLFWwindow *window, int width, int height);
 
 };
