@@ -1,6 +1,15 @@
 #include "Window.h"
 #include <iostream>
 
+Window *currentWindow = nullptr;
+
+Window* GetCurrentContext()
+{
+
+    return currentWindow;
+
+}
+
 Window::Window(int width, int height, const char* title) : width(width), height(height)
 {
 
@@ -15,6 +24,7 @@ Window::Window(int width, int height, const char* title) : width(width), height(
 
     glfwSetWindowUserPointer(window, this);
     glfwSetFramebufferSizeCallback(window, FramebufferResizeCallback);
+    currentWindow = this;
 
 }
 
@@ -56,7 +66,9 @@ void Window::Terminate()
 void Window::HandleResize(int width, int height)
 {
 
-    std::cout << "FrameBuffer width : " << width << " " << "Framebuffer height : " << height << "\n";
+    this->width  = width;
+    this->height = height;
+    //std::cout << "FrameBuffer width : " << width << " " << "Framebuffer height : " << height << "\n";
 
 }
 

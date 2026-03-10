@@ -44,6 +44,8 @@ int main()
 
     Window win = Window(1280, 720, "Renderer");
 
+    std::cout << GetCurrentContext()->width << " " << GetCurrentContext()->height << "\n";
+
     Shader basicShader("shaders/basic.vs", "shaders/basic.fs");
     Shader lightingShader("shaders/lighting.vs", "shaders/lighting.fs");
     Shader pickingShader("shaders/picking.vs", "shaders/picking.fs");

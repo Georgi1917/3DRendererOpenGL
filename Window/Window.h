@@ -3,7 +3,6 @@
 #include "../include/glew.h"
 #include "../include/GLFW/glfw3.h"
 
-
 struct Window
 {
 
@@ -22,3 +21,5 @@ struct Window
     static void FramebufferResizeCallback(GLFWwindow *window, int width, int height);
 
 };
+
+Window* GetCurrentContext();
