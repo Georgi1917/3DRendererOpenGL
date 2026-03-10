@@ -16,7 +16,6 @@ struct Renderer
 {
 
     Scene scene;
-    
     PickingFramebuffer fbo;
 
     void BeginFrame();

@@ -51,7 +51,7 @@ int main()
 
     ImGuizmoLayer ImGuizmoLayer;
     MousePicker mousePicker;
-    PickingFramebuffer fbo;
+    PickingFramebuffer fbo(win.width, win.height);
     Renderer renderer; renderer.fbo = fbo;
 
     renderer.EnableDepthTesting();

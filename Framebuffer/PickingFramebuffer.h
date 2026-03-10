@@ -10,6 +10,7 @@ struct PickingFramebuffer
     unsigned int pickingTexId;
     unsigned int renderBuffId;
 
+    PickingFramebuffer(int width, int height);
     PickingFramebuffer();
     ~PickingFramebuffer();
 
