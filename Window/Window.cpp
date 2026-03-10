@@ -68,7 +68,6 @@ void Window::HandleResize(int width, int height)
 
     this->width  = width;
     this->height = height;
-    //std::cout << "FrameBuffer width : " << width << " " << "Framebuffer height : " << height << "\n";
 
 }
 

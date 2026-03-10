@@ -4,7 +4,7 @@
 void Renderer::BeginFrame()
 {
 
-    glViewport(0, 0, 1280, 720);
+    glViewport(0, 0, GetCurrentContext()->width, GetCurrentContext()->height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 }
@@ -13,7 +13,7 @@ void Renderer::PickingPass(Shader& shader)
 {
 
     fbo.Bind();
-    glViewport(0, 0, 1280, 720);
+    glViewport(0, 0, GetCurrentContext()->width, GetCurrentContext()->height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     DrawMeshesPicking(shader);
     DrawLightSourcePicking(shader);
@@ -31,7 +31,7 @@ void Renderer::MainPass(Shader& shader)
 void Renderer::SkyboxPass(Shader& shader)
 {
 
-    glViewport(0, 0, 1280, 720);
+    glViewport(0, 0, GetCurrentContext()->width, GetCurrentContext()->height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (!scene.hasSkybox) return;
@@ -46,7 +46,7 @@ void Renderer::SkyboxPass(Shader& shader)
     shader.SetMatrix4fv("view", view);
     shader.SetMatrix4fv("model", scene.skyBoxModel->model);
     scene.skyBoxModel->Draw(shader);
-    //scene.skyBoxModel->UpdateMatrix();
+    
     scene.skyBoxTexture->Unbind();
     glDepthMask(GL_TRUE);
     glDepthFunc(GL_LESS);
@@ -81,8 +81,6 @@ void Renderer::DrawMeshes(Shader &shader)
         shader.SetMatrix4fv("model", entity->model);
         entity->Draw(shader);
 
-        //entity->UpdateMatrix();
-
     }
 
 }
@@ -101,8 +99,6 @@ void Renderer::DrawMeshesPicking(Shader &shader)
         shader.SetMatrix4fv("model", model->model);
         model->Draw(shader);
 
-        //model->UpdateMatrix();
-
     }
 
 }
@@ -117,8 +113,6 @@ void Renderer::DrawLightSource(Shader &shader)
     shader.SetMatrix4fv("view", scene.camera->GetViewMatrix());
     scene.lightSource->mesh->Draw(shader);
 
-    //scene.lightSource->mesh->UpdateMatrix();
-
 }
 
 void Renderer::DrawLightSourcePicking(Shader& shader)
@@ -130,8 +124,6 @@ void Renderer::DrawLightSourcePicking(Shader& shader)
     shader.SetMatrix4fv("projection", scene.projection);
     shader.SetMatrix4fv("view", scene.camera->GetViewMatrix());
     scene.lightSource->mesh->Draw(shader);
-    
-    //scene.lightSource->mesh->UpdateMatrix();
 
 }
 
