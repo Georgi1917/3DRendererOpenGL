@@ -3,6 +3,13 @@
 #include "../include/glew.h"
 #include <iostream>
 
+struct FramebufferSpecification
+{
+
+    int width, height;
+
+};
+
 struct PickingFramebuffer
 {
 
@@ -10,11 +17,12 @@ struct PickingFramebuffer
     unsigned int pickingTexId;
     unsigned int renderBuffId;
 
-    PickingFramebuffer(int width, int height);
-    PickingFramebuffer();
+    PickingFramebuffer() = default;
+    PickingFramebuffer(FramebufferSpecification &fbo_spec);
     ~PickingFramebuffer();
 
     void Bind();
     void Unbind();
+    void ResizeFramebuffer(FramebufferSpecification &new_spec);
 
 };

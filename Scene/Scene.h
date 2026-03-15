@@ -21,4 +21,6 @@ struct Scene
     Scene();
     ~Scene();
 
+    void ResetProjection(int width, int height);
+
 };

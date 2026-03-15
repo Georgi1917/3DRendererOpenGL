@@ -22,6 +22,7 @@ void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum se
                                 const GLchar* message, const void* userParam) 
 {
     fprintf(stderr, "OpenGL Debug: %s\n", message);
+    exit(0);
 }
 
 static bool IsValidFile(std::string filepath)
@@ -51,7 +52,8 @@ int main()
 
     ImGuizmoLayer ImGuizmoLayer;
     MousePicker mousePicker;
-    PickingFramebuffer fbo(win.width, win.height);
+    FramebufferSpecification fbo_spec{ win.width, win.height };
+    PickingFramebuffer fbo{ fbo_spec };
     Renderer renderer; renderer.fbo = fbo;
 
     renderer.EnableDepthTesting();
@@ -91,6 +93,16 @@ int main()
 
         ImGuizmoLayer.BeginFrame(0, 0, win.width, win.height);
         ImGuizmoLayer.UpdateEntity(activeEntity, renderer.scene.camera->GetViewMatrix(), renderer.scene.projection);
+
+        if (fbo_spec.width != win.width || fbo_spec.height != win.height)
+        {
+
+            fbo_spec.width = win.width; fbo_spec.height = win.height;
+            fbo.ResizeFramebuffer(fbo_spec);
+            renderer.fbo = fbo;
+            renderer.scene.ResetProjection(win.width, win.height);
+
+        }
         
         ImGui::Begin("First Window");
 

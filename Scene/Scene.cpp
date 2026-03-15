@@ -29,3 +29,10 @@ Scene::~Scene()
     entities.clear();
 
 }
+
+void Scene::ResetProjection(int width, int height)
+{
+
+    projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 300.0f);
+
+}

@@ -13,7 +13,7 @@ Model* MousePicker::GetClickedEntity(PickingFramebuffer &fbo, Scene &scene)
         char pixel[3];
         glfwGetCursorPos(glfwGetCurrentContext(), &mx, &my);
         fbo.Bind();
-        glReadPixels((int)mx, 720 - (int)my, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
+        glReadPixels((int)mx, GetCurrentContext()->height - (int)my, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
         fbo.Unbind();
 
         if (scene.lightSource->mesh->CompareIdToColor(pixel[0], pixel[1], pixel[2]))
