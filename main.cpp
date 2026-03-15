@@ -54,6 +54,7 @@ int main()
     MousePicker mousePicker;
     FramebufferSpecification fbo_spec{ win.width, win.height };
     PickingFramebuffer fbo{ fbo_spec };
+    Scene scene;
     Renderer renderer; renderer.fbo = fbo;
 
     renderer.EnableDepthTesting();
@@ -76,7 +77,7 @@ int main()
 
         float deltaTime = GetDeltaTime();
 
-        renderer.scene.camera->Update(win.window, deltaTime);
+        scene.camera->Update(win.window, deltaTime);
 
         renderer.BeginFrame();
 
@@ -84,15 +85,15 @@ int main()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        renderer.PickingPass(pickingShader);
-        renderer.SkyboxPass(skyboxShader);
-        renderer.MainPass(basicShader);
-        renderer.LightPass(lightingShader);
+        renderer.PickingPass(pickingShader, scene);
+        renderer.SkyboxPass(skyboxShader, scene);
+        renderer.MainPass(basicShader, scene);
+        renderer.LightPass(lightingShader, scene);
 
-        activeEntity = mousePicker.GetClickedEntity(fbo, renderer.scene);
+        activeEntity = mousePicker.GetClickedEntity(fbo, scene);
 
         ImGuizmoLayer.BeginFrame(0, 0, win.width, win.height);
-        ImGuizmoLayer.UpdateEntity(activeEntity, renderer.scene.camera->GetViewMatrix(), renderer.scene.projection);
+        ImGuizmoLayer.UpdateEntity(activeEntity, scene.camera->GetViewMatrix(), scene.projection);
 
         if (fbo_spec.width != win.width || fbo_spec.height != win.height)
         {
@@ -100,7 +101,7 @@ int main()
             fbo_spec.width = win.width; fbo_spec.height = win.height;
             fbo.ResizeFramebuffer(fbo_spec);
             renderer.fbo = fbo;
-            renderer.scene.ResetProjection(win.width, win.height);
+            scene.ResetProjection(win.width, win.height);
 
         }
         
@@ -118,7 +119,7 @@ int main()
             {
 
                 if (IsValidFile(entry.path().string()) && ImGui::MenuItem(entry.path().generic_string().c_str()))
-                    renderer.scene.entities.push_back(new Model(entry.path().generic_string().c_str()));
+                    scene.entities.push_back(new Model(entry.path().generic_string().c_str()));
 
             }
 
@@ -131,10 +132,10 @@ int main()
             else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         
 
-        if (ImGui::Checkbox("Attenuation", &renderer.scene.lightSource->hasAttenuation))
+        if (ImGui::Checkbox("Attenuation", &scene.lightSource->hasAttenuation))
         {}
 
-        if (ImGui::Checkbox("Draw Skybox", &renderer.scene.hasSkybox))
+        if (ImGui::Checkbox("Draw Skybox", &scene.hasSkybox))
         {}
             
         if (activeEntity)
@@ -143,14 +144,14 @@ int main()
             if (ImGui::Button("Delete Object"))
             {
 
-                for (auto it = renderer.scene.entities.begin(); it != renderer.scene.entities.end();)
+                for (auto it = scene.entities.begin(); it != scene.entities.end();)
                 {
 
                     if (*it == activeEntity)
                     {
 
                         delete *it;
-                        it = renderer.scene.entities.erase(it);
+                        it = scene.entities.erase(it);
             
                         activeEntity = nullptr;
                         mousePicker.activeEntity = nullptr;

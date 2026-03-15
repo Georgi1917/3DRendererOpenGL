@@ -9,26 +9,26 @@ void Renderer::BeginFrame()
 
 }
 
-void Renderer::PickingPass(Shader& shader)
+void Renderer::PickingPass(Shader& shader, Scene &scene)
 {
 
     fbo.Bind();
     glViewport(0, 0, GetCurrentContext()->width, GetCurrentContext()->height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    DrawMeshesPicking(shader);
-    DrawLightSourcePicking(shader);
+    DrawMeshesPicking(shader, scene);
+    DrawLightSourcePicking(shader, scene);
     fbo.Unbind();
 
 }
 
-void Renderer::MainPass(Shader& shader)
+void Renderer::MainPass(Shader& shader, Scene &scene)
 {
 
-    DrawMeshes(shader);
+    DrawMeshes(shader, scene);
 
 }
 
-void Renderer::SkyboxPass(Shader& shader)
+void Renderer::SkyboxPass(Shader& shader, Scene &scene)
 {
 
     glViewport(0, 0, GetCurrentContext()->width, GetCurrentContext()->height);
@@ -53,14 +53,14 @@ void Renderer::SkyboxPass(Shader& shader)
 
 }
 
-void Renderer::LightPass(Shader &shader)
+void Renderer::LightPass(Shader &shader, Scene &scene)
 {
 
-    DrawLightSource(shader);
+    DrawLightSource(shader, scene);
 
 }
 
-void Renderer::DrawMeshes(Shader &shader)
+void Renderer::DrawMeshes(Shader &shader, Scene &scene)
 {
 
     shader.Bind();
@@ -85,7 +85,7 @@ void Renderer::DrawMeshes(Shader &shader)
 
 }
 
-void Renderer::DrawMeshesPicking(Shader &shader)
+void Renderer::DrawMeshesPicking(Shader &shader, Scene &scene)
 {
 
     shader.Bind();
@@ -103,7 +103,7 @@ void Renderer::DrawMeshesPicking(Shader &shader)
 
 }
 
-void Renderer::DrawLightSource(Shader &shader)
+void Renderer::DrawLightSource(Shader &shader, Scene &scene)
 {
 
     shader.Bind();
@@ -115,7 +115,7 @@ void Renderer::DrawLightSource(Shader &shader)
 
 }
 
-void Renderer::DrawLightSourcePicking(Shader& shader)
+void Renderer::DrawLightSourcePicking(Shader& shader, Scene &scene)
 {
 
     shader.Bind();

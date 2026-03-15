@@ -15,23 +15,22 @@
 struct Renderer
 {
 
-    Scene scene;
     PickingFramebuffer fbo;
 
     void BeginFrame();
 
-    void PickingPass(Shader& shader);
-    void SkyboxPass(Shader& shader);
-    void MainPass(Shader& shader);
-    void LightPass(Shader& shader);
+    void PickingPass(Shader& shader, Scene &scene);
+    void SkyboxPass(Shader& shader, Scene &scene);
+    void MainPass(Shader& shader, Scene &scene);
+    void LightPass(Shader& shader, Scene &scene);
 
     void EnableDepthTesting();
 
     private:
 
-        void DrawMeshes(Shader &shader);
-        void DrawMeshesPicking(Shader &shader);
-        void DrawLightSource(Shader &shader);
-        void DrawLightSourcePicking(Shader &shader);
+        void DrawMeshes(Shader &shader, Scene &scene);
+        void DrawMeshesPicking(Shader &shader, Scene &scene);
+        void DrawLightSource(Shader &shader, Scene &scene);
+        void DrawLightSourcePicking(Shader &shader, Scene &scene);
     
 };
