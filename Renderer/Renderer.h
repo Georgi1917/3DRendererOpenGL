@@ -17,6 +17,8 @@ struct Renderer
 
     PickingFramebuffer fbo;
 
+    Renderer();
+
     void BeginFrame();
 
     void PickingPass(Shader& shader, Scene &scene);

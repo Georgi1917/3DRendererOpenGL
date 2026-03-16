@@ -1,6 +1,22 @@
 #include "Renderer.h"
 #include <iostream>
 
+void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
+                                const GLchar* message, const void* userParam) 
+{
+    fprintf(stderr, "OpenGL Debug: %s\n", message);
+    exit(0);
+}
+
+Renderer::Renderer()
+{
+
+    EnableDepthTesting();
+    glEnable(GL_DEBUG_OUTPUT);
+    glDebugMessageCallback(MessageCallback, nullptr);
+
+}
+
 void Renderer::BeginFrame()
 {
 

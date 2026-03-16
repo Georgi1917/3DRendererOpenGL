@@ -6,7 +6,6 @@
 #include "Framebuffer/PickingFramebuffer.h"
 #include "Scene/Scene.h"
 #include <vector>
-#include <memory>
 
 struct MousePicker
 {

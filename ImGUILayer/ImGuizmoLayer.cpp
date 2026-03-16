@@ -58,8 +58,6 @@ void ImGuizmoLayer::UpdateEntity(Model *entity, glm::mat4 &viewMatrix, glm::mat4
         entity->rotation = rotation;
         entity->scale = scale;
 
-        //entity->UpdateMatrix();
-
     }
 
 }
