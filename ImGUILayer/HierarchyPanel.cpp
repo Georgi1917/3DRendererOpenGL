@@ -1,4 +1,4 @@
-#include "ImGuiLayer.h"
+#include "HierarchyPanel.h"
 
 static bool IsValidFile(std::string filepath)
 {
@@ -15,7 +15,7 @@ static bool IsValidFile(std::string filepath)
 
 }
 
-void ImGuiLayer::Init(Window window, bool install_callbacks)
+void HierarchyPanel::Init(Window window, bool install_callbacks)
 {
 
     IMGUI_CHECKVERSION();
@@ -28,7 +28,7 @@ void ImGuiLayer::Init(Window window, bool install_callbacks)
 
 }
 
-void ImGuiLayer::NewFrame()
+void HierarchyPanel::NewFrame()
 {
 
     ImGui_ImplOpenGL3_NewFrame();
@@ -37,7 +37,7 @@ void ImGuiLayer::NewFrame()
 
 }
 
-void ImGuiLayer::OnRender(const char *name, Scene &scene)
+void HierarchyPanel::OnRender(const char *name, Scene &scene)
 {
 
     float deltaTime = GetDeltaTime();
@@ -187,7 +187,34 @@ void ImGuiLayer::OnRender(const char *name, Scene &scene)
 
 }
 
-void ImGuiLayer::Shutdown()
+void HierarchyPanel::ShowDockspace()
+{
+
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+
+    const ImGuiViewport *viewport = ImGui::GetMainViewport();
+
+    ImGui::SetNextWindowPos(viewport->WorkPos);
+    ImGui::SetNextWindowSize(viewport->WorkSize);
+    ImGui::SetNextWindowViewport(viewport->ID);
+
+    window_flags |= ImGuiWindowFlags_NoTitleBar |
+                    ImGuiWindowFlags_NoCollapse |
+                    ImGuiWindowFlags_NoResize |
+                    ImGuiWindowFlags_NoMove |
+                    ImGuiWindowFlags_NoBringToFrontOnFocus |
+                    ImGuiWindowFlags_NoNavFocus;
+
+    ImGui::Begin("Dock Space", nullptr, window_flags);
+
+    ImGuiID dockspace_id = ImGui::GetID("MainDockSpace");
+    ImGui::DockSpace(dockspace_id, ImVec2(0, 0));
+
+    ImGui::End();
+
+}
+
+void HierarchyPanel::Shutdown()
 {
 
     ImGui_ImplOpenGL3_Shutdown();

@@ -11,12 +11,13 @@
 #include <vector>
 #include <set>
 
-struct ImGuiLayer
+struct HierarchyPanel
 {
 
     void Init(Window window, bool install_callbacks);
     void NewFrame();
     void OnRender(const char *name, Scene &scene);
+    void ShowDockspace();
     void Shutdown();
 
 };

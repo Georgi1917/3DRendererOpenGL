@@ -9,7 +9,7 @@
 #include "Renderer/Renderer.h"
 #include "Framebuffer/PickingFramebuffer.h"
 #include "ImGUILayer/ImGuizmoLayer.h"
-#include "ImGUILayer/ImGuiLayer.h"
+#include "ImGUILayer/HierarchyPanel.h"
 
 int main()
 {
@@ -22,14 +22,14 @@ int main()
     Shader skyboxShader("shaders/skybox.vs", "shaders/skybox.fs");
 
     ImGuizmoLayer ImGuizmoLayer;
-    ImGuiLayer ImGuiLayer;
+    HierarchyPanel HierarchyPanel;
     MousePicker mousePicker;
     FramebufferSpecification fbo_spec{ win.width, win.height };
     PickingFramebuffer fbo{ fbo_spec };
     Scene scene;
     Renderer renderer; renderer.fbo = fbo;
 
-    ImGuiLayer.Init(win, true);
+    HierarchyPanel.Init(win, true);
 
     Model* activeEntity = nullptr;
 
@@ -42,7 +42,8 @@ int main()
 
         renderer.BeginFrame();
 
-        ImGuiLayer.NewFrame();
+        HierarchyPanel.NewFrame();
+        HierarchyPanel.ShowDockspace();
 
         renderer.PickingPass(pickingShader, scene);
         renderer.SkyboxPass(skyboxShader, scene);
@@ -64,14 +65,14 @@ int main()
 
         }
 
-        ImGuiLayer.OnRender("Window", scene);
+        HierarchyPanel.OnRender("Window", scene);
 
         win.SwapBuffers();
         win.PollEvents();
 
     }
 
-    ImGuiLayer.Shutdown();
+    HierarchyPanel.Shutdown();
     win.Terminate();
     return 0;
 
