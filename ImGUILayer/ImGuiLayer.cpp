@@ -20,7 +20,8 @@ void ImGuiLayer::Init(Window window, bool install_callbacks)
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO(); (void)io;
+    ImGuiIO &io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window.window, install_callbacks);
     ImGui_ImplOpenGL3_Init("#version 330");
