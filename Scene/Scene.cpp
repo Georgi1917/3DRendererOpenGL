@@ -16,7 +16,7 @@ Scene::Scene()
 
     });
     skyBoxModel = ConstructSkyboxM();
-    projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 1.0f, 300.0f);
+    projection = glm::perspective(glm::radians(75.0f), 1280.0f / 720.0f, 1.0f, 300.0f);
 
     entities.push_back(new Model("obj-files/wizard.blend"));
 
@@ -33,6 +33,6 @@ Scene::~Scene()
 void Scene::ResetProjection(int width, int height)
 {
 
-    projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 300.0f);
+    projection = glm::perspective(glm::radians(75.0f), (float)width / (float)height, 1.0f, 300.0f);
 
 }
