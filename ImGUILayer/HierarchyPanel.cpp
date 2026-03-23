@@ -44,7 +44,7 @@ void HierarchyPanel::OnRender(const char *name, Scene &scene)
 
     Model* activeEntity = MousePicker::GetCurrentActiveEntity();
 
-    ImGui::Begin("First Window");
+    ImGui::Begin(name);
 
     if (ImGui::Button("Import Object"))
         ImGui::OpenPopup("Objects");
@@ -181,9 +181,6 @@ void HierarchyPanel::OnRender(const char *name, Scene &scene)
     }
     
     ImGui::End();
-
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 }
 

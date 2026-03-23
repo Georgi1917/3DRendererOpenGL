@@ -10,6 +10,7 @@
 #include "Framebuffer/PickingFramebuffer.h"
 #include "ImGUILayer/ImGuizmoLayer.h"
 #include "ImGUILayer/HierarchyPanel.h"
+#include "ImGUILayer/SceneViewport.h"
 
 int main()
 {
@@ -23,9 +24,12 @@ int main()
 
     ImGuizmoLayer ImGuizmoLayer;
     HierarchyPanel HierarchyPanel;
+    SceneViewport SceneViewport;
     MousePicker mousePicker;
-    FramebufferSpecification fbo_spec{ win.width, win.height };
-    PickingFramebuffer fbo{ fbo_spec };
+    FramebufferSpecification picking_spec{ win.width, win.height };
+    FramebufferSpecification main_spec {800, 600};
+    PickingFramebuffer fbo{ picking_spec };
+    PickingFramebuffer main_fbo{ main_spec };
     Scene scene;
     Renderer renderer; renderer.fbo = fbo;
 
@@ -46,26 +50,29 @@ int main()
         HierarchyPanel.ShowDockspace();
 
         renderer.PickingPass(pickingShader, scene);
+        main_fbo.Bind();
         renderer.SkyboxPass(skyboxShader, scene);
         renderer.MainPass(basicShader, scene);
         renderer.LightPass(lightingShader, scene);
+        main_fbo.Unbind();
 
         activeEntity = mousePicker.GetClickedEntity(fbo, scene);
 
         ImGuizmoLayer.BeginFrame(0, 0, win.width, win.height);
         ImGuizmoLayer.UpdateEntity(activeEntity, scene.camera->GetViewMatrix(), scene.projection);
 
-        if (fbo_spec.width != win.width || fbo_spec.height != win.height)
+        if (picking_spec.width != win.width || picking_spec.height != win.height)
         {
 
-            fbo_spec.width = win.width; fbo_spec.height = win.height;
-            fbo.ResizeFramebuffer(fbo_spec);
+            picking_spec.width = win.width; picking_spec.height = win.height;
+            fbo.ResizeFramebuffer(picking_spec);
             renderer.fbo = fbo;
             scene.ResetProjection(win.width, win.height);
 
         }
 
-        HierarchyPanel.OnRender("Window", scene);
+        HierarchyPanel.OnRender("Hierarchy Panel", scene);
+        SceneViewport.OnRender("Scene", main_fbo, main_spec);
 
         win.SwapBuffers();
         win.PollEvents();
