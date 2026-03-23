@@ -12,7 +12,7 @@ struct ImGuizmoLayer
 
     ImGuizmo::OPERATION currentOperation = ImGuizmo::TRANSLATE;
 
-    void BeginFrame(int x, int y, int width, int height);
+    void BeginFrame(int x, int y, int width, int height, ImDrawList *drawList);
     void UpdateEntity(Model* entity, glm::mat4 &viewMatrix, glm::mat4 &projection);
 
 };

@@ -25,11 +25,13 @@ int main()
     ImGuizmoLayer ImGuizmoLayer;
     HierarchyPanel HierarchyPanel;
     SceneViewport SceneViewport;
-    MousePicker mousePicker;
+
     FramebufferSpecification picking_spec{ win.width, win.height };
-    FramebufferSpecification main_spec {800, 600};
+    FramebufferSpecification main_spec { 800, 600 };
     PickingFramebuffer fbo{ picking_spec };
     PickingFramebuffer main_fbo{ main_spec };
+
+    MousePicker mousePicker;
     Scene scene;
     Renderer renderer; renderer.fbo = fbo;
 
@@ -58,20 +60,19 @@ int main()
 
         activeEntity = mousePicker.GetClickedEntity(fbo, scene);
 
-        ImGuizmoLayer.BeginFrame(0, 0, win.width, win.height);
-        ImGuizmoLayer.UpdateEntity(activeEntity, scene.camera->GetViewMatrix(), scene.projection);
-
-        if (picking_spec.width != win.width || picking_spec.height != win.height)
+        if (picking_spec.width != main_spec.width || picking_spec.height != main_spec.height)
         {
 
-            picking_spec.width = win.width; picking_spec.height = win.height;
+            picking_spec.width = main_spec.width; picking_spec.height = main_spec.height;
             fbo.ResizeFramebuffer(picking_spec);
             renderer.fbo = fbo;
-            scene.ResetProjection(win.width, win.height);
+            scene.ResetProjection(main_spec.width, main_spec.height);
 
         }
 
         HierarchyPanel.OnRender("Hierarchy Panel", scene);
+        ImGuizmoLayer.BeginFrame(SceneViewport.x, SceneViewport.y, SceneViewport.width, SceneViewport.height, SceneViewport.drawList);
+        ImGuizmoLayer.UpdateEntity(activeEntity, scene.camera->GetViewMatrix(), scene.projection);
         SceneViewport.OnRender("Scene", main_fbo, main_spec);
 
         win.SwapBuffers();

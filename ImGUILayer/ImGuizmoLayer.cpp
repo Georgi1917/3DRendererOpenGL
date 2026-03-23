@@ -1,11 +1,11 @@
 #include "ImGuizmoLayer.h"
 
-void ImGuizmoLayer::BeginFrame(int x, int y, int width, int height)
+void ImGuizmoLayer::BeginFrame(int x, int y, int width, int height, ImDrawList *drawList)
 {
 
     ImGuizmo::BeginFrame();
     ImGuizmo::SetOrthographic(false);
-    ImGuizmo::SetDrawlist(ImGui::GetForegroundDrawList());
+    ImGuizmo::SetDrawlist(drawList);
     ImGuizmo::SetRect(x, y, width, height);
 
 }

@@ -8,7 +8,9 @@
 struct SceneViewport
 {
 
+    int x, y;
     int width, height;
+    ImDrawList *drawList = nullptr;
     
     void OnRender(const char* name, PickingFramebuffer &fbo, FramebufferSpecification &spec);
 
