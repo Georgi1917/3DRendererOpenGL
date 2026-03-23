@@ -1,17 +1,19 @@
 #include "ImGuizmoLayer.h"
 
-void ImGuizmoLayer::BeginFrame(int x, int y, int width, int height, ImDrawList *drawList)
+void ImGuizmoLayer::BeginFrame(int x, int y, int width, int height)
 {
 
     ImGuizmo::BeginFrame();
     ImGuizmo::SetOrthographic(false);
-    ImGuizmo::SetDrawlist(drawList);
+    ImGuizmo::SetDrawlist();
     ImGuizmo::SetRect(x, y, width, height);
 
 }
 
-void ImGuizmoLayer::UpdateEntity(Model *entity, glm::mat4 &viewMatrix, glm::mat4 &projection)
+void ImGuizmoLayer::UpdateEntity(glm::mat4 &viewMatrix, glm::mat4 &projection)
 {
+
+    Model *entity = MousePicker::GetCurrentActiveEntity();
 
     if (!entity)
         return;

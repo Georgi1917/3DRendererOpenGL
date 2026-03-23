@@ -7,7 +7,7 @@
 #include "Shader.h"
 #include "MousePicker.h"
 #include "Renderer/Renderer.h"
-#include "Framebuffer/PickingFramebuffer.h"
+#include "Framebuffer/Framebuffer.h"
 #include "ImGUILayer/ImGuizmoLayer.h"
 #include "ImGUILayer/HierarchyPanel.h"
 #include "ImGUILayer/SceneViewport.h"
@@ -26,10 +26,8 @@ int main()
     HierarchyPanel HierarchyPanel;
     SceneViewport SceneViewport;
 
-    FramebufferSpecification picking_spec{ win.width, win.height };
-    FramebufferSpecification main_spec { 800, 600 };
-    PickingFramebuffer fbo{ picking_spec };
-    PickingFramebuffer main_fbo{ main_spec };
+    Framebuffer fbo{ win.width, win.height };
+    Framebuffer main_fbo{ win.width, win.height };
 
     MousePicker mousePicker;
     Scene scene;
@@ -60,20 +58,17 @@ int main()
 
         activeEntity = mousePicker.GetClickedEntity(fbo, scene);
 
-        if (picking_spec.width != main_spec.width || picking_spec.height != main_spec.height)
+        if (fbo.f_width != main_fbo.f_width || fbo.f_height != main_fbo.f_height)
         {
 
-            picking_spec.width = main_spec.width; picking_spec.height = main_spec.height;
-            fbo.ResizeFramebuffer(picking_spec);
+            fbo.ResizeFramebuffer(main_fbo.f_width, main_fbo.f_height);
             renderer.fbo = fbo;
-            scene.ResetProjection(main_spec.width, main_spec.height);
+            scene.ResetProjection(main_fbo.f_width, main_fbo.f_height);
 
         }
 
         HierarchyPanel.OnRender("Hierarchy Panel", scene);
-        ImGuizmoLayer.BeginFrame(SceneViewport.x, SceneViewport.y, SceneViewport.width, SceneViewport.height, SceneViewport.drawList);
-        ImGuizmoLayer.UpdateEntity(activeEntity, scene.camera->GetViewMatrix(), scene.projection);
-        SceneViewport.OnRender("Scene", main_fbo, main_spec);
+        SceneViewport.OnRender("Scene", main_fbo, scene);
 
         win.SwapBuffers();
         win.PollEvents();

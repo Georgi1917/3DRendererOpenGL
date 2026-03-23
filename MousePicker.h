@@ -3,7 +3,7 @@
 #include "include/glew.h"
 #include "include/GLFW/glfw3.h"
 #include "Window/Window.h"
-#include "Framebuffer/PickingFramebuffer.h"
+#include "Framebuffer/Framebuffer.h"
 #include "Scene/Scene.h"
 #include <vector>
 
@@ -12,7 +12,7 @@ struct MousePicker
 
     static Model* activeEntity;
 
-    static Model* GetClickedEntity(PickingFramebuffer &fbo, Scene &scene);
+    static Model* GetClickedEntity(Framebuffer &fbo, Scene &scene);
     static Model* GetCurrentActiveEntity();
 
 };

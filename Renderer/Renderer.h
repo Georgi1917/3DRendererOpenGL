@@ -4,7 +4,7 @@
 #include "../Scene/Scene.h"
 #include "VertexArray.h"
 #include "IndexBuffer.h"
-#include "../Framebuffer/PickingFramebuffer.h"
+#include "../Framebuffer/Framebuffer.h"
 #include "../Shader.h"
 #include "../Scene/Model.h"
 #include "../Window/Window.h"
@@ -15,7 +15,7 @@
 struct Renderer
 {
 
-    PickingFramebuffer fbo;
+    Framebuffer fbo;
 
     Renderer();
 

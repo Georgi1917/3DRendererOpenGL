@@ -10,19 +10,21 @@ struct FramebufferSpecification
 
 };
 
-struct PickingFramebuffer
+struct Framebuffer
 {
+
+    int f_width, f_height;
 
     unsigned int framebufferId;
     unsigned int pickingTexId;
     unsigned int renderBuffId;
 
-    PickingFramebuffer() = default;
-    PickingFramebuffer(FramebufferSpecification &fbo_spec);
-    ~PickingFramebuffer();
+    Framebuffer() = default;
+    Framebuffer(int width, int height);
+    ~Framebuffer();
 
     void Bind();
     void Unbind();
-    void ResizeFramebuffer(FramebufferSpecification &new_spec);
+    void ResizeFramebuffer(int width, int height);
 
 };

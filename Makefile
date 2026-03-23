@@ -9,7 +9,7 @@ IMGUI_LAYER = ImGUILayer/HierarchyPanel.cpp ImGUILayer/SceneViewport.cpp
 RENDERER = Renderer/VertexArray.cpp Renderer/VertexBuffer.cpp Renderer/Renderer.cpp Renderer/IndexBuffer.cpp Renderer/BufferLayoutObject.cpp
 ADDITIONAL_OBJS = Shader.cpp Camera.cpp MousePicker.cpp
 SCENE = Scene/Mesh.cpp Scene/Light.cpp Scene/Model.cpp Scene/Scene.cpp
-FRAMEBUFFER_OBJS = Framebuffer/PickingFramebuffer.cpp
+FRAMEBUFFER_OBJS = Framebuffer/Framebuffer.cpp
 TEXTURES = Textures/Texture.cpp Textures/Cubemap.cpp
 WINDOW = Window/Window.cpp Window/Time.cpp
 

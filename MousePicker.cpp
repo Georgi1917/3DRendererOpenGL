@@ -3,7 +3,7 @@
 
 Model* MousePicker::activeEntity = nullptr;
 
-Model* MousePicker::GetClickedEntity(PickingFramebuffer &fbo, Scene &scene)
+Model* MousePicker::GetClickedEntity(Framebuffer &fbo, Scene &scene)
 {
 
     if (glfwGetMouseButton(glfwGetCurrentContext(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
