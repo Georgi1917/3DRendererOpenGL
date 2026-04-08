@@ -13,7 +13,7 @@ FRAMEBUFFER_OBJS = Framebuffer/Framebuffer.cpp
 TEXTURES = Textures/Texture.cpp Textures/Cubemap.cpp
 WINDOW = Window/Window.cpp Window/Time.cpp
 
-SRC = main.cpp stb_image.cpp tiny_obj_loader.cpp $(IMGUI) $(IMGUIZMO) $(IMGUI_LAYER) $(RENDERER) $(ADDITIONAL_OBJS) $(SCENE) $(FRAMEBUFFER_OBJS) $(TEXTURES) $(WINDOW)
+SRC = main.cpp stb_image.cpp $(IMGUI) $(IMGUIZMO) $(IMGUI_LAYER) $(RENDERER) $(ADDITIONAL_OBJS) $(SCENE) $(FRAMEBUFFER_OBJS) $(TEXTURES) $(WINDOW)
 
 TARGET = main.exe
 

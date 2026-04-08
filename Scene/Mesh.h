@@ -4,7 +4,6 @@
 #include "../include/glm/glm.hpp"
 #include "../include/glm/gtc/matrix_transform.hpp"
 #include "../include/glm/gtc/type_ptr.hpp"
-#include "../include/tiny_obj_loader.h"
 #include "../Renderer/VertexArray.h"
 #include "../Renderer/VertexBuffer.h"
 #include "../Renderer/IndexBuffer.h"

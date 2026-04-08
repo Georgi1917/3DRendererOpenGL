@@ -26,12 +26,12 @@ int main()
     HierarchyPanel HierarchyPanel;
     SceneViewport SceneViewport;
 
-    Framebuffer fbo{ win.width, win.height };
+    Framebuffer picking_fbo{ win.width, win.height };
     Framebuffer main_fbo{ win.width, win.height };
 
     MousePicker mousePicker;
     Scene scene;
-    Renderer renderer; renderer.fbo = fbo;
+    Renderer renderer; renderer.fbo = picking_fbo;
 
     HierarchyPanel.Init(win, true);
 
@@ -56,13 +56,13 @@ int main()
         renderer.LightPass(lightingShader, scene);
         main_fbo.Unbind();
 
-        activeEntity = mousePicker.GetClickedEntity(fbo, scene);
+        activeEntity = mousePicker.GetClickedEntity(picking_fbo, scene);
 
-        if (fbo.f_width != main_fbo.f_width || fbo.f_height != main_fbo.f_height)
+        if (picking_fbo.f_width != main_fbo.f_width || picking_fbo.f_height != main_fbo.f_height)
         {
 
-            fbo.ResizeFramebuffer(main_fbo.f_width, main_fbo.f_height);
-            renderer.fbo = fbo;
+            picking_fbo.ResizeFramebuffer(main_fbo.f_width, main_fbo.f_height);
+            renderer.fbo = picking_fbo;
             scene.ResetProjection(main_fbo.f_width, main_fbo.f_height);
 
         }
