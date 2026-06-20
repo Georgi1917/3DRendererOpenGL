@@ -12,8 +12,17 @@ Model* MousePicker::GetClickedEntity(Framebuffer &fbo, Scene &scene)
         double mx, my;
         char pixel[3];
         glfwGetCursorPos(glfwGetCurrentContext(), &mx, &my);
+        int mouseRelX = (int)mx - fbo.f_x;
+        int mouseRelY = (int)my - fbo.f_y;
+
+        if (mouseRelX < 0 || mouseRelY < 0 || 
+            mouseRelX > fbo.f_x + fbo.f_width || mouseRelY > fbo.f_y + fbo.f_height)
+            return activeEntity;
+
+        //std::cout << " MX : " << mouseRelX << " MY : " << mouseRelY << "\n";
+
         fbo.Bind();
-        glReadPixels((int)mx, GetCurrentContext()->height - (int)my, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
+        glReadPixels(mouseRelX, fbo.f_height - mouseRelY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
         fbo.Unbind();
 
         if (scene.lightSource->mesh->CompareIdToColor(pixel[0], pixel[1], pixel[2]))

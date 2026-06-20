@@ -6,6 +6,8 @@ void SceneViewport::OnRender(const char* name, Framebuffer &fbo, Scene &scene)
 
     ImGui::Begin(name);
 
+    ImGuiIO& io = ImGui::GetIO();
+
     ImVec2 size = ImGui::GetContentRegionAvail();
     ImVec2 pos  = ImGui::GetCursorScreenPos();
 
@@ -13,7 +15,7 @@ void SceneViewport::OnRender(const char* name, Framebuffer &fbo, Scene &scene)
     x = pos.x; y = pos.y;
 
     if (size.x != fbo.f_width || size.y != fbo.f_height)
-        fbo.ResizeFramebuffer(width, height);
+        fbo.ResizeFramebuffer(x, y, width, height);
 
     ImGui::Image((ImTextureID)fbo.framebufferId, size, ImVec2(0,1), ImVec2(1, 0));
 

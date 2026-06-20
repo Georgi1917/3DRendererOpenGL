@@ -5,7 +5,7 @@ static bool CheckFramebufferStatus()
     return (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
 }
 
-Framebuffer::Framebuffer(int width, int height)
+Framebuffer::Framebuffer(int x, int y, int width, int height)
 {
 
     glGenFramebuffers(1, &framebufferId);
@@ -24,6 +24,7 @@ Framebuffer::Framebuffer(int width, int height)
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderBuffId);
 
     f_width = width; f_height = height;
+    f_x = x; f_y = y;
 
     if (!CheckFramebufferStatus()) std::cout << "Framebuffer incomplete!" << "\n";
 
@@ -54,7 +55,7 @@ void Framebuffer::Unbind()
 
 }
 
-void Framebuffer::ResizeFramebuffer(int width, int height)
+void Framebuffer::ResizeFramebuffer(int x, int y, int width, int height)
 {
 
     glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
@@ -66,6 +67,7 @@ void Framebuffer::ResizeFramebuffer(int width, int height)
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
 
     f_width = width; f_height = height;
+    f_x = x; f_y = y;
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

@@ -26,8 +26,8 @@ int main()
     HierarchyPanel HierarchyPanel;
     SceneViewport SceneViewport;
 
-    Framebuffer picking_fbo{ win.width, win.height };
-    Framebuffer main_fbo{ win.width, win.height };
+    Framebuffer picking_fbo{ 0, 0, win.width, win.height };
+    Framebuffer main_fbo{ 0, 0, win.width, win.height };
 
     MousePicker mousePicker;
     Scene scene;
@@ -61,7 +61,7 @@ int main()
         if (picking_fbo.f_width != main_fbo.f_width || picking_fbo.f_height != main_fbo.f_height)
         {
 
-            picking_fbo.ResizeFramebuffer(main_fbo.f_width, main_fbo.f_height);
+            picking_fbo.ResizeFramebuffer(main_fbo.f_x, main_fbo.f_y, main_fbo.f_width, main_fbo.f_height);
             renderer.fbo = picking_fbo;
             scene.ResetProjection(main_fbo.f_width, main_fbo.f_height);
 

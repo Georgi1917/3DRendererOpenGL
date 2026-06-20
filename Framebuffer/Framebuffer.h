@@ -3,16 +3,10 @@
 #include "../include/glew.h"
 #include <iostream>
 
-struct FramebufferSpecification
-{
-
-    int width, height;
-
-};
-
 struct Framebuffer
 {
 
+    int f_x, f_y;
     int f_width, f_height;
 
     unsigned int framebufferId;
@@ -20,11 +14,11 @@ struct Framebuffer
     unsigned int renderBuffId;
 
     Framebuffer() = default;
-    Framebuffer(int width, int height);
+    Framebuffer(int x, int y, int width, int height);
     ~Framebuffer();
 
     void Bind();
     void Unbind();
-    void ResizeFramebuffer(int width, int height);
+    void ResizeFramebuffer(int x, int y, int width, int height);
 
 };
