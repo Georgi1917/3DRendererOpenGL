@@ -19,8 +19,6 @@ Model* MousePicker::GetClickedEntity(Framebuffer &fbo, Scene &scene)
             mouseRelX > fbo.f_x + fbo.f_width || mouseRelY > fbo.f_y + fbo.f_height)
             return activeEntity;
 
-        //std::cout << " MX : " << mouseRelX << " MY : " << mouseRelY << "\n";
-
         fbo.Bind();
         glReadPixels(mouseRelX, fbo.f_height - mouseRelY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
         fbo.Unbind();

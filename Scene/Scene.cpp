@@ -33,6 +33,6 @@ Scene::~Scene()
 void Scene::ResetProjection(int width, int height)
 {
 
-    projection = glm::perspective(glm::radians(75.0f), (float)width / (float)height, 1.0f, 300.0f);
+    projection = glm::perspective(glm::radians(75.0f), (float)width / height, 1.0f, 300.0f);
 
 }
