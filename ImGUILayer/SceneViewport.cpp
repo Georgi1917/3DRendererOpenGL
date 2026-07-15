@@ -4,6 +4,7 @@
 void SceneViewport::OnRender(const char* name, Framebuffer &fbo, Scene &scene)
 {
 
+    ImGuizmo::BeginFrame();
     ImGui::Begin(name);
 
     ImGuiIO& io = ImGui::GetIO();
@@ -19,7 +20,10 @@ void SceneViewport::OnRender(const char* name, Framebuffer &fbo, Scene &scene)
 
     ImGui::Image((ImTextureID)fbo.framebufferId, size, ImVec2(0,1), ImVec2(1, 0));
 
-    guizmo_layer.BeginFrame(x, y, width, height);
+    ImGuizmo::SetOrthographic(false);
+    ImGuizmo::SetDrawlist();
+    ImGuizmo::SetRect(x, y, width, height);
+    //guizmo_layer.BeginFrame(x, y, width, height);
     guizmo_layer.UpdateEntity(scene.camera->GetViewMatrix(), scene.projection);
 
     ImGui::End();
