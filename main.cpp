@@ -11,6 +11,7 @@
 #include "ImGUILayer/ImGuizmoLayer.h"
 #include "ImGUILayer/HierarchyPanel.h"
 #include "ImGUILayer/SceneViewport.h"
+#include "ImGUILayer/ImGuiLayer.h"
 
 int main()
 {
@@ -22,18 +23,21 @@ int main()
     Shader pickingShader("shaders/picking.vs", "shaders/picking.fs");
     Shader skyboxShader("shaders/skybox.vs", "shaders/skybox.fs");
 
-    ImGuizmoLayer ImGuizmoLayer;
+    ImGuizmoLayer  ImGuizmoLayer;
+    ImGuiLayer     ImGuiLayer;
     HierarchyPanel HierarchyPanel;
-    SceneViewport SceneViewport;
+    SceneViewport  SceneViewport;
 
     Framebuffer picking_fbo{ 0, 0, win.width, win.height };
     Framebuffer main_fbo{ 0, 0, win.width, win.height };
 
     MousePicker mousePicker;
     Scene scene;
-    Renderer renderer; renderer.fbo = picking_fbo;
+    Renderer renderer; 
+    renderer.picking_fbo = picking_fbo;
+    renderer.main_fbo = main_fbo;
 
-    HierarchyPanel.Init(win, true);
+    ImGuiLayer.Init(win, true);
 
     Model* activeEntity = nullptr;
 
@@ -46,8 +50,8 @@ int main()
 
         renderer.BeginFrame();
 
-        HierarchyPanel.NewFrame();
-        HierarchyPanel.ShowDockspace();
+        ImGuiLayer.NewFrame();
+        ImGuiLayer.ShowDockspace();
 
         renderer.PickingPass(pickingShader, scene);
         main_fbo.Bind();
@@ -62,20 +66,23 @@ int main()
         {
 
             picking_fbo.ResizeFramebuffer(main_fbo.f_x, main_fbo.f_y, main_fbo.f_width, main_fbo.f_height);
-            renderer.fbo = picking_fbo;
-            scene.ResetProjection(main_fbo.f_width, main_fbo.f_height);
+            renderer.picking_fbo = picking_fbo;
+            renderer.main_fbo = main_fbo;
+            //scene.ResetProjection(main_fbo.f_width, main_fbo.f_height);
 
         }
 
         HierarchyPanel.OnRender("Hierarchy Panel", scene);
         SceneViewport.OnRender("Scene", main_fbo, scene);
 
+        ImGuiLayer.DrawRenderData();
+
         win.SwapBuffers();
         win.PollEvents();
 
     }
 
-    HierarchyPanel.Shutdown();
+    ImGuiLayer.Shutdown();
     win.Terminate();
     return 0;
 

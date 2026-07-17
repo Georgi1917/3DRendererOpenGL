@@ -15,28 +15,6 @@ static bool IsValidFile(std::string filepath)
 
 }
 
-void HierarchyPanel::Init(Window window, bool install_callbacks)
-{
-
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO();
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window.window, install_callbacks);
-    ImGui_ImplOpenGL3_Init("#version 330");
-
-}
-
-void HierarchyPanel::NewFrame()
-{
-
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-
-}
-
 void HierarchyPanel::OnRender(const char *name, Scene &scene)
 {
 
@@ -181,41 +159,5 @@ void HierarchyPanel::OnRender(const char *name, Scene &scene)
     }
     
     ImGui::End();
-
-}
-
-void HierarchyPanel::ShowDockspace()
-{
-
-    ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-
-    const ImGuiViewport *viewport = ImGui::GetMainViewport();
-
-    ImGui::SetNextWindowPos(viewport->WorkPos);
-    ImGui::SetNextWindowSize(viewport->WorkSize);
-    ImGui::SetNextWindowViewport(viewport->ID);
-
-    window_flags |= ImGuiWindowFlags_NoTitleBar |
-                    ImGuiWindowFlags_NoCollapse |
-                    ImGuiWindowFlags_NoResize |
-                    ImGuiWindowFlags_NoMove |
-                    ImGuiWindowFlags_NoBringToFrontOnFocus |
-                    ImGuiWindowFlags_NoNavFocus;
-
-    ImGui::Begin("Dock Space", nullptr, window_flags);
-
-    ImGuiID dockspace_id = ImGui::GetID("MainDockSpace");
-    ImGui::DockSpace(dockspace_id, ImVec2(0, 0));
-
-    ImGui::End();
-
-}
-
-void HierarchyPanel::Shutdown()
-{
-
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
 
 }

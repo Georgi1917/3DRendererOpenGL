@@ -4,7 +4,7 @@
 void SceneViewport::OnRender(const char* name, Framebuffer &fbo, Scene &scene)
 {
 
-    ImGuizmo::BeginFrame();
+    ImGui::SetNextWindowSize({900, 600}, ImGuiCond_FirstUseEver);
     ImGui::Begin(name);
 
     ImGuiIO& io = ImGui::GetIO();
@@ -16,19 +16,17 @@ void SceneViewport::OnRender(const char* name, Framebuffer &fbo, Scene &scene)
     x = pos.x; y = pos.y;
 
     if (size.x != fbo.f_width || size.y != fbo.f_height)
+    {
         fbo.ResizeFramebuffer(x, y, width, height);
+        scene.ResetProjection(width, height);
+    }
 
-    ImGui::Image((ImTextureID)fbo.framebufferId, size, ImVec2(0,1), ImVec2(1, 0));
+    ImGui::Image((ImTextureID)fbo.pickingTexId, size, ImVec2(0,1), ImVec2(1, 0));
 
-    ImGuizmo::SetOrthographic(false);
     ImGuizmo::SetDrawlist();
     ImGuizmo::SetRect(x, y, width, height);
-    //guizmo_layer.BeginFrame(x, y, width, height);
     guizmo_layer.UpdateEntity(scene.camera->GetViewMatrix(), scene.projection);
 
     ImGui::End();
-
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 }

@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include <iostream>
 
 Scene::Scene()
 {
@@ -33,6 +34,7 @@ Scene::~Scene()
 void Scene::ResetProjection(int width, int height)
 {
 
+    std::cout << "Resizing projection : " << width << " " << height << "\n";
     projection = glm::perspective(glm::radians(75.0f), (float)width / height, 1.0f, 300.0f);
 
 }

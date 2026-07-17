@@ -20,7 +20,7 @@ Renderer::Renderer()
 void Renderer::BeginFrame()
 {
 
-    glViewport(0, 0, GetCurrentContext()->width, GetCurrentContext()->height);
+    glViewport(0, 0, main_fbo.f_width, main_fbo.f_height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 }
@@ -28,12 +28,12 @@ void Renderer::BeginFrame()
 void Renderer::PickingPass(Shader& shader, Scene &scene)
 {
 
-    fbo.Bind();
-    glViewport(0, 0, GetCurrentContext()->width, GetCurrentContext()->height);
+    picking_fbo.Bind();
+    glViewport(0, 0, picking_fbo.f_width, picking_fbo.f_height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     DrawMeshesPicking(shader, scene);
     DrawLightSourcePicking(shader, scene);
-    fbo.Unbind();
+    picking_fbo.Unbind();
 
 }
 
@@ -47,7 +47,7 @@ void Renderer::MainPass(Shader& shader, Scene &scene)
 void Renderer::SkyboxPass(Shader& shader, Scene &scene)
 {
 
-    glViewport(0, 0, GetCurrentContext()->width, GetCurrentContext()->height);
+    glViewport(0, 0, main_fbo.f_width, main_fbo.f_height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (!scene.hasSkybox) return;

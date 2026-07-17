@@ -15,13 +15,15 @@
 struct Renderer
 {
 
-    Framebuffer fbo;
+    Framebuffer picking_fbo;
+    Framebuffer main_fbo;
 
     Renderer();
 
     void BeginFrame();
 
     void PickingPass(Shader& shader, Scene &scene);
+
     void SkyboxPass(Shader& shader, Scene &scene);
     void MainPass(Shader& shader, Scene &scene);
     void LightPass(Shader& shader, Scene &scene);
