@@ -11,6 +11,7 @@
 #include "ImGUILayer/ImGuizmoLayer.h"
 #include "ImGUILayer/HierarchyPanel.h"
 #include "ImGUILayer/SceneViewport.h"
+#include "ImGUILayer/EntityControllPanel.h"
 #include "ImGUILayer/ImGuiLayer.h"
 
 int main()
@@ -23,10 +24,11 @@ int main()
     Shader pickingShader("shaders/picking.vs", "shaders/picking.fs");
     Shader skyboxShader("shaders/skybox.vs", "shaders/skybox.fs");
 
-    ImGuizmoLayer  ImGuizmoLayer;
-    ImGuiLayer     ImGuiLayer;
-    HierarchyPanel HierarchyPanel;
-    SceneViewport  SceneViewport;
+    ImGuizmoLayer       ImGuizmoLayer;
+    ImGuiLayer          ImGuiLayer;
+    HierarchyPanel      HierarchyPanel;
+    EntityControllPanel EntityPanel;
+    SceneViewport       SceneViewport;
 
     Framebuffer picking_fbo{ 0, 0, win.width, win.height };
     Framebuffer main_fbo{ 0, 0, win.width, win.height };
@@ -68,10 +70,10 @@ int main()
             picking_fbo.ResizeFramebuffer(main_fbo.f_x, main_fbo.f_y, main_fbo.f_width, main_fbo.f_height);
             renderer.picking_fbo = picking_fbo;
             renderer.main_fbo = main_fbo;
-            //scene.ResetProjection(main_fbo.f_width, main_fbo.f_height);
 
         }
 
+        EntityPanel.OnRender("Entity Panel", scene);
         HierarchyPanel.OnRender("Hierarchy Panel", scene);
         SceneViewport.OnRender("Scene", main_fbo, scene);
 
