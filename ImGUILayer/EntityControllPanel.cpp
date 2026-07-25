@@ -88,6 +88,38 @@ void EntityControllPanel::OnRender(const char* name, Scene &scene)
             ImGui::DragFloat3("Scale", &(activeEntity->scale.x), 2.0f * deltaTime, 1.0f, 100.0f) 
             ) activeEntity->UpdateMatrix();
 
+        if (ImGui::Button("Flip Textures"))
+        {
+
+            static bool flipState = false;
+
+            for (auto mesh : activeEntity->modelMeshes)
+            {
+
+                std::string location;
+                std::string texType;
+                std::vector<Texture*> flippedTextures;
+
+                for (auto it = mesh->textures.begin(); it != mesh->textures.end();)
+                {
+
+                    location = (*it)->loc;
+                    texType  = (*it)->textureType;
+
+                    delete *it;
+                    it = mesh->textures.erase(it);
+                    if (location == "None") flippedTextures.push_back(new Texture(texType));
+                    else flippedTextures.push_back(new Texture(location.c_str(), texType, flipState));
+
+                }
+
+                mesh->textures = std::move(flippedTextures);
+
+            }
+
+            flipState = flipState ? false : true;
+
+        }
     }
 
     ImGui::End();
