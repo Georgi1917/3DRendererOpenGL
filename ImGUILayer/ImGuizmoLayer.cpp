@@ -3,7 +3,6 @@
 void ImGuizmoLayer::BeginFrame(int x, int y, int width, int height)
 {
 
-    ImGuizmo::BeginFrame();
     ImGuizmo::SetOrthographic(false);
     ImGuizmo::SetDrawlist();
     ImGuizmo::SetRect(x, y, width, height);
@@ -13,7 +12,7 @@ void ImGuizmoLayer::BeginFrame(int x, int y, int width, int height)
 void ImGuizmoLayer::UpdateEntity(glm::mat4 &viewMatrix, glm::mat4 &projection)
 {
 
-    Model *entity = MousePicker::GetCurrentActiveEntity();
+    Model *entity = MousePicker::activeEntity;
 
     if (!entity)
         return;

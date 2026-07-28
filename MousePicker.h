@@ -11,8 +11,8 @@ struct MousePicker
 {
 
     static Model* activeEntity;
+    static Model* draggedEntity;
 
-    static Model* GetClickedEntity(Framebuffer &fbo, Scene &scene);
-    static Model* GetCurrentActiveEntity();
+    static void GetClickedEntity(Framebuffer &fbo, Scene &scene);
 
 };

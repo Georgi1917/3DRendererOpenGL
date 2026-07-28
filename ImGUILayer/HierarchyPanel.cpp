@@ -20,7 +20,7 @@ void HierarchyPanel::OnRender(const char *name, Scene &scene)
 
     float deltaTime = GetDeltaTime();
 
-    Model* activeEntity = MousePicker::GetCurrentActiveEntity();
+    Model* activeEntity = MousePicker::activeEntity;
 
     ImGui::Begin(name);
 

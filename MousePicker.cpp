@@ -1,12 +1,13 @@
 #include "MousePicker.h"
 #include <iostream>
 
-Model* MousePicker::activeEntity = nullptr;
+Model* MousePicker::activeEntity  = nullptr;
+Model* MousePicker::draggedEntity = nullptr;
 
-Model* MousePicker::GetClickedEntity(Framebuffer &fbo, Scene &scene)
+void MousePicker::GetClickedEntity(Framebuffer &fbo, Scene &scene)
 {
 
-    if (glfwGetMouseButton(glfwGetCurrentContext(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    if (glfwGetMouseButton(glfwGetCurrentContext(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !draggedEntity)
     {
 
         double mx, my;
@@ -17,7 +18,7 @@ Model* MousePicker::GetClickedEntity(Framebuffer &fbo, Scene &scene)
 
         if (mouseRelX < 0 || mouseRelY < 0 || 
             mouseRelX > fbo.f_x + fbo.f_width || mouseRelY > fbo.f_y + fbo.f_height)
-            return activeEntity;
+            return;
 
         fbo.Bind();
         glReadPixels(mouseRelX, fbo.f_height - mouseRelY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
@@ -27,6 +28,7 @@ Model* MousePicker::GetClickedEntity(Framebuffer &fbo, Scene &scene)
         {
 
             activeEntity = scene.lightSource->mesh;
+            draggedEntity = activeEntity;
 
         }
 
@@ -36,6 +38,7 @@ Model* MousePicker::GetClickedEntity(Framebuffer &fbo, Scene &scene)
             if (entity->CompareIdToColor(pixel[0], pixel[1], pixel[2]))
             {
                 activeEntity = entity;
+                draggedEntity = activeEntity;
                 break;
             }
             
@@ -43,13 +46,7 @@ Model* MousePicker::GetClickedEntity(Framebuffer &fbo, Scene &scene)
 
     }
 
-    return activeEntity;
-
-}
-
-Model* MousePicker::GetCurrentActiveEntity()
-{
-
-    return activeEntity;
+    if (glfwGetMouseButton(glfwGetCurrentContext(), GLFW_MOUSE_BUTTON_LEFT) != GLFW_PRESS)
+        draggedEntity = nullptr;
 
 }

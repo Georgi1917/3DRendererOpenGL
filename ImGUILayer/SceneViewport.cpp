@@ -23,8 +23,7 @@ void SceneViewport::OnRender(const char* name, Framebuffer &fbo, Scene &scene)
 
     ImGui::Image((ImTextureID)fbo.pickingTexId, size, ImVec2(0,1), ImVec2(1, 0));
 
-    ImGuizmo::SetDrawlist();
-    ImGuizmo::SetRect(x, y, width, height);
+    guizmo_layer.BeginFrame(x, y, width, height);
     guizmo_layer.UpdateEntity(scene.camera->GetViewMatrix(), scene.projection);
 
     ImGui::End();
