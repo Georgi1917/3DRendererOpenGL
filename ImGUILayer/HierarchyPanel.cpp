@@ -31,14 +31,25 @@ void HierarchyPanel::OnRender(const char *name, Scene &scene)
         if (ImGui::CollapsingHeader(("Model " + std::to_string(model->id)).c_str()))
         {
 
+            int k = 0;
+
             for (auto& mesh : model->modelMeshes)
             {
 
                 int i = 0;
                 int j = 0;
 
+                const char *mat_name = mesh->material.name.c_str();
+                if (mat_name)
+                {
+                    // std::cout << "Yes" << "\n";
+                    mat_name = ("asdasd" + std::to_string(k + 1)).c_str();
+                }
+
+                //std::cout << mat_name << "\n";
+
                 ImGui::Indent(12.0f);
-                if (ImGui::CollapsingHeader(mesh->material.name.c_str()))
+                if (ImGui::CollapsingHeader(mat_name))
                 {
 
                     ImGui::InputFloat3(("Ambient" + std::to_string(j + 1)).c_str(), &(mesh->material.ambient.x), "%.3f");
@@ -72,6 +83,7 @@ void HierarchyPanel::OnRender(const char *name, Scene &scene)
                 }
 
                 ImGui::Unindent(12.0f);
+                k++;
 
             }
 
