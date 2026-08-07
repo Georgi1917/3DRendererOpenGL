@@ -13,6 +13,7 @@
 #include "ImGUILayer/SceneViewport.h"
 #include "ImGUILayer/EntityControllPanel.h"
 #include "ImGUILayer/ImGuiLayer.h"
+#include "ImGUILayer/FilePanel.h"
 
 int main()
 {
@@ -29,6 +30,7 @@ int main()
     HierarchyPanel      HierarchyPanel;
     EntityControllPanel EntityPanel;
     SceneViewport       SceneViewport;
+    FilePanel           FilePanel;
 
     Framebuffer picking_fbo{ 0, 0, win.width, win.height };
     Framebuffer main_fbo{ 0, 0, win.width, win.height };
@@ -74,6 +76,7 @@ int main()
         EntityPanel.OnRender("Entity Panel", scene);
         HierarchyPanel.OnRender("Hierarchy Panel", scene);
         SceneViewport.OnRender("Scene", main_fbo, scene);
+        FilePanel.OnRender("File Panel", scene);
 
         ImGuiLayer.DrawRenderData();
 
