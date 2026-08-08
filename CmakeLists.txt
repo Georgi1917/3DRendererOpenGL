@@ -1,0 +1,99 @@
+cmake_minimum_required(VERSION 3.20)
+
+project(Renderer LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+
+#################################################################
+
+set(IMGUI_SOURCES
+    include/imgui/imgui.cpp
+    include/imgui/imgui_demo.cpp
+    include/imgui/imgui_draw.cpp
+    include/imgui/imgui_impl_glfw.cpp
+    include/imgui/imgui_impl_opengl3.cpp
+    include/imgui/imgui_tables.cpp
+    include/imgui/imgui_widgets.cpp
+)
+
+set(IMGUIZMO_SOURCES
+    include/imguizmo/ImGuizmo.cpp
+    ImGUILayer/ImGuizmoLayer.cpp
+)
+
+set(IMGUI_LAYER_SOURCES
+    ImGUILayer/HierarchyPanel.cpp
+    ImGUILayer/SceneViewport.cpp
+    ImGUILayer/ImGuiLayer.cpp
+    ImGUILayer/EntityControllPanel.cpp
+    ImGUILayer/FilePanel.cpp
+)
+
+set(RENDERER_SOURCES
+    Renderer/VertexArray.cpp
+    Renderer/VertexBuffer.cpp
+    Renderer/Renderer.cpp
+    Renderer/IndexBuffer.cpp
+    Renderer/BufferLayoutObject.cpp
+)
+
+set(SCENE_SOURCES
+    Scene/Mesh.cpp
+    Scene/Light.cpp
+    Scene/Model.cpp
+    Scene/Scene.cpp
+)
+
+set(FRAMEBUFFER_SOURCES
+    Framebuffer/Framebuffer.cpp
+)
+
+set(TEXTURE_SOURCES
+    Textures/Texture.cpp
+    Textures/Cubemap.cpp
+)
+
+set(WINDOW_SOURCES
+    Window/Window.cpp
+    Window/Time.cpp
+)
+
+set(SOURCES
+    main.cpp
+    stb_image.cpp
+
+    ${IMGUI_SOURCES}
+    ${IMGUIZMO_SOURCES}
+    ${IMGUI_LAYER_SOURCES}
+    ${RENDERER_SOURCES}
+    ${SCENE_SOURCES}
+    ${FRAMEBUFFER_SOURCES}
+    ${TEXTURE_SOURCES}
+    ${WINDOW_SOURCES}
+
+    Shader.cpp
+    Camera.cpp
+    MousePicker.cpp
+)
+
+################################################################################
+
+add_executable(Renderer ${SOURCES})
+
+target_include_directories(Renderer PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_link_directories(Renderer PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib
+)
+
+target_link_libraries(Renderer PRIVATE
+    glfw3 
+    glew32 
+    gdi32 
+    opengl32 
+    assimp 
+    z
+)

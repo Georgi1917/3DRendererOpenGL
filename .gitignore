@@ -1,5 +1,6 @@
 main.exe
 imgui.ini
+build/
 obj-files/*.obj
 obj-files/*.mtl
 obj-files/*.png
