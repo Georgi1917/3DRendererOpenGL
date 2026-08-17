@@ -2,12 +2,12 @@
 #include <iostream>
 
 Model* MousePicker::activeEntity  = nullptr;
-Model* MousePicker::draggedEntity = nullptr;
+bool MousePicker::is_dragging = false;
 
 void MousePicker::GetClickedEntity(Framebuffer &fbo, Scene &scene)
 {
 
-    if (glfwGetMouseButton(glfwGetCurrentContext(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !draggedEntity)
+    if (glfwGetMouseButton(glfwGetCurrentContext(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !is_dragging)
     {
 
         double mx, my;
@@ -28,7 +28,7 @@ void MousePicker::GetClickedEntity(Framebuffer &fbo, Scene &scene)
         {
 
             activeEntity = scene.lightSource->mesh;
-            draggedEntity = activeEntity;
+            is_dragging = true;
 
         }
 
@@ -38,7 +38,7 @@ void MousePicker::GetClickedEntity(Framebuffer &fbo, Scene &scene)
             if (entity->CompareIdToColor(pixel[0], pixel[1], pixel[2]))
             {
                 activeEntity = entity;
-                draggedEntity = activeEntity;
+                is_dragging = true;
                 break;
             }
             
@@ -47,6 +47,6 @@ void MousePicker::GetClickedEntity(Framebuffer &fbo, Scene &scene)
     }
 
     if (glfwGetMouseButton(glfwGetCurrentContext(), GLFW_MOUSE_BUTTON_LEFT) != GLFW_PRESS)
-        draggedEntity = nullptr;
+        is_dragging = false;
 
 }

@@ -46,6 +46,9 @@ void ImGuizmoLayer::UpdateEntity(glm::mat4 &viewMatrix, glm::mat4 &projection)
     if (ImGuizmo::IsUsing())
     {
 
+        printf("Is using : True\n");
+        MousePicker::is_dragging = true;
+
         glm::vec3 translation, rotation, scale;
 
         ImGuizmo::DecomposeMatrixToComponents(

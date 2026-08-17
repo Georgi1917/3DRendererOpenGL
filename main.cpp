@@ -62,8 +62,6 @@ int main()
         renderer.LightPass(lightingShader, scene);
         main_fbo.Unbind();
 
-        mousePicker.GetClickedEntity(picking_fbo, scene);
-
         if (picking_fbo.f_width != main_fbo.f_width || picking_fbo.f_height != main_fbo.f_height)
         {
 
@@ -79,6 +77,8 @@ int main()
         FilePanel.OnRender("File Panel", scene);
 
         ImGuiLayer.DrawRenderData();
+
+        mousePicker.GetClickedEntity(picking_fbo, scene);
 
         win.SwapBuffers();
         win.PollEvents();
