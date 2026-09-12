@@ -42,6 +42,7 @@ int main()
     renderer.main_fbo = main_fbo;
 
     ImGuiLayer.Init(win, true);
+    FilePanel.Init();
 
     while(!win.ShouldClose())
     {
