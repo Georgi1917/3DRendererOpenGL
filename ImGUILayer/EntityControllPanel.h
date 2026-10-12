@@ -15,6 +15,6 @@
 struct EntityControllPanel
 {
 
-    void OnRender(const char* name, Scene &scene);
+    void OnRender(const char* name, Scene& scene);
 
 };

@@ -15,7 +15,7 @@ static bool IsValidFile(std::string filepath)
 
 }
 
-void EntityControllPanel::OnRender(const char* name, Scene &scene)
+void EntityControllPanel::OnRender(const char* name, Scene& scene)
 {
 
     float deltaTime = GetDeltaTime();
@@ -30,7 +30,8 @@ void EntityControllPanel::OnRender(const char* name, Scene &scene)
     if (ImGui::BeginPopup("Objects"))
     {
 
-        const char *path = "obj-files/";
+        //const char *path = "obj-files/";
+        const char* path = "Resources/Models/";
 
         for (const auto &entry : std::filesystem::directory_iterator(path))
         {
@@ -120,6 +121,10 @@ void EntityControllPanel::OnRender(const char* name, Scene &scene)
             flipState = flipState ? false : true;
 
         }
+    }
+    if (ImGui::Button("Set light position to camera")) {
+        scene.lightSource->mesh->trans = scene.camera->GetPosition();
+        scene.lightSource->mesh->UpdateMatrix();
     }
 
     ImGui::End();

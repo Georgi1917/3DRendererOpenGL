@@ -166,7 +166,8 @@ Texture* Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::s
     if (mat->GetTextureCount(type) > 0)
     {
 
-        aiString texPath("obj-files/");
+        //aiString texPath("obj-files/");
+        aiString texPath("Resources/Models/");
         aiString path;
         mat->GetTexture(type, 0, &path);
         texPath.Append(path.C_Str());

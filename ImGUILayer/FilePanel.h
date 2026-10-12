@@ -7,7 +7,4 @@ struct FilePanel
     void Init();
     void OnRender(const char* name, Scene& scene);
 
-    private:
-        ImFont* font;
-
 };
