@@ -57,6 +57,7 @@ int main()
         ImGuiLayer.ShowDockspace();
 
         renderer.PickingPass(pickingShader, scene);
+        
         main_fbo.Bind();
         renderer.SkyboxPass(skyboxShader, scene);
         renderer.MainPass(basicShader, scene);

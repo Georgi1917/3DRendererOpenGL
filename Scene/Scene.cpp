@@ -19,7 +19,7 @@ Scene::Scene()
     skyBoxModel = ConstructSkyboxM();
     projection = glm::perspective(glm::radians(90.0f), 1280.0f / 720.0f, 1.0f, 1000.0f);
 
-    entities.push_back(new Model("obj-files/wizard.blend"));
+    //entities.push_back(new Model("Resources/Models/Whitechapel.blend"));
 
 }
 
