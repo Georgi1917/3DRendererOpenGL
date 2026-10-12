@@ -1,5 +1,6 @@
 #pragma once
 #include "../Scene/Scene.h"
+#include <set>
 
 struct FilePanel
 {

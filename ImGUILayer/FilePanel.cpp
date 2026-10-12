@@ -6,6 +6,76 @@
 #include <iostream>
 #include "Fonts/IconsFontAwesome7.h"
 
+static bool is_valid_file(std::string filepath)
+{
+
+    std::set<std::string> validFormats = { ".obj", ".blend", ".stl", ".fbx", ".glb", ".gltf" };
+    int idx = filepath.find('.', 0);
+
+    std::string s = "";
+
+    for (int i = idx; i < filepath.size(); i++) {
+        s += filepath[i];
+    }
+
+    return validFormats.find(s) != validFormats.end();
+
+}
+
+static bool icon_text_button(const char* id, 
+                             const char* icon, 
+                             const char* label, 
+                             ImVec2 size = ImVec2(90.0f, 80.0f)) 
+{
+
+    ImGui::PushID(id);
+
+    ImVec2 pos = ImGui::GetCursorScreenPos();
+
+    bool clicked = ImGui::InvisibleButton("##button", size);
+
+    ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+    ImVec2 min = pos;
+    ImVec2 max = ImVec2(pos.x + size.x, pos.y + size.y);
+
+    bool hovered = ImGui::IsItemHovered();
+    bool active = ImGui::IsItemActive();
+
+    ImU32 bg_color = IM_COL32(45, 45, 50, 255);
+
+    if (hovered) {
+        bg_color = IM_COL32(65, 105, 150, 255);
+    } else if (active) {
+        bg_color = IM_COL32(65, 65, 72, 255);
+    }
+
+    draw_list->AddRectFilled(min, max, bg_color, 6.0f);
+
+    ImVec2 icon_size = ImGui::CalcTextSize(icon);
+
+    ImVec2 icon_pos(
+        pos.x + (size.x - icon_size.x) * 0.5f,
+        pos.y + 10.0f
+    );
+
+    draw_list->AddText(icon_pos, IM_COL32(220, 220, 230, 255), icon);
+
+    ImVec2 label_size = ImGui::CalcTextSize(label);
+
+    ImVec2 label_pos (
+        pos.x + (size.x - label_size.x) * 0.5f,
+        pos.y + 45.0f
+    );
+
+    draw_list->AddText(label_pos, IM_COL32(240, 240, 240, 255), label);
+
+    ImGui::PopID();
+
+    return clicked;
+
+}
+
 void FilePanel::Init() {
 
     ImGuiIO& io = ImGui::GetIO();
@@ -15,8 +85,8 @@ void FilePanel::Init() {
     font_config.MergeMode = true;
     font_config.GlyphMinAdvanceX = 25.0f;
 
-    ImFont* font = io.Fonts->AddFontFromFileTTF("ImGUILayer\\Fonts\\Font Awesome 7 Free-Solid-900.otf", 
-                                                25.0f, &font_config);
+    ImFont* font = io.Fonts->AddFontFromFileTTF("ImGUILayer/Fonts/Font Awesome 7 Free-Solid-900.otf", 
+                                                20.0f, &font_config);
 
 }
 
@@ -35,12 +105,24 @@ void FilePanel::OnRender(const char* name, Scene& scene)
         }
     }
 
+    auto iter = std::filesystem::directory_iterator(path);
+
     for (const auto& entry : std::filesystem::directory_iterator(path))
     {
 
+        ImGui::PushID(entry.path().filename().generic_string().c_str());
+
         if (entry.is_regular_file()) {
-            ImGui::Text(entry.path().filename().generic_string().c_str());
+            if (is_valid_file(entry.path().filename().generic_string()) &&
+                icon_text_button("item", ICON_FA_CUBE, entry.path().filename().generic_string().c_str())) {
+
+                ImGui::SameLine();
+                scene.entities.push_back(new Model(entry.path().generic_string().c_str()));
+
+            }
         }
+
+        ImGui::PopID();
 
         if (entry.is_directory())
         {
@@ -48,7 +130,7 @@ void FilePanel::OnRender(const char* name, Scene& scene)
             std::string icon = ICON_FA_FOLDER;
             std::string dir  = entry.path().generic_string().c_str();
 
-            if (ImGui::Button((icon.append(dir)).c_str())) {
+            if (icon_text_button("model", icon.c_str(), "Models")) {
                 inside_folder = true;
                 path = entry.path().generic_string().c_str();
             }
