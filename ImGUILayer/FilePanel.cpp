@@ -6,10 +6,12 @@
 #include <iostream>
 #include "Fonts/IconsFontAwesome7.h"
 
+inline const std::set<std::string> valid_formats_models = { ".obj", ".blend", ".stl", ".fbx", ".glb", ".gltf" };
+inline const std::set<std::string> valid_formats_textures = { ".jpg", ".jpeg", ".png" };
+
 static bool is_valid_file(std::string filepath)
 {
 
-    std::set<std::string> validFormats = { ".obj", ".blend", ".stl", ".fbx", ".glb", ".gltf" };
     int idx = filepath.find('.', 0);
 
     std::string s = "";
@@ -18,7 +20,7 @@ static bool is_valid_file(std::string filepath)
         s += filepath[i];
     }
 
-    return validFormats.find(s) != validFormats.end();
+    return (valid_formats_models.find(s) != valid_formats_models.end()) || (valid_formats_textures.find(s) != valid_formats_textures.end());
 
 }
 
@@ -103,26 +105,24 @@ void FilePanel::OnRender(const char* name, Scene& scene)
             path = ".\\Resources";
             inside_folder = false;
         }
+        ImGui::NewLine();
     }
-
-    auto iter = std::filesystem::directory_iterator(path);
 
     for (const auto& entry : std::filesystem::directory_iterator(path))
     {
 
         ImGui::PushID(entry.path().filename().generic_string().c_str());
+        ImGui::SameLine();
 
         if (entry.is_regular_file()) {
+
             if (is_valid_file(entry.path().filename().generic_string()) &&
                 icon_text_button("item", ICON_FA_CUBE, entry.path().filename().generic_string().c_str())) {
 
-                ImGui::SameLine();
                 scene.entities.push_back(new Model(entry.path().generic_string().c_str()));
 
             }
         }
-
-        ImGui::PopID();
 
         if (entry.is_directory())
         {
@@ -130,12 +130,14 @@ void FilePanel::OnRender(const char* name, Scene& scene)
             std::string icon = ICON_FA_FOLDER;
             std::string dir  = entry.path().generic_string().c_str();
 
-            if (icon_text_button("model", icon.c_str(), "Models")) {
+            if (icon_text_button("model", icon.c_str(), entry.path().filename().generic_string().c_str())) {
                 inside_folder = true;
                 path = entry.path().generic_string().c_str();
             }
 
         }
+
+        ImGui::PopID();
 
     }
 
