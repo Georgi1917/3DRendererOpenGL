@@ -79,6 +79,8 @@ void main()
     if (material.hasSpecularTexture)
     {
         specular = light.specular * spec * vec3(texture(material.SpecularTexture, TexCoord));
+        // float spec_strength = normalize(texture(material.SpecularTexture, TexCoord)).r;
+        // specular = light.specular * spec * spec_strength;
     }
     else
     {

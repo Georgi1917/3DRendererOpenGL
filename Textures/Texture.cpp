@@ -28,10 +28,17 @@ Texture::Texture(const char* loc, std::string texType, bool flip)
     if (data)
     {
         
-        if (nChannels == 3)
+        printf("Number of channels : %d\n", nChannels);
+        if (nChannels == 3) {
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        else
+        }
+        else if (nChannels == 4) {
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        }
+        else if (nChannels == 1) {
+            printf("1 Channel textures are currently not supported by the current shader\n");
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, data);
+        } //TODO: Implement loading a texture image that only has one channel
 
         glGenerateMipmap(GL_TEXTURE_2D);
 

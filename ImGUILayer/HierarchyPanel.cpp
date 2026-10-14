@@ -1,20 +1,5 @@
 #include "HierarchyPanel.h"
 
-static bool IsValidFile(std::string filepath)
-{
-
-    std::set<std::string> validFormats = { ".obj", ".blend", ".stl", ".fbx", ".glb", ".gltf" };
-    int idx = filepath.find('.', 0);
-
-    std::string s = "";
-
-    for (int i = idx; i < filepath.size(); i++)
-        s += filepath[i];
-
-    return validFormats.find(s) != validFormats.end();
-
-}
-
 void HierarchyPanel::OnRender(const char *name, Scene &scene)
 {
 
@@ -58,12 +43,10 @@ void HierarchyPanel::OnRender(const char *name, Scene &scene)
                     for (auto& tex: mesh->textures)
                     {
 
-                        ImGui::PushID(tex);
                         static char buffer[256];
                         std::strcpy(buffer, tex->loc.c_str());
 
-                        ImGui::Text(tex->textureType.c_str());
-                        if(ImGui::InputText("Texture Path", buffer, sizeof(buffer)))
+                        if(ImGui::InputText((tex->textureType + " Path").c_str(), buffer, sizeof(buffer)))
                         {
 
                             std::string texType = tex->textureType;
@@ -72,8 +55,6 @@ void HierarchyPanel::OnRender(const char *name, Scene &scene)
                             tex = new Texture(buffer, texType);
 
                         }
-
-                        ImGui::PopID();
 
                     }
 

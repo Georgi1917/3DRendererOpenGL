@@ -81,6 +81,14 @@ void Framebuffer::ResizeFramebuffer(int x, int y, int width, int height)
     glGenTextures(1, &pickingTexId);
     glBindTexture(GL_TEXTURE_2D, pickingTexId);
     printf("FBO resize requested: %d x %d\n", width, height);
+
+    if (width <= 0) {
+        width = 5;
+    }
+    if (height <= 0) {
+        height = 5;
+    }
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
