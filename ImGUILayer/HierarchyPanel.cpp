@@ -28,43 +28,42 @@ void HierarchyPanel::OnRender(const char *name, Scene &scene)
     {
 
         ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 5.0f);
-        if (ImGui::CollapsingHeader(("Model " + std::to_string(model->id)).c_str()))
+        ImGui::PushID(model);
+        if (ImGui::CollapsingHeader("Model"))
         {
 
-            int k = 0;
+            int k = 1;
 
             for (auto& mesh : model->modelMeshes)
             {
 
-                int i = 0;
-                int j = 0;
+                ImGui::PushID(mesh);
 
                 const char *mat_name = mesh->material.name.c_str();
-                if (mat_name)
+                if (!mat_name)
                 {
-                    // std::cout << "Yes" << "\n";
-                    mat_name = ("asdasd" + std::to_string(k + 1)).c_str();
+                    mat_name = ("Mesh - " + std::to_string(k++)).c_str();
                 }
 
-                //std::cout << mat_name << "\n";
 
                 ImGui::Indent(12.0f);
                 if (ImGui::CollapsingHeader(mat_name))
                 {
 
-                    ImGui::InputFloat3(("Ambient" + std::to_string(j + 1)).c_str(), &(mesh->material.ambient.x), "%.3f");
-                    ImGui::InputFloat3(("Diffuse" + std::to_string(j + 1)).c_str(), &(mesh->material.diffuse.x), "%.3f");
-                    ImGui::InputFloat3(("Specular" + std::to_string(j + 1)).c_str(), &(mesh->material.specular.x), "%.3f");
+                    ImGui::InputFloat3("Ambient", &(mesh->material.ambient.x), "%.3f");
+                    ImGui::InputFloat3("Diffuse", &(mesh->material.diffuse.x), "%.3f");
+                    ImGui::InputFloat3("Specular", &(mesh->material.specular.x), "%.3f");
 
                     ImGui::Text("\nTextures:");
                     for (auto& tex: mesh->textures)
                     {
 
+                        ImGui::PushID(tex);
                         static char buffer[256];
                         std::strcpy(buffer, tex->loc.c_str());
 
                         ImGui::Text(tex->textureType.c_str());
-                        if(ImGui::InputText(("Texture Location" + std::to_string(i + 1)).c_str(), buffer, sizeof(buffer)))
+                        if(ImGui::InputText("Texture Path", buffer, sizeof(buffer)))
                         {
 
                             std::string texType = tex->textureType;
@@ -74,21 +73,21 @@ void HierarchyPanel::OnRender(const char *name, Scene &scene)
 
                         }
 
-                        i++;
+                        ImGui::PopID();
 
                     }
-
-                    j++;
 
                 }
 
                 ImGui::Unindent(12.0f);
-                k++;
+
+                ImGui::PopID();
 
             }
 
         }
 
+        ImGui::PopID();
         ImGui::PopStyleVar(1);
 
     }

@@ -63,14 +63,32 @@ static bool icon_text_button(const char* id,
 
     draw_list->AddText(icon_pos, IM_COL32(220, 220, 230, 255), icon);
 
-    ImVec2 label_size = ImGui::CalcTextSize(label);
+    const float padding = 5.0f;
+    const float text_top = pos.y + 35.0f;
+    const float text_bottom = max.y - 4.0f;
 
-    ImVec2 label_pos (
-        pos.x + (size.x - label_size.x) * 0.5f,
-        pos.y + 45.0f
+    ImVec2 text_min(pos.x + padding, text_top);
+    ImVec2 text_max(max.x - padding, text_bottom);
+
+    draw_list->PushClipRect(text_min, text_max, true);
+
+    draw_list->AddText(
+        ImGui::GetFont(),
+        ImGui::GetFontSize(),
+        text_min,
+        IM_COL32(240, 240, 240, 255),
+        label,
+        nullptr,
+        size.x - padding * 2.0f
     );
 
-    draw_list->AddText(label_pos, IM_COL32(240, 240, 240, 255), label);
+    draw_list->PopClipRect();
+
+    if (hovered) {
+        ImGui::BeginTooltip();
+        ImGui::TextUnformatted(label);
+        ImGui::EndTooltip();
+    }
 
     ImGui::PopID();
 
@@ -111,7 +129,7 @@ void FilePanel::OnRender(const char* name, Scene& scene)
     for (const auto& entry : std::filesystem::directory_iterator(path))
     {
 
-        ImGui::PushID(entry.path().filename().generic_string().c_str());
+        ImGui::PushID(entry.path().generic_string().c_str());
         ImGui::SameLine();
 
         if (entry.is_regular_file()) {
