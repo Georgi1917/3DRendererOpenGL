@@ -56,6 +56,19 @@ void HierarchyPanel::OnRender(const char *name, Scene &scene)
 
                         }
 
+                        if (ImGui::BeginDragDropTarget()) {
+                            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ITEM")) {
+
+                                const char* path = (const char*)payload->Data;
+                                std::string tex_type = tex->textureType;
+
+                                delete tex;
+                                tex = new Texture(path, tex_type);
+
+                            }
+                            ImGui::EndDragDropTarget();
+                        }
+
                     }
 
                 }

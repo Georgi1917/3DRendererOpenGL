@@ -26,6 +26,16 @@ void SceneViewport::OnRender(const char* name, Framebuffer &fbo, Scene &scene)
     guizmo_layer.BeginFrame(x, y, width, height);
     guizmo_layer.UpdateEntity(scene.camera->GetViewMatrix(), scene.projection);
 
+    if(ImGui::BeginDragDropTarget()) {
+        if(const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ITEM")) {
+            const char* path = (const char*)payload->Data;
+
+            scene.entities.push_back(new Model(path));
+        }
+
+        ImGui::EndDragDropTarget();
+    }
+
     ImGui::End();
 
 }

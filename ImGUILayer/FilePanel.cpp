@@ -132,25 +132,32 @@ void FilePanel::OnRender(const char* name, Scene& scene)
         ImGui::PushID(entry.path().generic_string().c_str());
         ImGui::SameLine();
 
+        std::string full_path = entry.path().generic_string();
+        std::string filename = entry.path().filename().generic_string();
+
         if (entry.is_regular_file()) {
 
-            if (is_valid_file(entry.path().filename().generic_string()) &&
-                icon_text_button("item", ICON_FA_CUBE, entry.path().filename().generic_string().c_str())) {
+            if (is_valid_file(filename)) {
+                if (icon_text_button("item", ICON_FA_CUBE, filename.c_str())) {
+                    scene.entities.push_back(new Model(full_path.c_str()));
+                }
 
-                scene.entities.push_back(new Model(entry.path().generic_string().c_str()));
+                if (ImGui::BeginDragDropSource()) {
+                    ImGui::SetDragDropPayload("ITEM", full_path.c_str(), full_path.size() + 1);
+                    ImGui::Text(filename.c_str());
+                    ImGui::EndDragDropSource();
+                }
 
             }
+
         }
 
         if (entry.is_directory())
         {
-            
-            std::string icon = ICON_FA_FOLDER;
-            std::string dir  = entry.path().generic_string().c_str();
 
-            if (icon_text_button("model", icon.c_str(), entry.path().filename().generic_string().c_str())) {
+            if (icon_text_button("model", ICON_FA_FOLDER, filename.c_str())) {
                 inside_folder = true;
-                path = entry.path().generic_string().c_str();
+                path = full_path.c_str();
             }
 
         }

@@ -37,8 +37,6 @@ struct Material
 struct Mesh
 {
 
-    unsigned int id;
-
     VertexArray  vao = VertexArray();
     IndexBuffer  ibo = IndexBuffer();
 
