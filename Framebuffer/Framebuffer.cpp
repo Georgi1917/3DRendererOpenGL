@@ -80,7 +80,6 @@ void Framebuffer::ResizeFramebuffer(int x, int y, int width, int height)
 
     glGenTextures(1, &pickingTexId);
     glBindTexture(GL_TEXTURE_2D, pickingTexId);
-    printf("FBO resize requested: %d x %d\n", width, height);
 
     if (width <= 0) {
         width = 5;

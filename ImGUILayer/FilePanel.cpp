@@ -3,6 +3,7 @@
 #include "../include/imgui/imgui_impl_glfw.h"
 #include "../include/imgui/imgui_impl_opengl3.h"
 #include <filesystem>
+#include <algorithm>
 #include <iostream>
 #include "Fonts/IconsFontAwesome7.h"
 
@@ -114,6 +115,12 @@ void FilePanel::OnRender(const char* name, Scene& scene)
 {
 
     ImGui::Begin(name);
+    ImGui::BeginChild(
+        "FilePanel",
+        ImVec2(0,0),
+        ImGuiChildFlags_None,
+        ImGuiWindowFlags_None
+    );
 
     static bool inside_folder = false;
     static std::string path = ".\\Resources";
@@ -126,11 +133,18 @@ void FilePanel::OnRender(const char* name, Scene& scene)
         ImGui::NewLine();
     }
 
+    float button_width = 90.0f;
+    float spacing = ImGui::GetStyle().ItemSpacing.x;
+
+    int column = 0;
+    int max_columns = std::max(
+        1, (int)(ImGui::GetContentRegionAvail().x + spacing) / (int)(button_width + spacing)
+    );
+
     for (const auto& entry : std::filesystem::directory_iterator(path))
     {
 
         ImGui::PushID(entry.path().generic_string().c_str());
-        ImGui::SameLine();
 
         std::string full_path = entry.path().generic_string();
         std::string filename = entry.path().filename().generic_string();
@@ -148,6 +162,8 @@ void FilePanel::OnRender(const char* name, Scene& scene)
                     ImGui::EndDragDropSource();
                 }
 
+                column++;
+
             }
 
         }
@@ -160,12 +176,19 @@ void FilePanel::OnRender(const char* name, Scene& scene)
                 path = full_path.c_str();
             }
 
+            column++;
+
+        }
+
+        if (column % max_columns != 0) {
+            ImGui::SameLine();
         }
 
         ImGui::PopID();
 
     }
 
+    ImGui::EndChild();
     ImGui::End();
 
 }
