@@ -152,9 +152,8 @@ void FilePanel::OnRender(const char* name, Scene& scene)
         if (entry.is_regular_file()) {
 
             if (is_valid_file(filename)) {
-                if (icon_text_button("item", ICON_FA_CUBE, filename.c_str())) {
-                    scene.entities.push_back(new Model(full_path.c_str()));
-                }
+
+                icon_text_button("item", ICON_FA_CUBE, filename.c_str());
 
                 if (ImGui::BeginDragDropSource()) {
                     ImGui::SetDragDropPayload("ITEM", full_path.c_str(), full_path.size() + 1);

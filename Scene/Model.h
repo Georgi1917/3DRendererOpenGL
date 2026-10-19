@@ -21,19 +21,20 @@ struct Model
     glm::vec3 pickingColor;
 
     Model(std::vector<Mesh*> meshes);
-    Model(const char* filepath);
+    Model(const char* filepath, bool* is_successfull);
     ~Model();
     
     void Draw(Shader &shader);
     void UpdateMatrix();
     bool CompareIdToColor(unsigned char r, unsigned char g, unsigned char b);
 
-    void LoadModel(const char* filepath);
-    void ProccessNode(aiNode *node, const aiScene *scene);
-    Mesh* ProccessMesh(aiMesh *mesh, const aiScene *scene);
-    Texture* LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
-    Material LoadMaterial(aiMaterial *mat);
-    void OrderMeshesByMaterial(const aiScene *scene);
+    private:
+        void LoadModel(const char* filepath, bool* is_succesfull);
+        void ProccessNode(aiNode *node, const aiScene *scene);
+        Mesh* ProccessMesh(aiMesh *mesh, const aiScene *scene);
+        Texture* LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
+        Material LoadMaterial(aiMaterial *mat);
+        void OrderMeshesByMaterial(const aiScene *scene);
 
 };
 

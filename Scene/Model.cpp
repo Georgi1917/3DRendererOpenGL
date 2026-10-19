@@ -29,7 +29,7 @@ Model::Model(std::vector<Mesh*> meshes)
 
 }
 
-Model::Model(const char* filepath)
+Model::Model(const char* filepath, bool* is_successfull)
 {
 
     id = currIdM;
@@ -51,7 +51,7 @@ Model::Model(const char* filepath)
     model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
     model = glm::scale(model, scale);
 
-    LoadModel(filepath);
+    LoadModel(filepath, is_successfull);
 
 }
 
@@ -123,7 +123,7 @@ bool Model::CompareIdToColor(unsigned char r, unsigned char g, unsigned char b)
 
 }
 
-void Model::LoadModel(const char* filepath)
+void Model::LoadModel(const char* filepath, bool* is_successfull)
 {
 
     Assimp::Importer import;
@@ -132,11 +132,13 @@ void Model::LoadModel(const char* filepath)
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) 
     {
         std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
+        *is_successfull = false;
         return;
     }
     
     ProccessNode(scene->mRootNode, scene);
     OrderMeshesByMaterial(scene);
+    *is_successfull = true;
 
 }
 

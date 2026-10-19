@@ -29,8 +29,15 @@ void SceneViewport::OnRender(const char* name, Framebuffer &fbo, Scene &scene)
     if(ImGui::BeginDragDropTarget()) {
         if(const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ITEM")) {
             const char* path = (const char*)payload->Data;
+            bool is_successfull = false;
+            Model* entity = new Model(path, &is_successfull);
 
-            scene.entities.push_back(new Model(path));
+            if (is_successfull) {
+                scene.entities.push_back(entity);
+            }
+            else {
+                delete entity;
+            }
         }
 
         ImGui::EndDragDropTarget();
