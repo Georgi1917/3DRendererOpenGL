@@ -25,10 +25,12 @@ struct Material
     bool hasAmbientTexture;
     bool hasDiffuseTexture;
     bool hasSpecularTexture;
+    bool hasNormalTexture;
 
     sampler2D AmbientTexture;
     sampler2D DiffuseTexture;
     sampler2D SpecularTexture;
+    sampler2D NormalTexture;
 
     float shininess;
 
@@ -42,11 +44,22 @@ uniform vec3 viewPos;
 in vec3 Normal;
 in vec3 FragPos;
 in vec2 TexCoord;
+in mat3 TBN;
 
 void main()
 {
 
-    vec3 norm = normalize(Normal);
+    //vec3 norm = normalize(Normal);
+    vec3 norm;
+    if (material.hasNormalTexture) {
+        norm = texture(material.NormalTexture, TexCoord).rgb;
+        norm = norm * 2.0f - 1.0f;
+        norm = normalize(TBN * norm);
+    }
+    else {
+        norm = normalize(Normal);
+    }
+
     vec3 lightDir = normalize(light.pos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
 
@@ -79,8 +92,6 @@ void main()
     if (material.hasSpecularTexture)
     {
         specular = light.specular * spec * vec3(texture(material.SpecularTexture, TexCoord));
-        // float spec_strength = normalize(texture(material.SpecularTexture, TexCoord)).r;
-        // specular = light.specular * spec * spec_strength;
     }
     else
     {

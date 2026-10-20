@@ -127,7 +127,7 @@ void Model::LoadModel(const char* filepath, bool* is_successfull)
 {
 
     Assimp::Importer import;
-    const aiScene *scene = import.ReadFile(filepath, aiProcess_Triangulate | aiProcess_FlipUVs);	
+    const aiScene *scene = import.ReadFile(filepath, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);	
 	
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) 
     {
@@ -168,7 +168,6 @@ Texture* Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::s
     if (mat->GetTextureCount(type) > 0)
     {
 
-        //aiString texPath("obj-files/");
         aiString texPath("Resources/Models/");
         aiString path;
         mat->GetTexture(type, 0, &path);
@@ -251,6 +250,7 @@ void Model::OrderMeshesByMaterial(const aiScene *scene)
         newTextures.push_back(LoadMaterialTextures(scene->mMaterials[i], aiTextureType_AMBIENT, "AmbientTexture"));
         newTextures.push_back(LoadMaterialTextures(scene->mMaterials[i], aiTextureType_DIFFUSE, "DiffuseTexture"));
         newTextures.push_back(LoadMaterialTextures(scene->mMaterials[i], aiTextureType_SPECULAR, "SpecularTexture"));
+        newTextures.push_back(LoadMaterialTextures(scene->mMaterials[i], aiTextureType_HEIGHT, "NormalTexture"));
 
         mesh->textures = std::move(newTextures);
 
@@ -279,11 +279,22 @@ Mesh* Model::ProccessMesh(aiMesh *mesh, const aiScene *scene)
     std::vector<unsigned int> indices;
     Material mat;
 
+    // if (mesh->HasTangentsAndBitangents()) {
+    //         printf("Mesh has TB.\n");
+    // }
+
     for (int i = 0; i < mesh->mNumVertices; i++)
     {
         Vertex vertex;
         vertex.points = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
         vertex.normals = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
+
+        if (mesh->HasTangentsAndBitangents()) {
+            vertex.tangent = glm::vec3(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
+        }
+        else {
+            vertex.tangent = glm::vec3(0.0f, 0.0f, 0.0f);
+        }
 
         if (mesh->mTextureCoords[0])
         {
@@ -291,7 +302,9 @@ Mesh* Model::ProccessMesh(aiMesh *mesh, const aiScene *scene)
             vertex.texCoords = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 
         }
-        else vertex.texCoords = glm::vec2(0.0f, 0.0f);
+        else {
+            vertex.texCoords = glm::vec2(0.0f, 0.0f);
+        }
 
         vertices.push_back(vertex);
 
@@ -327,14 +340,14 @@ Model* ConstructSkyboxM()
 {
 
     std::vector<Vertex> skyboxVertices = {
-        {{-1.0f, -1.0f,  1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
-        {{1.0f, -1.0f,  1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
-        {{1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
-        {{-1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
-        {{-1.0f,  1.0f,  1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
-        {{1.0f,  1.0f,  1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
-        {{1.0f,  1.0f, -1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
-        {{-1.0f,  1.0f, -1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}}
+        {{-1.0f, -1.0f,  1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+        {{1.0f, -1.0f,  1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+        {{1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+        {{-1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+        {{-1.0f,  1.0f,  1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+        {{1.0f,  1.0f,  1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+        {{1.0f,  1.0f, -1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+        {{-1.0f,  1.0f, -1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}}
     };
 
     std::vector<unsigned int> skyboxIndices = {

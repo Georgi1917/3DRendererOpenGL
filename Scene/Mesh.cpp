@@ -15,6 +15,7 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
     ibo.init(indices.data(), indices.size());
     layout.Push<float>(3);
     layout.Push<float>(3);
+    layout.Push<float>(3);
     layout.Push<float>(2);
     vao.AddBuffer(vbo, layout);
     vao.Unbind();
