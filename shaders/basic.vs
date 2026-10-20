@@ -22,8 +22,6 @@ void main()
     FragPos = vec3(model * vec4(pos, 1.0));
     TexCoord = aTexCoord;
 
-    //vec3 T = normalize(vec3(model * vec4(tangent, 0.0f)));
-    //vec3 N = normalize(vec3(model * vec4(Normal, 0.0f)));
     vec3 T = normalize(normalMatrix * tangent);
     vec3 N = normalize(normalMatrix * aNormal);
     vec3 B = cross(N, T);
