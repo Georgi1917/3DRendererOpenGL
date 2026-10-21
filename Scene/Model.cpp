@@ -81,6 +81,7 @@ void Model::Draw(Shader& shader)
         shader.SetBool("material.hasAmbientTexture", false);
         shader.SetBool("material.hasDiffuseTexture", false);
         shader.SetBool("material.hasSpecularTexture", false);
+        shader.SetBool("material.hasNormalTexture", false);
         
         for (int i = 0; i < mesh->textures.size(); i++)
         {
@@ -168,7 +169,7 @@ Texture* Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::s
     if (mat->GetTextureCount(type) > 0)
     {
 
-        aiString texPath("Resources/Models/");
+        aiString texPath("Resources/Textures/");
         aiString path;
         mat->GetTexture(type, 0, &path);
         texPath.Append(path.C_Str());
