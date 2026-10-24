@@ -86,8 +86,10 @@ void Model::Draw(Shader& shader)
         for (int i = 0; i < mesh->textures.size(); i++)
         {
 
-            if (mesh->textures[i]->loc == "None") continue;
+            //if (mesh->textures[i]->loc == "None") continue;
             
+            if (!mesh->textures[i]->loaded_correctly) continue;
+
             shader.SetBool("material.has" + mesh->textures[i]->textureType, true);
             shader.Set1I("material." + mesh->textures[i]->textureType, i);
             glActiveTexture(GL_TEXTURE0 + i);
@@ -178,7 +180,7 @@ Texture* Model::LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::s
 
     }
 
-    return new Texture(typeName);
+    return new Texture("None", typeName);
 
 }
 

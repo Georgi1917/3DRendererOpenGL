@@ -1,13 +1,14 @@
 #include "Texture.h"
 #include <iostream>
 
-Texture::Texture(std::string texType)
-{
+// Texture::Texture(std::string texType)
+// {
 
-    loc = "None";
-    textureType = texType;
+//     loc = "None";
+//     textureType = texType;
+//     loaded_correctly = false;
 
-}
+// }
 
 Texture::Texture(const char* loc, std::string texType, bool flip)
 {
@@ -43,10 +44,18 @@ Texture::Texture(const char* loc, std::string texType, bool flip)
         glGenerateMipmap(GL_TEXTURE_2D);
 
     }
-    else std::cout << "Failed to create texture!" << "\n";
+    else {
+        std::cout << "Failed to create texture!" << "\n";
+        this->loc = loc;
+        textureType = texType;
+        loaded_correctly = false;
+        glDeleteTextures(1, &textureID);
+        return;
+    }
 
     textureType = texType;
     this->loc = loc;
+    loaded_correctly = true;
 
     stbi_image_free(data);
 
@@ -55,7 +64,7 @@ Texture::Texture(const char* loc, std::string texType, bool flip)
 Texture::~Texture()
 {
 
-    if (loc == "None") return;
+    if (!loaded_correctly) return;
     std::cout << "Texture Destructor called : " << textureID << "\n";
     glDeleteTextures(1, &textureID);
 

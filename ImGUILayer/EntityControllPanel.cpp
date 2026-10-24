@@ -73,9 +73,14 @@ void EntityControllPanel::OnRender(const char* name, Scene& scene)
 
                     delete *it;
                     it = mesh->textures.erase(it);
-                    if (location == "None") flippedTextures.push_back(new Texture(texType));
-                    else flippedTextures.push_back(new Texture(location.c_str(), texType, flipState));
 
+                    if (location == "None") {
+                        flippedTextures.push_back(new Texture("None", texType));
+                    }
+                    else {
+                        flippedTextures.push_back(new Texture(location.c_str(), texType, flipState));
+                    }
+                    
                 }
 
                 mesh->textures = std::move(flippedTextures);

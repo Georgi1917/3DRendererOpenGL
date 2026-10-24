@@ -59,9 +59,11 @@ int main()
         renderer.PickingPass(pickingShader, scene);
         
         main_fbo.Bind();
+        glEnable(GL_FRAMEBUFFER_SRGB);
         renderer.SkyboxPass(skyboxShader, scene);
         renderer.MainPass(basicShader, scene);
         renderer.LightPass(lightingShader, scene);
+        glDisable(GL_FRAMEBUFFER_SRGB);
         main_fbo.Unbind();
 
         if (picking_fbo.f_width != main_fbo.f_width || picking_fbo.f_height != main_fbo.f_height)

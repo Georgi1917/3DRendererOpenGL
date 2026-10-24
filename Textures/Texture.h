@@ -7,12 +7,13 @@
 struct Texture
 {
     
-    unsigned int textureID;
+    unsigned int textureID = 0;
     std::string loc;
     std::string textureType;
+    bool loaded_correctly = true;
 
     Texture(const char* loc, std::string texType, bool flip = true);
-    Texture(std::string texType);
+    //Texture(std::string texType);
     ~Texture();
 
     void Bind();

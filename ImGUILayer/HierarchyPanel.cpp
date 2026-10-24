@@ -46,7 +46,7 @@ void HierarchyPanel::OnRender(const char *name, Scene &scene)
                         static char buffer[256];
                         std::strcpy(buffer, tex->loc.c_str());
 
-                        if(ImGui::InputText((tex->textureType + " Path").c_str(), buffer, sizeof(buffer)))
+                        if(ImGui::InputText((tex->textureType + " Path").c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_ReadOnly))
                         {
 
                             std::string texType = tex->textureType;
